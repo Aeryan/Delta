@@ -28,3 +28,22 @@ stories:
   - action: utter_did_that_help
   - intent: deny
   - action: utter_goodbye
+
+- story: interactive_story_1
+  steps:
+  - intent: request_room
+  - action: room_form
+  - active_loop: room_form
+  - slot_was_set:
+    - requested_slot: num_people
+  - slot_was_set:
+    - num_people: 5
+  - slot_was_set:
+    - requested_slot: glass_walls
+  - slot_was_set:
+    - glass_walls: true
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: utter_submit
+  - action: utter_slots_values

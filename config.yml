@@ -23,7 +23,7 @@ pipeline:
 # Custom
    - name: "DucklingEntityExtractor"
      url: "http://localhost:8000"
-     dimensions: [ "number", "numeral"]
+     dimensions: [ "number"]
      timezone: "Europe/Tallinn"
      timeout: 3
 

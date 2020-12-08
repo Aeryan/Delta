@@ -1,0 +1,78 @@
+version: "2.0"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+  - request_room
+  - inform
+
+responses:
+  utter_greet:
+    - text: "Hey! How are you?"
+
+  utter_cheer_up:
+    - text: "Here is something to cheer you up:"
+      image: "https://i.imgur.com/nGF1K8f.jpg"
+
+  utter_did_that_help:
+    - text: "Did that help you?"
+
+  utter_happy:
+    - text: "Great, carry on!"
+
+  utter_goodbye:
+    - text: "Bye"
+
+  utter_iamabot:
+    - text: "I am a bot, powered by Rasa."
+
+  utter_ask_room_form_num_people:
+    - text: "How many people should the room fit?"
+
+  utter_ask_room_form_glass_walls:
+    - text: "Is it okay if the walls are see-through?"
+
+  utter_submit:
+    - text: "Okay."
+
+  utter_slots_values:
+    - text: "I am going to run a search using these parameters:\n
+              - number of people: {num_people}\n
+              - glass walls: {glass_walls}"
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+
+forms:
+  room_form:
+    num_people:
+      - type: from_entity
+        entity: number
+        intent: inform
+    glass_walls:
+      - type: from_intent
+        intent: affirm
+        value: true
+      - type: from_intent
+        intent: deny
+        value: false
+
+entities:
+  - number
+  - ordinal
+
+slots:
+  num_people:
+    type: float
+    auto_fill: false
+    influence_conversation: false
+  glass_walls:
+    type: text
+    auto_fill: false
+    influence_conversation: false

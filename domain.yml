@@ -3,11 +3,11 @@ session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
 intents:
+- greet
 - inform
 - request_room
 - affirm
 - mood_unhappy
-- greet
 - goodbye
 - deny
 - mood_great
@@ -23,10 +23,21 @@ slots:
     type: float
     auto_fill: false
     influence_conversation: false
-    max_value: 1.0
-    min_value: 0.0
   requested_slot:
     type: text
+    influence_conversation: false
+  room_search_feedback:
+    type: text
+    auto_fill: false
+    influence_conversation: false
+  room_search_partial_match:
+    type: bool
+    influence_conversation: false
+  room_search_perfect_match:
+    type: bool
+    influence_conversation: false
+  room_search_result:
+    type: float
     influence_conversation: false
 responses:
   utter_greet:
@@ -42,19 +53,25 @@ responses:
   - text: Bye
   utter_iamabot:
   - text: I am a bot, powered by Rasa.
-  utter_ask_room_form_num_people:
+  utter_ask_room_search_form_num_people:
   - text: How many people should the room fit?
-  utter_ask_room_form_glass_walls:
+  utter_ask_room_search_form_glass_walls:
   - text: Is it okay if the walls are see-through?
   utter_submit:
-  - text: Okay.
+  - text: Okay, checking available rooms.
   utter_slots_values:
   - text: "I am going to run a search using these parameters:\n - number of people: {num_people}\n - glass walls: {glass_walls}"
+  utter_ask_room_search_feedback:
+  - text: Shall I mark this room as "in use" for the next hour?
+  utter_task_finalized:
+  - text: Done.
 actions:
-- utter_slots_values
-- utter_submit
+- room_search
+- room_search_finalize
+- room_search_results
+- reset_all_slots
 forms:
-  room_form:
+  room_search_form:
     num_people:
     - type: from_entity
       entity: number
@@ -63,6 +80,14 @@ forms:
     - type: from_intent
       intent: affirm
       value: true
+    - type: from_intent
+      intent: deny
+      value: false
+  room_accept_form:
+    room_search_feedback:
+    - type: from_intent
+      intent: affirm
+      value: yes
     - type: from_intent
       intent: deny
       value: false

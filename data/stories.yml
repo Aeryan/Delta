@@ -29,21 +29,25 @@ stories:
   - intent: deny
   - action: utter_goodbye
 
-- story: interactive_story_1
+- story: room search success
   steps:
   - intent: request_room
-  - action: room_form
-  - active_loop: room_form
-  - slot_was_set:
-    - requested_slot: num_people
-  - slot_was_set:
-    - num_people: 5
-  - slot_was_set:
-    - requested_slot: glass_walls
-  - slot_was_set:
-    - glass_walls: true
-  - slot_was_set:
-    - requested_slot: null
+  - action: room_search_form
+  - active_loop: room_search_form
   - active_loop: null
   - action: utter_submit
-  - action: utter_slots_values
+  - action: room_search
+  # room_search_results may force room_accept_form as FollowUpAction
+  - action: room_search_results
+
+- story: room search acceptance
+  steps:
+  - action: room_accept_form
+  - active_loop: room_accept_form
+  - active_loop: null
+  - slot_was_set:
+      - room_search_feedback: True
+  - action: room_search_finalize
+  - action: reset_all_slots
+  - action: utter_task_finalized
+

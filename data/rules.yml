@@ -17,17 +17,25 @@ rules:
     - intent: bot_challenge
     - action: utter_iamabot
 
-  - rule: Activate room request form
-    steps:
-      - intent: request_room
-      - action: room_form
-      - active_loop: room_form
-
-  - rule: Submit room request form
-    condition:
-      - active_loop: room_form
-    steps:
-      - action: room_form
-      - active_loop: null
-      - action: utter_submit
-      - action: utter_slots_values
+#  - rule: Activate room request form
+#    steps:
+#      - intent: request_room
+#      - action: room_form
+#      - active_loop: room_form
+#
+#  - rule: Submit room request form
+#    condition:
+#      - active_loop: room_form
+#    steps:
+#      - action: room_form
+#      - active_loop: null
+#      - action: utter_submit
+#      - action: room_search
+#      - action: room_search_results
+#
+#  - rule: Activate room acceptance form
+#    condition:
+#      - slot_was_set:
+#          - room_search_feedback_required: True
+#    steps:
+#      - action: utter_goodbye

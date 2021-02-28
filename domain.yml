@@ -1,19 +1,23 @@
 version: '2.0'
 session_config:
   session_expiration_time: 60
-  carry_over_slots_to_new_session: true
+  carry_over_slots_to_new_session: false
 intents:
-- greet
-- inform
-- request_room
-- affirm
-- mood_unhappy
-- goodbye
-- deny
-- mood_great
-- bot_challenge
+  - greet
+  - inform
+  - request_general_options
+  - request_room
+  - request_employee_office
+  - affirm
+  - goodbye
+  - deny
+  - bot_challenge
+  - exit_form
+#- mood_great
+#- mood_unhappy
 entities:
-- number
+  - number
+  - employee
 slots:
   glass_walls:
     type: text
@@ -21,13 +25,13 @@ slots:
     influence_conversation: false
   num_people:
     type: float
-    auto_fill: false
+    auto_fill: true
     influence_conversation: false
   requested_slot:
     type: text
     influence_conversation: false
   room_search_feedback:
-    type: text
+    type: bool
     auto_fill: false
     influence_conversation: false
   room_search_partial_match:
@@ -39,55 +43,92 @@ slots:
   room_search_result:
     type: float
     influence_conversation: false
+  employee:
+    type: text
+    auto_fill: true
+    influence_conversation: false
+  office_search_result:
+    type: text
+    influence_conversation: false
+  office_employee_suggestion_feedback:
+    type: bool
+    auto_fill: false
+    influence_conversation: false
 responses:
+  utter_ok:
+    - text: Okay.
   utter_greet:
-  - text: Hey! How are you?
+    - text: Hello!
   utter_cheer_up:
-  - text: 'Here is something to cheer you up:'
-    image: https://i.imgur.com/nGF1K8f.jpg
+    - text: 'Here is something to cheer you up:'
+      image: https://i.imgur.com/nGF1K8f.jpg
   utter_did_that_help:
-  - text: Did that help you?
+    - text: Did that help you?
   utter_happy:
-  - text: Great, carry on!
-  utter_goodbye:
-  - text: Bye
+    - text: Great, carry on!
+  utter_bye:
+    - text: Have a nice day!
   utter_iamabot:
-  - text: I am a bot, powered by Rasa.
+    - text: I am a bot, powered by Rasa.
+  utter_offer_help:
+    - text: How can I help you?
+  utter_offer_additional_help:
+    - text: Is there anything else I can help you with?
   utter_ask_room_search_form_num_people:
-  - text: How many people should the room fit?
+    - text: How many people should the room fit?
   utter_ask_room_search_form_glass_walls:
-  - text: Is it okay if the walls are see-through?
+    - text: Is it okay if the walls are see-through?
   utter_submit:
-  - text: Okay, checking available rooms.
+    - text: Okay, checking available rooms.
   utter_slots_values:
-  - text: "I am going to run a search using these parameters:\n - number of people: {num_people}\n - glass walls: {glass_walls}"
+    - text: "I am going to run a search using these parameters:\n - number of people: {num_people}\n - glass walls: {glass_walls}"
   utter_ask_room_search_feedback:
-  - text: Shall I mark this room as "in use" for the next hour?
+    - text: Shall I mark this room as "in use" for the next hour?
   utter_task_finalized:
-  - text: Done.
+    - text: Done.
+  utter_room_search_failure:
+    - text: No available rooms were found.
+  utter_general_options:
+    - text: I can currently book available rooms.
+  utter_name_not_found:
+    - text: The provided name did not match that of any employee.
+  utter_ask_office_employee_suggestion_feedback:
+    - text: "Did you mean {office_search_result}?"
+  utter_office_result:
+    - text: "Their office is listed as {office_search_result}."
 actions:
-- room_search
-- room_search_finalize
-- room_search_results
-- reset_all_slots
+  - room_search
+  - room_search_finalize
+  - room_search_results
+  - reset_all_slots
+  - office_search
+  - office_search_parse_suggestion_reply
 forms:
   room_search_form:
     num_people:
-    - type: from_entity
-      entity: number
-      intent: inform
+      - type: from_entity
+        entity: number
+        intent: [inform, request_room]
     glass_walls:
-    - type: from_intent
-      intent: affirm
-      value: true
-    - type: from_intent
-      intent: deny
-      value: false
+      - type: from_intent
+        intent: affirm
+        value: true
+      - type: from_intent
+        intent: deny
+        value: false
   room_accept_form:
     room_search_feedback:
-    - type: from_intent
-      intent: affirm
-      value: yes
-    - type: from_intent
-      intent: deny
-      value: false
+      - type: from_intent
+        intent: affirm
+        value: True
+      - type: from_intent
+        intent: deny
+        value: False
+  office_employee_suggestion_form:
+    office_employee_suggestion_feedback:
+      - type: from_intent
+        intent: affirm
+        value: True
+      - type: from_intent
+        intent: deny
+        value: False

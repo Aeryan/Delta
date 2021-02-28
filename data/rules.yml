@@ -4,18 +4,35 @@ rules:
 
   - rule: Respond to greet
     steps:
-    - intent: greet
-    - action: utter_greet
+      - intent: greet
+      - action: utter_greet
+      - action: utter_offer_help
 
   - rule: Say goodbye anytime the user says goodbye
     steps:
-    - intent: goodbye
-    - action: utter_goodbye
+      - intent: goodbye
+      - action: utter_bye
 
   - rule: Say 'I am a bot' anytime the user challenges
     steps:
-    - intent: bot_challenge
-    - action: utter_iamabot
+      - intent: bot_challenge
+      - action: utter_iamabot
+
+  - rule: List capabilities anytime the user asks
+    steps:
+      - intent: request_general_options
+      - action: utter_general_options
+
+  - rule: office search initiation
+    steps:
+      - intent: request_employee_office
+      - action: office_search
+
+  - rule: office result print followup
+    steps:
+      - action: utter_office_result
+      - action: reset_all_slots
+      - action: utter_offer_additional_help
 
 #  - rule: Activate room request form
 #    steps:
@@ -38,4 +55,4 @@ rules:
 #      - slot_was_set:
 #          - room_search_feedback_required: True
 #    steps:
-#      - action: utter_goodbye
+#      - action: utter_bye

@@ -1,0 +1,24 @@
+version: "2.0"
+nlu:
+  - lookup: employee
+    examples: |
+      - Jaak Vilo
+      - Mark Fišel
+      - Piret Orav
+      - Raul Vicente Zafra
+      - Ahmed Mahmoud Hany Aly Awad
+      - Jaan Aru
+      - Radwa Mohamed El Emam El Shawi
+      - Raivo Kolde
+      - Meelis Kull
+      - Sven Laur
+      - Leopold Parts
+      - Hedi Peterson
+      - Anna Aljanaki
+      - Kallol Roy
+      - Riccardo Tommasini
+      - Syed Attique Shah
+      - Stefania Tomasiello
+      - Victor Henrique Cabral Pinheiro
+      - Raimond-Hendrik Tunnel
+      - Raimond Tunnel

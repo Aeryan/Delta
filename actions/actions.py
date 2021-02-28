@@ -75,8 +75,9 @@ class ActionUtterRoomSearchResults(Action):
             dispatcher.utter_message(text="No available rooms with opaque walls and sufficient space were found. Room " + str(room_num) + " is available, but has transparent walls.")
             return [FollowupAction(name="room_accept_form")]
         else:
-            dispatcher.utter_message(text="No available rooms were found.")
-            return []
+            # dispatcher.utter_message(text="No available rooms were found.")
+            # return [FollowupAction(name="reset_all_slots")]
+            return [FollowupAction(name="utter_room_search_failure")]
 
 
 class ActionFinalizeRoomSearch(Action):
@@ -97,6 +98,10 @@ class ActionFinalizeRoomSearch(Action):
             cur.close()
             conn.close()
 
+            dispatcher.utter_message(text="Done.")
+        else:
+            dispatcher.utter_message(text="Alright.")
+
         return []
 
 
@@ -110,6 +115,64 @@ class ActionResetAllSlots(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         return [AllSlotsReset()]
+
+
+class ActionSearchOffices(Action):
+    def name(self) -> Text:
+        return "office_search"
+
+    def run(self,
+            dispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        if type(tracker.get_slot('employee')) != str:
+            return []
+        name = tracker.get_slot('employee').title()
+        conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
+        cur = conn.cursor()
+
+        # If exact matching fails, offer to repeat query with closest match
+        # https://www.postgresql.org/docs/13/pgtrgm.html
+        cur.execute("SELECT room_nr FROM offices WHERE name = '" + name + "';")
+        result = cur.fetchone()
+        if result is None:
+            cur.execute("SELECT * FROM offices WHERE name % '" + name + "' ORDER BY name DESC;")
+            result = cur.fetchone()
+            cur.close()
+            conn.close()
+            return [SlotSet("office_search_result", result[1]),
+                    FollowupAction(name="utter_name_not_found")]
+
+        cur.close()
+        conn.close()
+        return [SlotSet("office_search_result", result[0]),
+                FollowupAction(name="utter_office_result")]
+
+
+# TODO: Needs better naming
+class ActionParseEmployeeSuggestionReply(Action):
+    def name(self) -> Text:
+        return "office_search_parse_suggestion_reply"
+
+    def run(self,
+            dispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        if tracker.get_slot("office_employee_suggestion_feedback"):
+            conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
+            cur = conn.cursor()
+            cur.execute("SELECT room_nr FROM offices WHERE name = '" + tracker.get_slot("office_search_result") + "';")
+            result = cur.fetchone()[0]
+            cur.close()
+            conn.close()
+            return [SlotSet("office_search_result", result),
+                    FollowupAction("utter_office_result")]
+
+        else:
+            dispatcher.utter_message(text="Alright.")
+            return [AllSlotsReset(),
+                    FollowupAction("utter_offer_additional_help")]
 
 #
 #

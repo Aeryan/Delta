@@ -37,6 +37,8 @@ nlu:
     - of course
     - that sounds good
     - correct
+    - ok
+    - okay
 - intent: deny
   examples: |
     - no
@@ -46,44 +48,20 @@ nlu:
     - don't like that
     - no way
     - not really
-- intent: mood_great
-  examples: |
-    - perfect
-    - great
-    - amazing
-    - feeling like a king
-    - wonderful
-    - I am feeling very good
-    - I am great
-    - I am amazing
-    - I am going to save the world
-    - super stoked
-    - extremely good
-    - so so perfect
-    - so good
-    - so perfect
-- intent: mood_unhappy
-  examples: |
-    - my day was horrible
-    - I am sad
-    - I don't feel very well
-    - I am disappointed
-    - super sad
-    - I'm so sad
-    - sad
-    - very sad
-    - unhappy
-    - not good
-    - not very good
-    - extremly sad
-    - so saad
-    - so sad
 - intent: bot_challenge
   examples: |
     - are you a bot?
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
+- intent: request_general_options
+  examples: |
+    - what can you do?
+    - what do you do?
+    - how can you help me?
+    - what do you do?
+    - what questions can you answer?
+    - what can I ask you about?
 - intent: request_room
   examples: |
     - are there any free rooms?
@@ -91,11 +69,71 @@ nlu:
     - are any rooms available?
     - room please
     - room
+    - i need a room for [three](number)
 - intent: inform
   examples: |
     - [one](number)
     - [one](number) person
     - [two](number) persons
     - [two](number) people
-    - six
+    - three
+    - four
     - five
+    - six
+    - seven
+    - eight
+    - nine
+    - ten
+- intent: exit_form
+  examples: |
+    - nevermind
+    - forget it
+    - I changed my mind
+    - cancel
+    - quit
+    - exit
+    - leave
+    - break
+# Rasa automatically looks up values from .yml files in data/
+- intent: request_employee_office
+  examples: |
+    - Where is [Jaan Aru](employee)'s office?
+    - Where is the office of [Mark Fišel](employee)?
+    - Can you tell me where [Piret Orav](employee)'s office is?
+    - How do I get to the office of [Raul Vicente Zafra](employee)?
+    - How can I get to [Ahmed Mahmoud Hany Aly Awad](employee)'s office?
+    - Where can I find [Jaak Vilo](employee)?
+
+#- intent: mood_great
+#  examples: |
+#    - good
+#    - perfect
+#    - great
+#    - amazing
+#    - feeling like a king
+#    - wonderful
+#    - I am feeling very good
+#    - I am great
+#    - I am amazing
+#    - I am going to save the world
+#    - super stoked
+#    - extremely good
+#    - so so perfect
+#    - so good
+#    - so perfect
+#- intent: mood_unhappy
+#  examples: |
+#    - my day was horrible
+#    - I am sad
+#    - I don't feel very well
+#    - I am disappointed
+#    - super sad
+#    - I'm so sad
+#    - sad
+#    - very sad
+#    - unhappy
+#    - not good
+#    - not very good
+#    - extremly sad
+#    - so saad
+#    - so sad

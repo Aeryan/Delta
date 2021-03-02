@@ -44,6 +44,7 @@ stories:
 - story: room search failure
   steps:
   - action: utter_room_search_failure
+  - action: reset_all_slots
   - action: utter_offer_additional_help
 
 # TODO: room search refusal

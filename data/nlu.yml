@@ -50,10 +50,20 @@ nlu:
     - not really
 - intent: bot_challenge
   examples: |
+    - what are you
     - are you a bot?
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
+- intent: location_challenge
+  examples: |
+    - where am I?
+    - where are we?
+- intent: room_help_request
+  examples: |
+    - how do I book rooms?
+    - how to book?
+    - what do I need to do in order to book a room?
 - intent: request_general_options
   examples: |
     - what can you do?
@@ -70,6 +80,11 @@ nlu:
     - room please
     - room
     - i need a room for [three](number)
+- intent: check_room
+  examples: |
+    - is [1037](number) free?
+    - is anyone in room [2021](number)?
+    - is [3003](number) taken?
 - intent: inform
   examples: |
     - [one](number)
@@ -84,6 +99,7 @@ nlu:
     - eight
     - nine
     - ten
+    - 10
 - intent: exit_form
   examples: |
     - nevermind

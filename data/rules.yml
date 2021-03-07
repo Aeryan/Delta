@@ -23,6 +23,24 @@ rules:
       - intent: request_general_options
       - action: utter_general_options
 
+  - rule: Explain room booking anytime the user asks
+    steps:
+      - intent: room_help_request
+      - action: utter_room_help
+
+  - rule: State the current location anytime the user asks
+    steps:
+      - intent: location_challenge
+      - action: utter_current_location
+
+  - rule: room check response
+    steps:
+      - intent: check_room
+      - action: room_check_form
+      - active_loop: room_check_form
+      - active_loop: null
+      - action: room_check
+
   - rule: office search initiation
     steps:
       - intent: request_employee_office

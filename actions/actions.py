@@ -6,6 +6,18 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, FollowupAction, AllSlotsReset
 
 
+class ActionResetAllSlots(Action):
+    def name(self) -> Text:
+        return "reset_all_slots"
+
+    def run(self,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        return [AllSlotsReset()]
+
+
 def search_transparent_rooms(cursor, room_capacity, preferred=True):
     cursor.execute("SELECT room_number FROM rooms WHERE available = true AND room_capacity >= {0} ORDER BY room_capacity ASC, transparent DESC;".format(room_capacity))
     q = cursor.fetchone()
@@ -69,7 +81,9 @@ class ActionUtterRoomSearchResults(Action):
         
         room_num = tracker.get_slot('room_search_result')
         if tracker.get_slot('room_search_perfect_match'):
-            dispatcher.utter_message(text="Room " + str(room_num) + " is available.")
+            string = "Room " + str(room_num) + " is available."
+            print(string)
+            dispatcher.utter_message(text=string)
             return [FollowupAction(name="room_accept_form")]
         elif tracker.get_slot('room_search_partial_match'):
             dispatcher.utter_message(text="No available rooms with opaque walls and sufficient space were found. Room " + str(room_num) + " is available, but has transparent walls.")
@@ -105,16 +119,26 @@ class ActionFinalizeRoomSearch(Action):
         return []
 
 
-class ActionResetAllSlots(Action):
+class ActionRoomCheck(Action):
     def name(self) -> Text:
-        return "reset_all_slots"
+        return "room_check"
 
     def run(self,
-            dispatcher: CollectingDispatcher,
+            dispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
+        cur = conn.cursor()
+        room_nr = tracker.get_slot('check_room')
+        cur.execute("SELECT available FROM rooms WHERE room_number = " + str(room_nr[1]) + ";")
+        if cur.fetchone()[0]:
+            dispatcher.utter_message(str(room_nr[1]) + " is currently available.")
+        else:
+            dispatcher.utter_message(str(room_nr[1]) + " is currently not available.")
 
-        return [AllSlotsReset()]
+        cur.close()
+        conn.close()
+        return []
 
 
 class ActionSearchOffices(Action):

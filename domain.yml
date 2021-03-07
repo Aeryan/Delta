@@ -6,6 +6,20 @@ session_config:
   carry_over_slots_to_new_session: false
 intents:
 - greet:
+    use_entities: []
+- bot_challenge:
+    use_entities: []
+- location_challenge:
+    use_entities: []
+- room_help_request:
+    use_entities: []
+- affirm:
+    use_entities: []
+- deny:
+    use_entities: true
+- goodbye:
+    use_entities: true
+- exit_form:
     use_entities: true
 - inform:
     use_entities: true
@@ -13,34 +27,26 @@ intents:
     use_entities: true
 - request_room:
     use_entities: true
+- check_room:
+    use_entities: true
 - request_employee_office:
-    use_entities: true
-- affirm:
-    use_entities: true
-- goodbye:
-    use_entities: true
-- deny:
-    use_entities: true
-- bot_challenge:
-    use_entities: true
-- exit_form:
     use_entities: true
 entities:
 - number
 - employee
 slots:
-  glass_walls:
-    type: rasa.shared.core.slots.TextSlot
-    initial_value: null
-    auto_fill: false
-    influence_conversation: false
   num_people:
     type: rasa.shared.core.slots.FloatSlot
     initial_value: null
     auto_fill: true
     influence_conversation: false
-    max_value: 1.0
+    max_value: 100.0
     min_value: 0.0
+  glass_walls:
+    type: rasa.shared.core.slots.TextSlot
+    initial_value: null
+    auto_fill: false
+    influence_conversation: false
   requested_slot:
     type: rasa.shared.core.slots.TextSlot
     initial_value: null
@@ -54,19 +60,26 @@ slots:
   room_search_partial_match:
     type: rasa.shared.core.slots.BooleanSlot
     initial_value: null
-    auto_fill: true
+    auto_fill: false
     influence_conversation: false
   room_search_perfect_match:
     type: rasa.shared.core.slots.BooleanSlot
     initial_value: null
-    auto_fill: true
+    auto_fill: false
     influence_conversation: false
   room_search_result:
     type: rasa.shared.core.slots.FloatSlot
     initial_value: null
     auto_fill: true
     influence_conversation: false
-    max_value: 1.0
+    max_value: 10000.0
+    min_value: 1.0
+  check_room:
+    type: rasa.shared.core.slots.FloatSlot
+    initial_value: null
+    auto_fill: true
+    influence_conversation: false
+    max_value: 10000.0
     min_value: 0.0
   employee:
     type: rasa.shared.core.slots.TextSlot
@@ -103,6 +116,10 @@ responses:
   - text: How can I help you?
   utter_offer_additional_help:
   - text: Is there anything else I can help you with?
+  utter_room_help:
+  - text: To book a room, just let me know you need a room, I'll ask you a few questions and we'll find a room that fits your needs.
+  utter_current_location:
+  - text: Due to the worldwide pandemic we are currently online.
   utter_ask_room_search_form_num_people:
   - text: How many people should the room fit?
   utter_ask_room_search_form_glass_walls:
@@ -129,10 +146,11 @@ responses:
   utter_office_result:
   - text: Their office is listed as {office_search_result}.
 actions:
+- reset_all_slots
 - room_search
 - room_search_finalize
 - room_search_results
-- reset_all_slots
+- room_check
 - office_search
 - office_search_parse_suggestion_reply
 forms:
@@ -158,6 +176,12 @@ forms:
     - intent: deny
       type: from_intent
       value: false
+  room_check_form:
+    check_room:
+    - entity: number
+      intent:
+      - check_room
+      type: from_entity
   office_employee_suggestion_form:
     office_employee_suggestion_feedback:
     - intent: affirm

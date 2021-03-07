@@ -29,11 +29,8 @@ stories:
   # each of which triggers a follow-up story
   - action: room_search_results
 
-- story: room search exit
+- story: form exit
   steps:
-  - intent: request_room
-  - action: room_search_form
-  - active_loop: room_search_form
   - intent: exit_form
   - action: action_deactivate_loop
   - active_loop: null

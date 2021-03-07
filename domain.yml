@@ -155,19 +155,19 @@ actions:
 - office_search_parse_suggestion_reply
 forms:
   room_search_form:
-    glass_walls:
-    - intent: affirm
-      type: from_intent
-      value: true
-    - intent: deny
-      type: from_intent
-      value: false
     num_people:
     - entity: number
       intent:
       - inform
       - request_room
       type: from_entity
+  glass_walls:
+    - intent: affirm
+      type: from_intent
+      value: true
+    - intent: deny
+      type: from_intent
+      value: false
   room_accept_form:
     room_search_feedback:
     - intent: affirm

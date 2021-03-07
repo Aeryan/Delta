@@ -79,6 +79,7 @@ nlu:
     - are any rooms available?
     - room please
     - room
+    - i need a room
     - i need a room for [three](number)
 - intent: check_room
   examples: |

@@ -161,7 +161,7 @@ forms:
       - inform
       - request_room
       type: from_entity
-  glass_walls:
+    glass_walls:
     - intent: affirm
       type: from_intent
       value: true

@@ -47,7 +47,7 @@
         };
         var data = JSON.stringify({"sender": id, "message": msg});
         xhr.send(data);
-
+        document.getElementById("submit_btn").scrollIntoView()
         return false;
      }
 </script>

@@ -2,23 +2,314 @@ version: "2.0"
 nlu:
   - lookup: employee
     examples: |
-      - Jaak Vilo
+      - Joonas Puura
+      - Kai Poolakese
+      - Alain Jarred Kermis
+      - Marianna Laht
+      - Lindsay Heather Wojtula
+      - Ardi Tampuu
+      - Erik Jaaniso
+      - Ivan Kuzmin
+      - Tauno Metsalu
+      - Dage Särg
+      - Rait Herman
+      - Birgit Sõrmus
+      - Taavi Luik
+      - Marek Oja
+      - Heleri Inno
+      - Rasmus Maide
+      - Varmo Vene
+      - Marina Lepp
+      - Vesal Vojdani
+      - Reimo Palm
+      - Reelika Suviste
+      - Henri Lakk
+      - Heidi Meier
+      - Tauno Palts
+      - Svetlana Golovko
+      - Tõnu Tamme
+      - Alo Aasmäe
+      - Kaspar Papli
+      - Ljubov Jaanuska
+      - Dominique Unruh
+      - Helger Lipmaa
+      - Vitaly Skachek
+      - Boris Kudryashov
+      - Mozhgan Pourmoradnasseri
+      - Denizalp Kapisiz
+      - Yangjia Li
+      - Bahman Ghandchi
+      - Rafieh Mosaheb
+      - Arnis Paršovs
+      - Kuldar Taveter
+      - Fabrizio Maria Maggi
+      - Raimundas Matulevicius
+      - Alexander Udo Nolte
+      - Rajesh Sharma
+      - Mario Ezequiel Scott
+      - Jaanus Jaggo
+      - Orlenys López Pintado
+      - Manuel Alejandro Camargo Chavez
+      - Rahul Goel
+      - Volodymyr Leno
+      - Kristiina Rahkema
+      - Shakshi Sharma
+      - Gamal Mahmoud Abdelmoaty Ibrahim Elkoumy
+      - Abasi-Amefon Obot Affia
+      - Muhammad Awais Ali
+      - Shefali Ajit Sharma
+      - Kateryna Kubrak
+      - Jake Tom
+      - Eero Vainikko
+      - Huber Raul Flores Macario
+      - Naveed Muhammad
+      - Kristjan Krips
+      - Jakob Mass
+      - Erkki Laaneoks
+      - Chinmaya Kumar Dehury
+      - Kaveh Khoshkhah
+      - Mainak Adhikari
+      - Mahir Gulzar
+      - Meelis Roos
       - Mark Fišel
-      - Piret Orav
+      - Kadri Muischnek
+      - Heili Orav
+      - Krista Liin
+      - Kairit Sirts
+      - Andre Tättar
+      - Elizaveta Korotkova
+      - Liisa Rätsep
+      - Kaili Müürisep
+      - Annika Laumets-Tättar
+      - Siim Orasmaa
+      - Tarmo Vaino
+      - Ivar Koppel
+      - Terje Vellemaa
+      - Hannes Tamme
+      - Indrek Pomerants
+      - Andres Toomsalu
+      - Ahti Saar
+      - Rasmus Soome
+      - Villem Tõnisson
+      - Antonina Topolova
+      - Ott Eric Oopkaup
+      - Vladislav Tuzov
+      - Martin Kaljula
+      - Annet Muru
+      - Anne Jääger
+      - Maarja Kungla
+      - Anni Suvi
+      - Saili Petti
+      - Anneli Vainumäe
+      - Merlin Pastak
+      - Reimo Luik
+      - Heili Kase
+      - Ülle Holm
+      - Laura Altin
       - Raul Vicente Zafra
-      - Ahmed Mahmoud Hany Aly Awad
       - Jaan Aru
-      - Radwa Mohamed El Emam El Shawi
       - Raivo Kolde
-      - Meelis Kull
       - Sven Laur
-      - Leopold Parts
       - Hedi Peterson
-      - Anna Aljanaki
       - Kallol Roy
-      - Riccardo Tommasini
       - Syed Attique Shah
-      - Stefania Tomasiello
       - Victor Henrique Cabral Pinheiro
+      - Priit Adler
+      - Elena Sügis
+      - Feras Mahmoud Naji Awaysheh
+      - Madis Vasser
+      - Nurlan Kerimov
+      - Samuele Langhi
+      - Maarja Pajusalu
+      - Ahto Salumets
+      - Oriol Corcoll Andreu
+      - Liis Kolberg
+      - Novin Shahroudi
+      - Aqeel Labash
+      - Martti Tamm
+      - Tambet Matiisen
+      - Kersti Jääger
       - Raimond-Hendrik Tunnel
-      - Raimond Tunnel
+      - Sten-Oliver Salumaa
+      - Sandra Eiche
+      - Claudia Kittask
+      - Thamara Luup Carvalho
+      - Uku Raudvere
+      - Edgar Sepp
+      - Anne Ott
+      - Sille Habakukk
+      - Florian Stelzer
+      - Ida Maria Orula
+      - Sirli Tamm
+      - Mari-Liis Allikivi
+      - Helle Hein
+      - Piret Luik
+      - Priit Paluoja
+      - Simmo Saan
+      - Peeter Laud
+      - Irina Bocharova
+      - Dirk Oliver Jim Theis
+      - Toomas Krips
+      - Hendrik Dirk Lodewijk Hollmann
+      - Danielle Melissa Morgan
+      - Janno Siim
+      - Anti Ingel
+      - Raul-Martin Rebane
+      - Jaak Vilo
+      - Piret Orav
+      - Ahmed Mahmoud Hany Aly Awad
+      - Radwa Mohamed El Emam El Shawi
+      - Meelis Kull
+      - Sander Mikelsaar
+      - Ilia Bider
+      - Marlon Gerardo Dumas Menjivar
+      - Dietmar Alfred Paul Kurt Pfahl
+      - Ulrich Norbisrath
+      - Fredrik Payman Milani
+      - Evgenia Trofimova
+      - Ishaya Peni Gambo
+      - Anti Alman
+      - Alejandra Duque Torres
+      - Katsiaryna Lashkevich
+      - Maria Angelica Medina Angarita
+      - Mari Seeba
+      - Mahmoud Shoush
+      - Hina Anwar
+      - Mubashar Iqbal
+      - Tahira Iqbal
+      - Alina Nekrasova
+      - Kerli Mooses
+      - Satish Narayana Srirama
+      - Pelle Jakovits
+      - Amnir Hadachi
+      - Artjom Lind
+      - Alo Peets
+      - Lauri Rätsep
+      - Deepsubhra Guha Roy
+      - Liyanage Don Mohan Devapriya Liyanage
+      - Farooq Ayoub Dar
+      - Shivananda Rangappa Poojara
+      - Heiki-Jaan Kaalep
+      - Tiit Roosmaa
+      - Sven Aller
+      - Eduard Barbu
+      - Kadri Vider
+      - Maksym Del
+      - Elizaveta Yankovskaya
+      - Mare Koit
+      - Neeme Kahusk
+      - Agnes Luhtaru
+      - Katrin Tsepelina
+      - Külli Lokko
+      - Ilja Livenson
+      - Sander Kuusemets
+      - Maxandre Olivier Georges Francois Lucien Ogeret
+      - Tõnu Raitviir
+      - Ulvi Gerst Talas
+      - Anders Martoja
+      - Sergei Zaiaev
+      - Olaf Viikna
+      - Iris Merilo
+      - Mait Tenslind
+      - Jakob Tamm
+      - Maria Gaiduk
+      - Jaanika Seli
+      - Kärt Summatavet
+      - Natali Belinska
+      - Henry Narits
+      - Reili Liiver
+      - Anastasiia Shevchenko
+      - Ülar Allas
+      - Liivi Luik
+      - Liis Tamm
+      - Maria Laanelepp
+      - Daisy Alatare
+      - Käroliin Jääger
+      - Meelis Käärik
+      - Johann Langemets
+      - Krista Fischer
+      - Jaan Lellep
+      - Arvet Pedas
+      - Tõnu Kollo
+      - Gennadi Vainikko
+      - Mart Abel
+      - Raul Kangro
+      - Kristi Kuljus
+      - Märt Põldvere
+      - Toomas Raus
+      - Kati Ain
+      - Kaur Lumiste
+      - Julia Polikarpus
+      - Evely Kirsiaed
+      - Reyna Maria Perez Tiscareño
+      - Anne Selart
+      - Ülo Reimaa
+      - Mikk Vikerpuur
+      - Mohammad Jamsher Ali
+      - Kristo Väljako
+      - Kai Budrikas
+      - Svetlana Saprõkova
+      - Kelli Sander
+      - Heljo Kaima
+      - Hendrik Vija
+      - Annika Krutto
+      - Britt Kalam
+      - Karin Täht
+      - Kerli Orav-Puurand
+      - Sirje Pihlap
+      - Kristel Mikkor
+      - Esa Matti Juhani Läärä
+      - Viktor Abramov
+      - Valdis Laan
+      - Jüri Lember
+      - Kalle Kaarli
+      - Kalev Pärna
+      - Rainis Haller
+      - Uno Hämarik
+      - Urve Kangro
+      - Märt Möls
+      - Ella Puman
+      - Imbi Traat
+      - Kaido Lätt
+      - Annely Mürk
+      - Natalia Saealle
+      - Indrek Zolk
+      - Lauri Tart
+      - Mare Vähi
+      - Ago-Erik Riet
+      - Emanuele Amedeo Zappala
+      - Hina Arif
+      - Enno Kolk
+      - Anette Tiitus
+      - Priit Lätt
+      - Liina Jürimaa
+      - Ene Käärik
+      - Kateryna Pavlyk
+      - Tiina Kraav
+      - Hannes Jukk
+      - Dmitri Rozgonjuk
+      - Leopold Parts
+      - Anna Aljanaki
+      - Riccardo Tommasini
+      - Stefania Tomasiello
+      - Dmytro Fishman
+      - Sulev Reisberg
+      - Kaur Alasoo
+      - Kadi Tulver
+      - Siyuan Gao
+      - Markus Haug
+      - Tarun Khajuria
+      - Kaido Lepik
+      - Mikhail Papkov
+      - Modar Sulaiman
+      - Markus Kängsepp
+      - Viacheslav Komisarenko
+      - Taavi Kivisik
+      - Irene-Angelica Chounta
+      - Ahti Põder
+      - Vambola Leping
+      - Lidia Feklistova
+      - Mirjam Paales
+      - Merilin Säde
+      - Jaan Janno
+      - Kalmer Apinis

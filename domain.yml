@@ -144,7 +144,9 @@ responses:
   utter_ask_office_employee_suggestion_feedback:
   - text: Did you mean {office_search_result}?
   utter_office_result:
-  - text: Their office is listed as {office_search_result}.
+  - text: The office of {employee} is listed as {office_search_result}.
+  utter_office_no_result:
+  - text: I don't know of {employee} having an office in Delta.
 actions:
 - reset_all_slots
 - room_search

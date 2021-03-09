@@ -170,6 +170,8 @@ class ActionSearchOffices(Action):
 
         cur.close()
         conn.close()
+        if result[0] is None:
+            return [FollowupAction(name="utter_office_result")]
         return [SlotSet("office_search_result", result[0]),
                 FollowupAction(name="utter_office_result")]
 

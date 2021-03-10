@@ -32,7 +32,12 @@ if __name__ == "__main__":
 
             # Receive and parse data from the Rasa server, close the client socket (crashes otherwise), and forward the data
             data_out = rasa_socket.recv(4096)
-            msg_data_out = ast.literal_eval(re.findall(r"{[\s\S]+}", data_out.decode("utf-8"))[0])
+            data_out_decoded = re.findall(r"{[\s\S]+}", data_out.decode("utf-8"))
+            print(data_out_decoded)
+            if len(data_out_decoded) > 0:
+                msg_data_out = ast.literal_eval(data_out_decoded[0])
+            else:
+                msg_data_out = [""]
             rasa_socket.close()
             clientsocket.send(data_out)
 

@@ -11,13 +11,13 @@
     <div class="row">
         <div class="column" style="position: fixed">
             <div style="width: 400px">
-                Welcome to Deltabot's testing environment. All dialogues will be logged.<br><br>When you break the bot, feel free to refresh the page and break it again in a different way!
+                Welcome to Deltabot's testing environment. All conversations will be logged to help improve the chatbot.<br><br>Whenever you break the chatbot, feel free to refresh the page and attempt to break it again in a different way!
             </div>
         </div>
         <div class="column">
             <div style="width:20%; margin:0 auto; padding: 5px; border: 1px solid black;">
                 <div id="textdiv"></div>
-                <form name="myForm" id="my_form" onsubmit="return validateForm()" method="post">
+                <form name="myForm" id="my_form" onsubmit="return postMsg(false)" method="post">
                     <label>Input:
                         <input type="text" name="fname" id="textinput">
                     </label>
@@ -31,12 +31,18 @@
     const id = Date.now();
     console.log(id)
 
-    function validateForm() {
-        var msg = document.forms["myForm"]["fname"].value;
-        var node = document.createElement("P")
-        node.appendChild(document.createTextNode(msg))
-        document.getElementById("textdiv").appendChild(node)
-        document.getElementById("my_form").reset()
+    function postMsg(initial) {
+        var msg;
+        if (initial === false) {
+            msg = document.forms["myForm"]["fname"].value;
+            var node = document.createElement("P")
+            node.appendChild(document.createTextNode(msg))
+            document.getElementById("textdiv").appendChild(node)
+            document.getElementById("my_form").reset()
+        }
+        else {
+            msg = "initmsg";
+        }
 
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "/webhook", false);
@@ -58,7 +64,10 @@
         xhr.send(data);
         document.getElementById("submit_btn").scrollIntoView()
         return false;
-     }
+    }
+
+    postMsg(true);
+    
 </script>
 </body>
 </html>

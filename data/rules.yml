@@ -1,6 +1,24 @@
 version: "2.0"
 
 rules:
+  - rule: Initialize conversation
+    conversation_start: true
+    steps:
+      - intent: initmsg
+      - action: utter_greet
+      - action: utter_iamabot
+      - action: utter_general_help
+
+  - rule: Two-stage fallback
+    steps:
+      - intent: nlu_fallback
+      - action: utter_ask_rephrase
+
+  - rule: Greet user
+    conversation_start: true
+    steps:
+      - intent: greet
+      - action: utter_greet
 
   - rule: Respond to greet
     steps:
@@ -20,8 +38,8 @@ rules:
 
   - rule: List capabilities anytime the user asks
     steps:
-      - intent: request_general_options
-      - action: utter_general_options
+      - intent: request_general_help
+      - action: utter_general_help
 
   - rule: Explain room booking anytime the user asks
     steps:
@@ -51,6 +69,22 @@ rules:
       - action: utter_office_result
       - action: reset_all_slots
       - action: utter_offer_additional_help
+
+  - rule: office no result print followup
+    steps:
+      - action: utter_office_no_result
+      - action: reset_all_slots
+      - action: utter_offer_additional_help
+
+  - rule: out-of-scope
+    steps:
+      - intent: out_of_scope
+      - action: utter_out_of_scope
+
+  - rule: out-of-scope-specific-room
+    steps:
+      - intent: out_of_scope_specific_room
+      - action: utter_out_of_scope_specific_room
 
 #  - rule: Activate room request form
 #    steps:

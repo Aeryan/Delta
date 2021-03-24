@@ -81,7 +81,7 @@ class ActionUtterRoomSearchResults(Action):
         
         room_num = tracker.get_slot('room_search_result')
         if tracker.get_slot('room_search_perfect_match'):
-            string = "Room " + str(room_num) + " is available."
+            string = "Room " + str(room_num[0]) + " is available."
             print(string)
             dispatcher.utter_message(text=string)
             return [FollowupAction(name="room_accept_form")]
@@ -130,11 +130,11 @@ class ActionRoomCheck(Action):
         conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
         cur = conn.cursor()
         room_nr = tracker.get_slot('check_room')
-        cur.execute("SELECT available FROM rooms WHERE room_number = " + str(room_nr[1]) + ";")
+        cur.execute("SELECT available FROM rooms WHERE room_number = " + str(room_nr) + ";")
         if cur.fetchone()[0]:
-            dispatcher.utter_message(str(room_nr[1]) + " is currently available.")
+            dispatcher.utter_message(str(room_nr) + " is currently available.")
         else:
-            dispatcher.utter_message(str(room_nr[1]) + " is currently not available.")
+            dispatcher.utter_message(str(room_nr) + " is currently not available.")
 
         cur.close()
         conn.close()
@@ -170,8 +170,9 @@ class ActionSearchOffices(Action):
 
         cur.close()
         conn.close()
+        print(result)
         if result[0] is None:
-            return [FollowupAction(name="utter_office_result")]
+            return [FollowupAction(name="utter_office_no_result")]
         return [SlotSet("office_search_result", result[0]),
                 FollowupAction(name="utter_office_result")]
 

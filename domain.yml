@@ -5,7 +5,15 @@ session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: false
 intents:
+- initmsg:
+    use_entities: []
 - greet:
+    use_entities: []
+- goodbye:
+    use_entities: []
+- affirm:
+    use_entities: []
+- deny:
     use_entities: []
 - bot_challenge:
     use_entities: []
@@ -13,27 +21,35 @@ intents:
     use_entities: []
 - room_help_request:
     use_entities: []
-- affirm:
+- request_general_help:
     use_entities: []
-- deny:
-    use_entities: true
-- goodbye:
-    use_entities: true
-- exit_form:
-    use_entities: true
-- inform:
-    use_entities: true
-- request_general_options:
-    use_entities: true
 - request_room:
-    use_entities: true
+    use_entities:
+      - number
 - check_room:
-    use_entities: true
+    use_entities:
+      - number
+- inform:
+    use_entities:
+      - number
+- exit_form:
+    use_entities: []
 - request_employee_office:
-    use_entities: true
+    use_entities:
+      - employee
+- request_lecture_data:
+    use_entities:
+      - subject
+- out_of_scope:
+    use_entities:
+      - number
+- out_of_scope_specific_room:
+    use_entities:
+      - number
 entities:
 - number
 - employee
+- subject
 slots:
   num_people:
     type: rasa.shared.core.slots.FloatSlot
@@ -96,6 +112,11 @@ slots:
     initial_value: null
     auto_fill: false
     influence_conversation: false
+  subject:
+    type: rasa.shared.core.slots.TextSlot
+    initial_value: null
+    auto_fill: true
+    influence_conversation: false
 responses:
   utter_ok:
   - text: Okay.
@@ -112,6 +133,10 @@ responses:
   - text: Have a nice day!
   utter_iamabot:
   - text: I am a bot, powered by Rasa.
+  utter_ask_rephrase:
+  - text: Sorry, I didn't quite understand the last message. Could you rephrase?
+  utter_default:
+  - text: Sorry, I didn't quite understand the last message. Could you rephrase?
   utter_offer_help:
   - text: How can I help you?
   utter_offer_additional_help:
@@ -137,7 +162,7 @@ responses:
   - text: Done.
   utter_room_search_failure:
   - text: No available rooms were found.
-  utter_general_options:
+  utter_general_help:
   - text: I can currently book rooms and list employee offices.
   utter_name_not_found:
   - text: The provided name did not match that of any employee.
@@ -147,6 +172,10 @@ responses:
   - text: The office of {employee} is listed as {office_search_result}.
   utter_office_no_result:
   - text: I don't know of {employee} having an office in Delta.
+  utter_out_of_scope:
+  - text: I'm afraid I can't handle that request. Maybe ask the building administrator for help?
+  utter_out_of_scope_specific_room:
+  - text: Sorry, I can't book specific rooms. You'll have to speak to the building administrator for that.
 actions:
 - reset_all_slots
 - room_search

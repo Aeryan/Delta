@@ -169,7 +169,7 @@ responses:
   utter_room_search_failure:
   - text: No available rooms were found.
   utter_general_help:
-  - text: I can currently book rooms and list employee offices.
+  - text: I can tell you when and where course events, such as lectures or practical sessions, take place. I can also list employee offices.
   utter_name_not_found:
   - text: The provided name did not match that of any employee.
   utter_ask_office_employee_suggestion_feedback:

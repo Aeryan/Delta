@@ -46,6 +46,10 @@ intents:
 - out_of_scope_specific_room:
     use_entities:
       - number
+- request_course_event_data:
+    use_entities:
+      - course
+      - course_event
 entities:
 - number
 - employee

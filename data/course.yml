@@ -1,0 +1,1052 @@
+version: "2.0"
+nlu:
+  - lookup: course
+    examples: |
+      - Calculus II
+      - Research Seminar in Cryptography
+      - Principles of Writing a Scientific Article
+      - Pharmacology and Toxicology
+      - Practice in Sport Speciality
+      - Web-based Basic English Grammar Course 2
+      - Foundations of Linguistics
+      - Erzya Language
+      - Practical Training in Informatics
+      - Pharmacognosy I
+      - Conflict Management
+      - Practical Works on Physical Measurement and Calibration
+      - English Syntax
+      - Application of ICF (International Classification of Functioning, Disability and Health) in Rehabilitation
+      - Classical Psychological Experiments
+      - Cost and Performance Management of a Company
+      - Food Microbiology and Microbiological Control
+      - Language Variation
+      - Family Sociology
+      - Introduction to Coding Theory
+      - Writing Scientific Article
+      - Methods of Learning and Teaching in Nursing
+      - Literature in Early Years
+      - Dance Art Speciality Practice
+      - Special Education Teacher and Speech Therapist Assistance Practice
+      - Estonian for Specific Purposes I
+      - Operations and Supply Chain Management
+      - Sewing Technology for Overclothes
+      - Introduction to Programming II
+      - Understanding Children and Childhoods
+      - Estonian Language (follow-up course) II
+      - Creating and Managing Websites
+      - Programming Language Research Seminar
+      - Project Management in Health Care
+      - Practical Work in Speech Development
+      - Intellectual Property (Sustainable Energetics)
+      - Photo Study
+      - Basic Course of Estonian II
+      - Student Research in Pharmacy II
+      - Entrepreneurship and Innovation
+      - Estonian Folk Costume
+      - Academic Expression in French
+      - Theories and History of Games
+      - General Surgery
+      - The Didactics of Dance Teaching
+      - Introduction to Methods and Conducting of Research
+      - Principles and Implementation of CLIL
+      - Arithmetic and Number Theory
+      - International Economics
+      - A Case Study Solution
+      - Master's Seminar IV: MA Seminar with Supervisor
+      - Environments for Youth Work
+      - Sociology and Cultural Anthropology
+      - Ethics and Alternatives for Animal Use in Research
+      - Health and Welfare in Preschool Institutions
+      - Motor Learning
+      - Overview of Media and Communication Theory
+      - Medical Biochemistry
+      - Inclusion SEN Children in Kindergarten
+      - Adapted Physical Activity and Sport
+      - Fundamentals of Physics
+      - Developing Social Enterprise
+      - Public and Third Sector Marketing
+      - Book Culture
+      - Philosophy and Methodology of Science II
+      - Introduction to School Psychology
+      - Secondary School Science Teacher Main Pedagogical Traineeship
+      - Specialization Practice
+      - Microeconomics
+      - Introduction to Complex Analysis
+      - Diversity in Education
+      - Digital Literacy
+      - History of the Baltic Sea Region
+      - Basic Grammar Course
+      - Main Pedagogical Traineeship in Pre-school Education
+      - Medical Theory and Ethics
+      - Emotional and Social Development of Children and Adolescents
+      - Discrete Mathematics I
+      - Research Seminar in Experimental Psychology
+      - Introduction to Philosophy
+      - History of Estonian Culture and School
+      - International Criminal Law Moot Court
+      - Introduction to Law
+      - Anatomy, Physiology and Pathology of Hearing and Speech
+      - Possibilities of Multimedia Usage in Different Subjects
+      - Project Personnel Management
+      - Qualitative Research Methods in Education
+      - Continuous Domain- and Subject-Traineeship in Science Education
+      - Microeconometrics
+      - Medical Ethics
+      - Functional Investigation of Respiration
+      - Linear Models
+      - History of Scientific Ideas
+      - Measurements and the Law
+      - CARe: Comprehensive Approach to Rehabilitation
+      - Margaret Atwood: Texts, Intertexts and Contexts
+      - Speed Reading
+      - Performing Arts History
+      - Biological Psychiatry
+      - Elementary Mathematics II
+      - Basics of Learning
+      - Cyberspace, Technology and International Law
+      - Demography
+      - Enterprise System Integration
+      - Pharmacoepidemiology and Pharmacoeconomics
+      - Estonian Art in the Post-War Period
+      - Macroeconomics
+      - Functional Analysis I
+      - Practical Learning-by-Doing
+      - Marketing and Customer Relationships Management
+      - Special Course in Machine Learning
+      - Tourism Planning
+      - Statistical Models in Gene Technology
+      - Overview of Public Communication and Media Regulation
+      - Otorhinolaryngology
+      - Play at Pre-school Age
+      - Applied Synthetic Biology
+      - Methods of Client-Work
+      - Special Seminar in Personality and Social Behaviour
+      - Laboratory Course in Bioorganic Chemistry
+      - Teaching Practice
+      - Business Growth Strategies
+      - Financial Modelling
+      - Tour and Event Management
+      - Health and Welfare at School
+      - Prelinguistic Development and Communication Skills of a Child
+      - Group Behaviour and Group Work in Social Pedagogy
+      - Practical Course in Environmental Biotechnology and Ecotechnology
+      - Museum Communication
+      - Principles of Communication
+      - Dance Composition III
+      - Epidemiology of Infectious Diseases
+      - Software Testing
+      - Special Course on Visual Communication
+      - Privacy and Data Protection - Ethics, Law, and Information Technology
+      - Development of Materials II: Classes of Materials, Composites
+      - Survival Models
+      - Enterprise Internship
+      - Data Systems Research Seminar
+      - Bioinformatics
+      - Histology
+      - Focus Groups
+      - Children's Rights
+      - Marketing of Innovative Products and Services
+      - Intensive Geometry Seminar
+      - Students with Special Educational Needs in Upper Secondary School
+      - Basics of Project Management
+      - Basics of Academic Writing
+      - Communication Management in Nursing Management and Education
+      - Dance Teacher Project
+      - Learning Environment and Teaching Resources
+      - Sun and Skin
+      - Block Printing
+      - Individual Psychological Resources and Their Development (Psychological Counsellor)
+      - Painting II
+      - International and EU Labour Law
+      - Marketing Practice
+      - Seminar in Discourse Analysis
+      - Comparative History of Legal Systems
+      - Research Paper
+      - Biomechanics and Ergonomics
+      - Theories of Modern Societies
+      - Artefacts in Estonian Folk Culture
+      - Primary Care Medicine
+      - Research and Data Analysis Methods in Economics
+      - Master's Seminar
+      - Analytical Chemistry
+      - Russian for Students of Medicine (100% Web-based), Level A2
+      - Doctoral Seminar in Media and Communication III
+      - Estonian for Beginners II (100% web-based). Level A1.1 > A1.2
+      - Client-Server Systems
+      - Administrative Law
+      - Master Class II
+      - Digital Product Management Industry Project
+      - Business Plan
+      - Religion and Nature
+      - Handball
+      - Negotiations Techniques
+      - Nursing Didactics
+      - Labour Law
+      - Learning, Teaching and Supervision
+      - Civil Law: General Part
+      - Research Design in Health Sciences
+      - Estonian for Academic Purposes
+      - Sport Management Practice
+      - Organizational Behaviour
+      - Doctoral Seminar
+      - Basics of Language Immersion
+      - Information Law, Privacy and Data Protection
+      - Virtual Tourism in Digital Economy Context
+      - The Culture of Finno-Ugric People
+      - Research Practice in Tourism Organization
+      - Fundamentals of the Environmental Physics I
+      - Practical Forestry
+      - History of English Language
+      - Research Seminar in Computational Humanities
+      - Rhythmics and Musical Movement I
+      - Process and Components of Performing Arts Production
+      - Game Theory
+      - Specialty Composition I
+      - Fundamentals of Medical Law for Nurse Managers
+      - Public Communication
+      - Psychology of Communication
+      - Basics of AV Production
+      - Civil Procedure
+      - Practical Journalism II
+      - Financial Environment
+      - Debt Counselling
+      - The Methodological Aspects of Physical Education
+      - Estonian Culture Studies
+      - Wellness and Spa Service Case Study and Analysis
+      - Professional Development I
+      - Public Procurement Law
+      - Programming Challenges and Competitions
+      - Psychology of Individual Differences
+      - Roman Private Law
+      - Microbiology
+      - Information Visualization in Social Sciences
+      - Price Formation and Income Management
+      - Meteorology. Practical Classes
+      - Field Course of Biological Communities
+      - Student Research in Pharmacy IV
+      - Youth Work Basics
+      - Up-bringing and Development at Pre-school Age
+      - Medical Genetics
+      - Invisible Restoration for Anterior Teeth
+      - The Basics of Innovation
+      - Master's Seminar II
+      - Individual Portfolio
+      - Didactics of Skills
+      - Russian Grammar I (100% Web-based), Level A2
+      - Principles of Secure Software Design
+      - Administrative Law (Advanced Seminar)
+      - Creating of Learning Organization and Leading in the Context of Community
+      - Change Management
+      - Master Thesis Seminar
+      - Development of a Child in Social Environment
+      - Martingales
+      - Research Seminars in Neuropsychopharmacology I
+      - Massage
+      - Basic Knowledge for the Research in Medical Biochemistry (I)
+      - Communication Psychology
+      - Dermatology and Venereology
+      - Wellness and Spa Service Quality Management
+      - Propaedeutics in Oral and Dental Diseases I
+      - Introduction to Theoretical Computer Science
+      - Public Speaking
+      - Persuasive Writing and Speaking
+      - Publishing a Research Paper in Social Sciences
+      - Practical Training of Communication Management Assistant
+      - Composition of Textbooks
+      - Sequence Analysis in Linux Environment
+      - Culturology
+      - Supporting Children with Special Needs
+      - Physiotherapy in Internal Diseases
+      - Business Regulation Environment
+      - Internal Medicine Propaedeutics (Part of Fundamentals of Diagnostics)
+      - Master's Thesis (Teacher of Arts and Technology)
+      - Criminal Procedure
+      - Graphic Design and Print Media
+      - Databases
+      - Field Course in Ornithology
+      - Master's Exam
+      - Inclusive Education
+      - Basics of Telecommunication
+      - Prosthetic Dentistry I
+      - Practical Course on Protected Species
+      - Introduction to Programming
+      - Object-oriented Programming
+      - Introduction into Fabric Construction
+      - Drawing I
+      - Seminar on Applied Mechanics
+      - Rheumatology
+      - Programming in C++
+      - Financial Econometrics
+      - Pharmacology
+      - Urology
+      - Intercultural Communication
+      - Introduction to Estonian Culture
+      - Seminar of Mathematics Competitions for University Students
+      - German Grammar I (100% Web-Based), Level A2
+      - Dance Analysis
+      - Business Strategies
+      - Fundamentals of Making Replicas and Reconstructions
+      - Author Seminar in American Literature
+      - Information Sources and Retrieval
+      - Trainee Practice in Teaching Estonian as a Foreign Language
+      - Network Technology I
+      - Introduction to Educational Leadership
+      - Internal Medicine Propaedeutics
+      - Global Economy
+      - Bachelor's Seminar
+      - Project Management
+      - European Union Law
+      - Software Product Management
+      - Volterra and Fredholm Equations
+      - Cryptology I
+      - Data Analysis in Molecular Biology
+      - Zoosemiotics: Umwelt and Animal Communication
+      - Safety of Adventure Activities
+      - Methodological Aspects of PE I
+      - China and the world
+      - Contemporary Lab Techniques
+      - Presentation of Research Results
+      - Conventional and Modified-Release Formulations
+      - Principles of Economics
+      - Leadership and Strategic Thinking
+      - Andragogy (Adult Education)
+      - Health Promotion
+      - Obstetrics and Gynaecology
+      - Contemporary Legal Framework on Domestic Violence
+      - Research Integrity: Framework Requirements, Values and Principles of Action
+      - Philosophical Disagreements
+      - Communicating Science
+      - Development and Design of Digital Service
+      - Distributed Systems Seminar
+      - The Child in Estonian Cultural History
+      - Male Voice Choir
+      - Practical Skills for Entrepreneur
+      - Youth Participation and Inclusion
+      - Investment Analysis
+      - Planning and Evaluating Language Teaching
+      - Biology
+      - Introduction to Impact Assessment
+      - Course on EU Law
+      - Spatial Data Analysis
+      - Decorating Methods for Leather Items
+      - Methods of Social Analysis: Qualitative Approach
+      - Educational Theory
+      - Looking at Art
+      - Translation of Business Texts from and into the First Foreign Language
+      - Nature Education Practice
+      - Instruction of Mathematics for SEN Children I
+      - Digital Information Resources
+      - Camp Work
+      - Selected Topics from Phenomenology and Hermeneutics
+      - Greek and Latin Palaeography
+      - Spreadsheet Processing
+      - Oral and Maxillofacial Surgery II
+      - Secure Programming Techniques
+      - Law of International Institutions
+      - Bioinformatics and Genomics
+      - Research Methods in Information Studies
+      - Occupational Safety and Ergonomics
+      - Module of Entrepreneurship
+      - Nursing Procedures
+      - Giftedness - Psychological and Pedagogical Issues
+      - International Settlement of Disputes
+      - Project Work II
+      - Auditing
+      - Contemporary Dance Techniques
+      - Russian Approaches to International Law and Human Rights
+      - Russian Grammar II (100% Web-based), Level B1
+      - Russian Grammar III (100% web-based), Level B2
+      - Anatomy and Physiology of the Oral Cavity
+      - Field Practicum
+      - Information Management Training
+      - Introduction into Theory of Sources and Archival Science
+      - Data Analysis II
+      - Educational Drama
+      - Skills of Negotiating
+      - Accuracy of Russian Language Speech II
+      - Music Education Didactics
+      - Technology Commercialisation and Academic Entrepreneurship (seminar)
+      - Multimedia
+      - Comparative Education
+      - Practice in Data Compression
+      - Network Technology II
+      - Methodology of Legal Studies
+      - Learning and Teaching
+      - Track and Field. Basic Course II
+      - Paediatrics
+      - Media Economics and Media Politics
+      - Career Study and Career Service Management
+      - Andrology - Male Health
+      - Continuous Pedagogical Traineeship
+      - Master's Thesis in Exercise and Sport Sciences
+      - Information Systems
+      - Field Practice in Nature Studies
+      - Population Statistics
+      - Estonian Dialects
+      - Cross-cultural Communication and Multicultural Education
+      - Soil Science
+      - Methodology of Teaching Mathematics I
+      - English. General Academic Vocabulary (100% Web-based), B1.2>B2.1
+      - English Morphology and Syntax
+      - Starting a Business
+      - Headaches - the most common complaint: what are the causes and how to treat headaches
+      - Business Case
+      - Basic Practice
+      - Intellectual Property
+      - Criminal Law
+      - Estonian Cultural History
+      - Training Session in Sport Training
+      - Data Analysis in Software Engineering
+      - History of Theatre
+      - Specialized Seminar on Case Solving
+      - Estonian for Beginners I (100% web-based). Level 0 > A1.1
+      - Basics of Case Management
+      - Experimental Psychology
+      - Human Computer Interaction
+      - Pharmacognosy III
+      - Seminar in Computational Neuroscience
+      - Marketing and Business Relations
+      - Dance House
+      - Moving Light and Visualization
+      - Organizational Information Processing
+      - International Protection of Intellectual Property
+      - Contemporary Dance Teaching Practice
+      - Creativity Psychology
+      - English as a Minor II
+      - Performance Structure and Function
+      - Youth Work Practice II
+      - Intellectual Property Protection in the Field of Information Technology
+      - Organization Management
+      - Speech Development in Preschool
+      - Teaching Practice for Primary Teachers II
+      - Ophthalmology
+      - Practical Training in Entrepreneurship
+      - Theories and Practice of Information Behaviour
+      - Computer Programming
+      - Analysis and Design of Information Systems
+      - Estonian Orthography and Creative Composition
+      - Academic Self-Management
+      - Translation: History, Theory, Practice
+      - Syntax of Estonian Language
+      - Practice in Fitness and Health Counselling
+      - Student with a Special Educational Need in Foreign Language Lessons
+      - Advanced Databases
+      - Comparative Human Rights Law
+      - Decision Making and Choice Behaviour
+      - Safety Regulations in Performing Arts
+      - Introduction to Autonomous Driving
+      - Digital Logic
+      - Children's Remembering and Learning in Informal Contexts
+      - Big Data Management
+      - Wellness and Health Tourism
+      - Understanding and Influencing Decisions
+      - Creative Activities Supervision Practice
+      - Social Pedagogy
+      - Personal and Professional Development
+      - Practical Training in Reference Instruction: 20th-century Historical Source Materials
+      - Specialty Report: Writing Practice
+      - Management
+      - Stomatognathic Physiology I
+      - English for Professional Purposes
+      - Supervising Students' Creative Work
+      - Interactive Frontend Development
+      - Community Development Research Methods
+      - Web Application Development
+      - English for the Students of Humanities II (100% web-based), Level B2.1 > B2.2
+      - Sports Physiotherapy
+      - Proteomics
+      - Economic Problems: a Case Analysis
+      - Environmental Chemistry
+      - Creating Adventure Education Environment
+      - Human Development
+      - Practical Stylistics in English
+      - Plant Systematics and Phylogenesis
+      - Strategic Management of Educational Institution
+      - Public Presentation
+      - Strategies of Active Science Teaching
+      - Academy of Estonian Culture 2020/2021
+      - Financial Management for Hospitality Decision Makers
+      - Master Exam
+      - Understanding and Communicating with Audiences
+      - Philosophy for Children
+      - Triathlon
+      - Russian Lexicology, Phraseology and Lexicography
+      - Introductory Practice
+      - Immunology
+      - Care of Neonate and Baby
+      - Seminar in French Literature
+      - Strategic Management
+      - Well-Being and it's Measurement
+      - Social and Ethical Aspects of Engineering
+      - Clinical Pharmacology
+      - Content and Language Integrated Learning (CLIL)
+      - Infectious Diseases
+      - History of Sports
+      - Teachers' Mental, Physical, and Emotional Health and Well-being
+      - Educational Management in Vocational Education
+      - Research Project
+      - European Union Criminal Law
+      - Pervasive Data Science Seminar
+      - Key Texts in English Studies
+      - Strategic Risk Management
+      - Numerical Methods
+      - Current Problems of Private Law I
+      - Research Methodology
+      - Software Entrepreneurship Project
+      - Human Resource Management and Organization Behaviour
+      - Hiking Practice
+      - Propaedeutics in Prosthetic Dentistry
+      - Models of Financial Mathematics
+      - Estonian for Beginners I, on the Basis of English, Level 0 > A1.1
+      - Culture Management Practice
+      - Cross-Cultural Communication
+      - Specific Drawing Practise
+      - Growing Company
+      - Basics of Tour Guiding
+      - Process Planning and Sketching in Crafts
+      - Integration in Basic School, General Competencies and Cross-Curricular Themes
+      - Dosimetry in the Environment and Radiation Protection
+      - Sports Medicine, Recreational Sports - No Pain, No Gain 2
+      - Stress and Burnout
+      - Education for Sustainable Development
+      - Multilanguage Child in Kindergarten
+      - The Possibility of Entrepreneurship in Medical Sciences
+      - Youth Counselling and Information
+      - Practical Training in National Archives
+      - German for Beginners I
+      - Exercise Biology
+      - Pre-school Basic Practice
+      - European Union - Politics and Economy
+      - Project Based Internship II
+      - Cloud Computing
+      - Biochemistry I
+      - Practice in Special Class Teaching and Special Educational Counselling
+      - Culture Semiotics
+      - Creating WWW Pages
+      - Nature Education and Ecology
+      - Principles of Neurology
+      - Value-based Management
+      - Aesthetics
+      - Bachelor's Exam in Journalism and Communication
+      - Supervised Practice in Clinical Psychology
+      - Contemporary Issues of the Information Age
+      - Medication Counselling in Pharmacy Practice
+      - Introduction to Teaching and Learning Research
+      - Structure of English
+      - Morphology in Estonian Language
+      - Understanding Social Well-being
+      - Irish History through Film
+      - Graduation Thesis Seminar
+      - Technology Entrepreneurship
+      - World Tourism Geography
+      - Information Visualization
+      - Musical History of the 20th Century I
+      - Multivariate Statistics
+      - Startup Financing
+      - Translation Seminar
+      - Social Security Law
+      - Child and Adolescent Psychopathology
+      - Contemporary International Relations (Since the 1990s)
+      - Practice of Product Design
+      - Written Translation from Estonian into English
+      - Rehabilitation in Sport
+      - Habitats and Land Cover in Estonia
+      - Youth Psychology and Psychiatry
+      - Practical French III
+      - Radiology
+      - Health and Performance Evaluation
+      - Optimization for Robot Control
+      - Muscular Balance and Training
+      - Biochemistry
+      - Human Physiology
+      - Introduction to Clinical Dentistry
+      - Ballet
+      - Basics of Business Information Processing
+      - Oral and Dental Diseases II
+      - Geriatric Physiotherapy
+      - Physiology
+      - Practical Internet Marketing
+      - Automata, Languages and Compilers
+      - Communication and Feedback in School
+      - International Law
+      - Research Methodology in Nursing Science II
+      - Academic Writing
+      - Russian for Beginners I (on the Basis of English) 100% web-based, Level 0 > A1
+      - Introduction to Quantitative Methods
+      - Company Law
+      - Generalized Linear Models
+      - Performing Arts Master Class
+      - General Astronomy: Observations
+      - Practical English Grammar II
+      - Scientific Research and Creative Work Methodology
+      - Graduation Paper in Librarianship
+      - Business Correspondence
+      - Life Insurance Mathematics II
+      - Introduction to Social Policies
+      - Contemporary Estonian Literature
+      - History of Philosophy I
+      - Observation Practice
+      - Didactics of Art Teaching
+      - Applications of Higher Mathematics in Economics
+      - Real Analysis
+      - Continuous Pedagogical Traineeship for Primary Teachers
+      - Family Medicine
+      - Modern Estonian
+      - Pedagogical Practice I
+      - Health Behaviour
+      - Radiology (Imaging Methods, Radio-anatomy, Basic Clinical Radiology)
+      - Programming Practicum
+      - Romanic Literatures
+      - Pedagogical Training in High-School
+      - Estonian Traditional Music I
+      - Bachelor's Thesis in German Language or Literature
+      - Neural Networks
+      - Research Methods
+      - English for Students of Medicine (50% Web-based), Level B2 > C1
+      - Planning Project
+      - Methods of Social Analysis: Quantitative Approach
+      - English for Advanced Learners (100% web-based), Level B2 > C1
+      - Material Science of Leather
+      - Process and Projects Management in Wellness Service Design
+      - Principles and Applications of Fluorescence Spectroscopy
+      - Paediatric Dentistry I
+      - Internship of Communication Strategy
+      - Categorical Data Analysis
+      - Graduation Exam in Information and Records Management
+      - Weaving I
+      - Contemporary Approaches to Learning
+      - Evidence-based Practice in Social Pedagogy
+      - Music Criticism
+      - French Contrastive Analysis
+      - System Administration
+      - Statistical Learning I
+      - The Official Documents and Databases of the European Union
+      - Participating in Professional Competition
+      - Probability and Mathematical Statistics
+      - Physical Medicine and Rehabilitation
+      - Children with Special Needs in Pre-school Institutions
+      - Introduction to Sound Engineering
+      - Basics and Methodology of Teaching Social Sciences
+      - Drawing III
+      - Computer Security
+      - Advanced Database Systems
+      - Biological Psychology
+      - Vacuum and Cryoengineering
+      - Human Resource Management and Leadership
+      - Research Methods in Business and Economics
+      - Political Culture and Political Communication
+      - Privacy-preserving Technologies
+      - Social Psychology
+      - Universal Algebra
+      - History of World Art: Renaissance Period
+      - Operating Systems
+      - Business Data Analytics
+      - Psychology and Law
+      - Natural Language Processing
+      - Introduction to Consumer Culture and Marketing Communications
+      - Patient Examination in Estonian
+      - Violence and Society's Response in the Context of Social Policy and Social Work
+      - Physiotherapy in Paediatrics II
+      - Final Graduation Exam
+      - Fetal and Neonatal Physiology and Behaviour, Breastfeeding
+      - Graduation Examination
+      - Physiology and Pathology
+      - Physical Activity for Health
+      - Marketing
+      - Gymnastics. Basic Course I
+      - Mobile and Cloud Computing Seminar
+      - Intermediate Course of Hungarian, Level A1.2 > A2
+      - Basic Practice for Physical Education Teacher
+      - Introduction to Business Law
+      - Russian Culture in a Context of the Intercultural Communication
+      - Linux Administration
+      - Banking
+      - Leadership and Management
+      - Programming at School (Python)
+      - Managerial Economics
+      - Basic Skills for Sewing Technology
+      - Personal Finance
+      - Choreography Practice
+      - Events Safety and Security
+      - Geriatrics Basic Course
+      - Human Molecular and Clinical Genetics
+      - Food, Nutrition and Sports Performance
+      - Authors of World Children's Literature
+      - Seminar of Speech and Language Assessment
+      - Legal and Academic English 2
+      - Basics of Business Ethics
+      - Fundamentals of Special Needs Education
+      - Study Programs and Textbooks in School Mathematics
+      - A Gifted Student in Class
+      - Observation Practice in Social Work or in Social Policy
+      - Programming Patterns in Computer Games
+      - Peer Tutoring
+      - Introduction to Entrepreneurship
+      - History of Medicine
+      - Intangible Cultural Heritage
+      - Basics of Finance
+      - Teaching Movement in Early Childhood Education
+      - History of English Literature from Romanticism to Modernism
+      - Floorball
+      - Critical Conditions in Emergency Medicine
+      - Advanced Professional Skills
+      - Basics of Creativity and Activity Study
+      - Skiing School
+      - Vascular Surgery
+      - Visual Communication Design
+      - Evidence-based Interventions for Social, Emotional and Behavioural Difficulties
+      - Differential Geometry
+      - Ill-posed Problems
+      - Statistical Data Science and Visualization
+      - Text Analysis 2
+      - Strategic Planning and Creation of Development Plan
+      - Application Software: SAS
+      - Sport and Society
+      - Basics of Music Entrepreneurship II
+      - Biotechnology in Environmental Management
+      - Final Graduation Exam in Physical Education and Sport
+      - Basics of News Writing
+      - Fundamentals of Experimental Research
+      - Introduction into Molecular and Cell Biology for Neurobiologists
+      - Pathological Anatomy
+      - Pharmaceutical Technology
+      - Discourse Analysis
+      - Web-based Basic English Grammar Course
+      - Estonian Orthography and Composition
+      - Statistical Data Science
+      - Methodology of Teaching Estonian I
+      - Research Practice
+      - Design Thinking for Team Leaders
+      - Entrepreneurial Finance
+      - Participating Practice in Social Work or in Social Policy
+      - Symbolics
+      - Internship in Design Thinking and Management
+      - Traditional Dance Practice
+      - Purposeful Reading I
+      - Diploma Performance - Dance Teacher
+      - Topological Vector Spaces
+      - Sports Traumatology
+      - Neurology and Neurosurgery
+      - Supervisor's Seminar
+      - Quantum Seminar
+      - Manifestation and Identification of Language Impairment in Children
+      - Research in Physiotherapy
+      - EU History and Integration Process
+      - Introduction to Film Arts
+      - Treasury of Lectures About Theology
+      - English Language
+      - Medical Microbiology
+      - Quantitative Data Collection and Analysis
+      - Fieldwork of Natural Environment
+      - Tort Law
+      - Geometry
+      - Seminar of Master's Thesis
+      - Course. Power Lifting and Body Building
+      - Contemporary Dance Art - Choreographic Encounters
+      - Data Interpretation and Presentation
+      - Pedagogical Practice
+      - Creative Skills in Entrepreneurial Behaviour
+      - Team-work Internship
+      - Estonian Vocabulary
+      - Secure Programming Techniques: Project Work
+      - Algebra II
+      - Problems of Public Law III
+      - Sport Games. Basic Course
+      - Ethics of Social Work
+      - Long-Term Athletic Development
+      - Organizational Theory and Culture
+      - Introductory Sociology
+      - Distributed Systems
+      - Information Technology in School
+      - Entrepreneurship
+      - Introduction to Quantum Algorithms
+      - Numerical Methods for Differential Equations
+      - Laboratory Medicine
+      - Modern History
+      - Destination Marketing
+      - Estonian word-building
+      - Management of Air Quality Monitoring
+      - Alzheimer Disease and Others Dementias
+      - Seminar in Stochastic Models
+      - Aquatic Sport. Basic Course
+      - Practical Estonian II
+      - History of English Literature from Middle Ages to Baroque
+      - Sculpture II
+      - Programming in C and Assembly Language
+      - Clinical Practice in Physiotherapy
+      - Participating in Conference
+      - Organizing Practice
+      - Big Data and Society
+      - Final Thesis Seminar
+      - English Language Teaching I
+      - Counselling Skills in Social Work Practice
+      - Supervisor's Workshop in Semiotics and Culture Studies
+      - Programming in Java
+      - Survey Sampling Theory I
+      - Policy Writing and Advocacy
+      - Theories of Social Work and Rehabilitation
+      - Enterprise Digitalization
+      - Basics of Research Methodology
+      - Temporomandibular Joint Diseases
+      - Self-regulation
+      - Business Process Management in an Organization
+      - Media Education
+      - Digital English Studies
+      - Visual Advertising in Theory and Practice
+      - Applied Hydrobiology
+      - Education of Pupils with Severe or Profound Intellectual Disability
+      - Literary Texts in Estonian Culture of Translation
+      - Doctoral Seminar in Ethnology and Folkloristics
+      - Traumatology and Orthopaedics
+      - Research Skills and Academic Writing
+      - Continuous Internship for Language Teachers
+      - Religion in the Occidental Culture
+      - Methodology of Teaching Nature Studies II
+      - Teaching Children with Special Needs in Kindergarten
+      - Work-Related English
+      - Fundamentals of Health Economics for Nursing Managers
+      - Psychology of Speech
+      - Social Pedagogical Approach in Social Work
+      - Practical Works on Environmental Physics
+      - Paediatric Oral Surgery
+      - Prosthetic Dentistry II
+      - Technical Construction
+      - Oral and Dental Diseases I
+      - History of World Art: Middle Ages
+      - Applied Crafts Research and Heritage of Crafts
+      - Environmental and Occupational Health
+      - Theory of French I
+      - Master's Thesis - Quantitative Economics
+      - Doctoral Seminar: Publishing Scientific Results
+      - Strategic IT Management
+      - Clinical Microbiology: Head and Neck Odontogenic Infections
+      - Self Expression Workshop
+      - French for Beginners A1
+      - Legal Steps in IPR Intensive Enterprise Life Cycle
+      - Psychiatry
+      - Language Technology
+      - Data Science for Urban Mobility
+      - General and Abdominal Surgery
+      - Algorithms and Data Structures
+      - Seminar in Post-Classical Literature
+      - Practical Training of Financial Management
+      - Customer Relationship Management
+      - Internal Medicine
+      - Internship
+      - Health Policy and Health Economics
+      - Modern Estonian III
+      - Internet Marketing
+      - Masterclass
+      - Community and Voluntary Work
+      - Bioinformatics Seminar
+      - Principles of Entrepreneurship II
+      - Pharmaceutical Excipients
+      - Asia and Pacific Business
+      - Developmental Language Disorders
+      - Current Issues in the Humanities and Social Sciences
+      - Personality and Social Psychology
+      - German for Students of Law (100% Web-based), Level B2 > C1
+      - Enterprise Education
+      - German Grammar II (100% web-based), Level B1
+      - Practical Training
+      - Data Visualization and Storytelling
+      - The Role of Psychology in Digital Product Creation
+      - Seminar Paper
+      - Phonetics with Praat
+      - Multivariate Analysis
+      - Special Seminar on International and European Law
+      - Sociosemiotics and Societal Theories
+      - Bachelor's Thesis Seminar
+      - Interviewing Techniques
+      - Musculoskeletal Physiotherapy
+      - Comprehensive Dentistry II
+      - Research Seminar in Data Mining
+      - Quantum Theory of Radiation
+      - General Theory of Law
+      - Wine Etiquette
+      - Methods for Teaching Crafts
+      - Visions of Empire: The British Empire and the Arts
+      - Social Well-Being Across the Life Course
+      - Law of Obligations, General Part
+      - Youth Research and Approaches to Youth
+      - The Theory of Physical Education
+      - Student Heritage
+      - Arithmetics II
+      - Business Analysis
+      - Contemporary Political Leadership
+      - Constitutional Law
+      - Biological Diversity II
+      - Basics of Information Management
+      - Primary School Methodology
+      - Bachelor's Examination
+      - Sports Medicine
+      - Observation and Pedagogical Practice
+      - Estonian Book History
+      - Pre-School Methodology
+      - Graduation Exam in Librarianship
+      - Neurology
+      - Innovative Organization and Human Resources Management
+      - Natural Sciences in I-II School Stages
+      - Institutions and Financing on the Field of Performing Arts
+      - E-Commerce and IT Contracts
+      - Number Theory
+      - Mathematics Competitions
+      - Probability Theory and Mathematical Statistics
+      - Russian Phonetics and Word Formation
+      - Communication in Exercise and Action in Human Movement
+      - English for Advanced Learners II (100% web-based), Level C1
+      - Political Philosophy
+      - History of Legal Philosophy
+      - Language and Culture Cafe II
+      - Practice for Theology Students
+      - Speech Fluency Disorders
+      - Spa Culture
+      - Coaching Practice
+      - Doctoral Seminar in Sociology II: Publishing Scientific Findings
+      - Identification of Children's Special Needs
+      - Marketing Management
+      - Methodology of Teaching Nature Studies I
+      - Methods of Teaching Russian Literature at School Level II
+      - Fundamentals of Research Work
+      - Service Management
+      - Didactics of Mathematics for Basic School
+      - Financial Management
+      - Practical Training in IT-Law
+      - Computer Graphics Project
+      - Education of Autistic Children
+      - Normal and Pathological Anatomy and Physiology
+      - Introduction to Specialty
+      - Comparative Cultural Studies in Music II
+      - Basics of Biology
+      - Bodywork
+      - Seminar on Enterprise Software: Master's Seminar
+      - Quantum Cryptography
+      - Mathematics and Didactics of Mathematics
+      - Pedagogy and Basics of Education
+      - Applied Cryptography
+      - Stress and  its Consequences
+      - International Humanitarian Law
+      - International Marketing
+      - Civil Enforcement Law
+      - Anaesthesiology and Intensive Care
+      - Master's Examination
+      - Social Work in a Multicultural Community
+      - Traditional Stonemasonry
+      - Machine Translation
+      - Basics of Marketing
+      - Orthodontics
+      - The Learning and Teaching of Students with Learning Difficulties at the First and Second School Level
+      - Multicultural Society and Cultural Identities in Estonia
+      - Methodology of Handicraft and Art
+      - School-based Youth Work Practice
+      - Modern Estonian II
+      - Health and Fitness Gymnastics
+      - Work of Special Education Teacher in the Rehabilitation System
+      - Introduction to Electroanalysis
+      - Didactics of the French Language I
+      - Methodology of Pre-school Mathematics
+      - Media Studies
+      - Research Methods in Psychology
+      - Tourism Finnish
+      - Methodology of Teaching Local Lore
+      - Introduction to the Romance Philology
+      - Transition to Advanced Mathematics
+      - The Basics of Psychology of the Children with Special Needs
+      - Course of Basic Environmental Chemistry I
+      - Cell Biology I
+      - Liquid Chromatography and Mass Spectrometry
+      - Principles of Entrepreneurship
+      - French Literature
+      - Occupational Physiotherapy and Ergonomics
+      - Introduction to History of Philosophy
+      - Digital Evidence, Computer Forensics and Cybercrime
+      - Transformation of Everyday Life in Estonia
+      - Speech Motor Disorders
+      - Primary School Teacher Basic Internship
+      - Fuzzy Logic and Soft Computing
+      - Computational Finance
+      - Family Medicine I
+      - Painting Master Class
+      - Analysis of Social Intervention
+      - Introduction to Data Science and Business Analytics
+      - Culture Management Seminar
+      - Personal Professional Development
+      - Introduction to Social Work
+      - Applied Accounting
+      - Accounting
+      - Service Design
+      - Marketing Communications
+      - Business Process Management
+      - Comparative Labour Law
+      - Smoking and Health
+      - Economic Policy
+      - Vocational Training for SEN Adolescents
+      - Geriatrics
+      - Special Practice
+      - Graphic Design
+      - Teams in Organization
+      - Creating Academic Texts
+      - Sport Management Workshop
+      - Introduction to the Positive Psychology Science
+      - Supportive Functions of an Organization and Documenting such Functions
+      - Recreation Management
+      - English for Intermediate Learners II, Level B2.1 > B2.2
+      - Methodology of Teaching Handicraft and Home Economics
+      - Students with ADHD
+      - Painting I
+      - Graduation Paper in Information and Records Management
+      - Research Seminar
+      - History of French
+      - Doctoral Seminar in Sociology III
+      - Contract Law
+      - Principles of Communication and Health Behaviour in Medicine
+      - Master's Thesis
+      - International Economic Environment
+      - English for Specific Purposes
+      - Cooperation in the Network of SEN Children
+      - Software Project and Team Management
+      - Pedagogical Practicum
+      - Administrative Court Procedure
+      - Social Work in Health Care
+      - Continuous Pedagogical Traineeship for SEN-teachers
+      - Developing General Competencies in Teaching
+      - Health Care Management and Health Economics
+      - Information Security
+      - Matrix Calculus for Statistics
+      - Pre-school Continuous Internship
+      - Practice
+      - Basics of Intellectual Property
+      - Methodology of Research I
+      - Practical Estonian Sign Language (A1)
+      - Cost Management and Management Control
+      - Individual and the Organization
+      - Introduction to Software Entrepreneurship
+      - Microbial Physiology
+      - English Grammar for Intermediate Students
+      - Accounting and Financial Management
+      - Ropework
+      - Local Government Law
+      - Positive Psychology
+      - Biopharmaceutics
+      - Using Spreadsheets
+      - Qualitative Data Collection and Analysis
+      - Technology Transfer, Technological Expertise
+      - Business English
+      - Project Based Internship
+      - Latin Text About the Roman Private Law
+      - Nursing Management
+      - Russian Grammar IV (100% web-based), Level C1
+      - Languages of the World
+      - Textile Technologies
+      - Technology of Shaping Bone And Horne
+      - Introduction to Qualitative Methods
+      - Practical Training for Entrepreneur
+      - English-Speaking Cultures
+      - Master Seminar
+      - Machine Learning II
+      - Painting
+      - Project Management Internship
+      - Biostatistics in Public Health
+      - Public Sector Economics
+      - Calculus I
+      - Seminar in Master Studies

@@ -1,0 +1,15 @@
+version: "2.0"
+nlu:
+  - lookup: course_event
+    examples: |
+      - practical training
+      - seminar
+      - resit
+      - colloqium
+      - test
+      - e-learning
+      - individual lesson
+      - practical session
+      - exam
+      - consultation hour
+      - lecture

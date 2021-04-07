@@ -48,12 +48,11 @@ for page in pages:
                 cur.execute("INSERT INTO offices(name, room_nr) VALUES ('" + name + "', NULL);")
                 updated[name] = True
 
-with open(os.path.join("..", "data", "employee.yml"), 'w') as employee_file:
+with open(os.path.join("..", "..", "data", "employee.yml"), 'w') as employee_file:
     employee_file.write('version: "2.0"\nnlu:\n  - lookup: employee\n    examples: |')
     for name in updated.keys():
         if not updated[name]:
             cur.execute("DELETE FROM offices WHERE name = '" + name + "';")
-        print(name)
         employee_file.write('\n      - ' + name)
 
 employee_file.close()

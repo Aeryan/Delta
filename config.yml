@@ -21,11 +21,11 @@ pipeline:
    - name: FallbackClassifier
      threshold: 0.5
 # Custom
-# Employee extraction using lookup table, subject extraction using regex
-#   - name: RegexEntityExtractor
-#     case_sensitive: False
-#     use_lookup_tables: True
-#     use_regexes: False
+# Course name extraction using lookup table
+   - name: RegexEntityExtractor
+     case_sensitive: False
+     use_lookup_tables: True
+     use_regexes: False
 # Employee extraction using fuzzy matching
    - name: "components.employee_extractor.EmployeeExtractor"
      match_threshold: 55

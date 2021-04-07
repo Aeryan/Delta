@@ -86,6 +86,11 @@ rules:
       - intent: out_of_scope_specific_room
       - action: utter_out_of_scope_specific_room
 
+  - rule: respond to course event query
+    steps:
+      - intent: request_course_event_data
+      - action: course_event_data_response
+
 #  - rule: Activate room request form
 #    steps:
 #      - intent: request_room

@@ -39,7 +39,7 @@ intents:
       - employee
 - request_lecture_data:
     use_entities:
-      - subject
+      - course
 - out_of_scope:
     use_entities:
       - number
@@ -49,7 +49,8 @@ intents:
 entities:
 - number
 - employee
-- subject
+- course
+- course_event
 slots:
   num_people:
     type: rasa.shared.core.slots.FloatSlot
@@ -112,7 +113,12 @@ slots:
     initial_value: null
     auto_fill: false
     influence_conversation: false
-  subject:
+  course:
+    type: rasa.shared.core.slots.TextSlot
+    initial_value: null
+    auto_fill: true
+    influence_conversation: false
+  course_event:
     type: rasa.shared.core.slots.TextSlot
     initial_value: null
     auto_fill: true
@@ -184,6 +190,7 @@ actions:
 - room_check
 - office_search
 - office_search_parse_suggestion_reply
+- course_event_data_response
 forms:
   room_search_form:
     num_people:

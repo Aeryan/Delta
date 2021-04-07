@@ -1,9 +1,12 @@
-# Symlink test
 import psycopg2
+import datetime
+from num2words import num2words
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, FollowupAction, AllSlotsReset
+
+WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
 
 class ActionResetAllSlots(Action):
@@ -200,17 +203,80 @@ class ActionParseEmployeeSuggestionReply(Action):
             return [AllSlotsReset(),
                     FollowupAction("utter_offer_additional_help")]
 
-#
-#
-# class ActionHelloWorld(Action):
-#
-#     def name(self) -> Text:
-#         return "action_hello_world"
-#
-#     def run(self, dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#
-#         dispatcher.utter_message(text="Hello World!")
-#
-#         return []
+
+# TODO: Only limited course titles are added to the lookup table.
+#  Memorize all unique course titles and add responses for irrelevant ones.
+class ActionCourseEventResponse(Action):
+
+    def name(self) -> Text:
+        return "course_event_data_response"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        course_title_raw = tracker.get_slot("course")
+        course_event_raw = tracker.get_slot("course_event")
+
+        conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
+        cur = conn.cursor()
+
+        # Any extracted course title is present in the database
+        # See above TODO
+        cur.execute("SELECT course_title FROM course_events WHERE course_title % '" + course_title_raw + "';")
+        course_title = cur.fetchone()[0]
+
+        cur.execute("SELECT event_type FROM course_events WHERE event_type % '" + course_event_raw + "';")
+        course_event = cur.fetchone()[0]
+
+        cur.execute("SELECT week_nr FROM ut_weeks WHERE monday <= '" + str(datetime.date.today())
+                    + "' AND sunday >= '" + str(datetime.date.today()) + "';")
+        current_week = str(cur.fetchone()[0])
+
+        cur.execute("SELECT weekday, begin_time, end_time, location, notes_et, notes_en FROM course_events WHERE course_title = '"
+                    + course_title
+                    + "' AND week = " + current_week
+                    + " AND event_type = '" + course_event
+                    + "';")
+
+        results = cur.fetchall()
+
+        if len(results) == 0:
+            dispatcher.utter_message("I don't know of any " + course_title + " " + course_event + "s this week.")
+        else:
+            result_count = len(results)
+            dispatcher.utter_message(course_title + " has " + str(result_count) + " " + course_event
+                                     + ("s" if result_count > 1 else "") + " this week.")
+            dispatcher.utter_message("\n")
+            for i in range(len(results)):
+                result = results[i]
+
+                # Sensible sentence starts
+                if len(results) == 1:
+                    primer = "It"
+                else:
+                    primer = "The " + num2words(i+1, to='ordinal')
+
+                # Location
+                if result[3] is None:
+                    dispatcher.utter_message(primer + " has no designated location.")
+                elif "Narva mnt 18" not in result[3]:
+                    dispatcher.utter_message(primer + " takes place in " + result[3] + ".")
+                else:
+                    dispatcher.utter_message(primer + " takes place in room " + result[3].split(" - ")[1] + ".")
+                # Time
+                dispatcher.utter_message("It takes place on " + WEEKDAYS[result[0]] + " between " + str(result[1]) + " and " + str(result[2]) + ".")
+
+                if result[4] != 'NULL':
+                    dispatcher.utter_message("The following (probably Estonian) note is attached:")
+                    dispatcher.utter_message(result[4])
+                if result[5] != 'NULL':
+                    dispatcher.utter_message("The following note is attached:")
+                    dispatcher.utter_message(result[5])
+                dispatcher.utter_message("\n")
+
+        cur.close()
+        conn.close()
+
+        return [AllSlotsReset(),
+                FollowupAction("utter_offer_additional_help")]

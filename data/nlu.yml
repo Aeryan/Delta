@@ -124,17 +124,15 @@ nlu:
     - How do I get to the office of [Raul Vicente Zafra](employee)?
     - How can I get to [Ahmed Mahmoud Hany Aly Awad](employee)'s office?
     - Where can I find [Jaak Vilo](employee)?
-- regex: subject
+- intent: request_course_event_data
   examples: |
-    - (\w ?)+
-- intent: request_lecture_data
-  examples: |
-    - Where is [Calculus I](subject)'s lecture hall?
-    - In what room do the lecture of [Calculus I](subject) take place?
-    - In what room does the lectures of [Calculus I](subject) take place?
-    - Where can I find [Calculus I](subject)'s lecture?
-    - When is the next lecture of [Calculus I](subject)?
-    - Where is the lecture of [Calculus I](subject)?
+    - When is the [lecture](course_event) of [Calculus I](course)?
+    - What is [Fuzzy Logic and Soft Computing](course)'s [seminar](course_event) room?
+    - In what room do the [qolloqium](course_event)s of [Public Presentation](course) take place?
+    - In what room does the [test](course_event) of [Key Texts in English Studies](course) take place?
+    - Where can I find [School-based Youth Work Practice](course)'s [individual lesson](course_event)?
+    - When is the next [practical session](course_event) of [Pedagogical Practicum](course)?
+    - Where is the [resit](course_event) of [Geriatrics](course)?
 - intent: out_of_scope
   examples: |
     - I left my hat in [three thousand and seven](number), can I get in the room to retrieve it?

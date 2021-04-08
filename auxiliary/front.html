@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
     <title>Deltabot</title>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.7/dist/semantic.min.css">
     <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.7/dist/semantic.min.js"></script>
 </head>
-<body style="background-color: #f1f1f1">
-    <div style="height: 50px"></div>
-    <div class="ui grid">
-        <div class="four wide computer sixteen wide mobile column">
-            <div class="ui segment" style="text-align: center">
-                Welcome to Deltabot's testing environment. All conversations will be logged to help improve the chatbot.<br><br>Whenever you break the chatbot, feel free to refresh the page and attempt to break it again in a different way!
+<body style="background-color: #f1f1f1;">
+    <div class="ui container">
+        <div class="ui grid">
+            <div class="four wide computer sixteen wide mobile column">
+                <div class="ui segment" style="text-align: center">
+                    Welcome to Deltabot's testing environment. All conversations will be logged to help improve the chatbot.<br><br>Whenever you break the chatbot, feel free to refresh the page and attempt to break it again in a different way!
+                </div>
             </div>
-        </div>
-        <div class="eight wide computer sixteen wide mobile column">
-            <div class="ui segment" style="background-color: #f1f1f1">
-                <div id="textdiv"></div>
-                <div class="ui hidden divider"></div>
-                <div class="ui fluid action input" style="max-width: 90%; margin: auto;">
-                    <input type="text" id="user_input" style="border-color: white;" placeholder="Ask a question..." onsubmit="postMsg(false)">
-                    <button class="ui icon button" style="background-color: white; padding: 0;">
-                        <i class="big play circle icon" id="submit_btn" style="color: #b79a33;" onclick="postMsg(false)"></i>
-                    </button>
+            <div class="eight wide computer sixteen wide mobile column">
+                <div class="ui segment" style="background-color: #f1f1f1">
+                    <div id="textdiv"></div>
+                    <div class="ui hidden divider"></div>
+                    <div class="ui fluid action input" style="max-width: 90%; margin: auto;">
+                        <input type="text" id="user_input" style="border-color: white;" placeholder="Ask a question..." onsubmit="postMsg(false)">
+                        <button class="ui icon button" style="background-color: white; padding: 0;">
+                            <i class="big play circle icon" id="submit_btn" style="color: #b79a33;" onclick="postMsg(false)"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -54,7 +55,7 @@
                 var message_node = document.createElement("DIV");
                 message_node.appendChild(document.createTextNode(msg));
                 message_node.classList.add("ui", "compact", "message");
-                message_node.style = "background-color: white; text-color: b79a33;";
+                message_node.style = "background-color: white; text-color: b79a33; max-width: 80%;";
                 var segment_node = document.createElement("DIV");
                 segment_node.appendChild(message_node);
                 segment_node.classList.add("ui", "basic", "fitted", "segment");
@@ -84,15 +85,20 @@
                     bot_node.style = "text-align: right; margin: 3px;";
                     document.getElementById("textdiv").appendChild(bot_node);
 
-                    for (i = 0; i < json.length; i++) {
-                        var message_node = document.createElement("DIV");
-                        message_node.appendChild(document.createTextNode(json[i]['text']));
-                        message_node.classList.add("ui", "compact", "message");
-                        message_node.style = "background-color: #b79a33; max-width: 50%;";
+                    for (var i = 0; i < json.length; i++) {
                         var segment_node = document.createElement("DIV");
-                        segment_node.appendChild(message_node);
-                        segment_node.classList.add("ui", "basic", "fitted", "segment");
-                        segment_node.style = "text-align: right; margin: 3px;";
+                        if (json[i]['text'] === "") {
+                            segment_node.classList.add("ui", "hidden", "divider");
+                        }
+                        else {
+                            var message_node = document.createElement("DIV");
+                            message_node.appendChild(document.createTextNode(json[i]['text']));
+                            message_node.classList.add("ui", "compact", "message");
+                            message_node.style = "background-color: #b79a33; max-width: 80%;";
+                            segment_node.appendChild(message_node);
+                            segment_node.classList.add("ui", "basic", "fitted", "segment");
+                            segment_node.style = "text-align: right; margin: 3px;";
+                        }
                         document.getElementById("textdiv").appendChild(segment_node);
                         document.getElementById("submit_btn").scrollIntoView();
                     }

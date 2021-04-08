@@ -73,7 +73,6 @@ nlu:
     - what can you do?
     - what do you do?
     - how can you help me?
-    - what do you do?
     - what questions can you answer?
     - what can I ask you about?
 - intent: request_room

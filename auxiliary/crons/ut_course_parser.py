@@ -74,12 +74,15 @@ def save_course_version_data(course_version_id):
         for event in r["events"]:
             print("\t\tEvent ", event["uuid"])
             for week in week_generator(event["time"]["academic_weeks"]):
-                if event["state"]["code"] == "confirmed" and (event["location"] == {}
-                                                              or "notes" in event["location"].keys()
-                                                              or event["location"]["address"].split(" - ")[0] == "Narva mnt 18"):
+                # Store all events regardless of their location
+
+                # if event["state"]["code"] == "confirmed" and (event["location"] == {}
+                #                                               or "notes" in event["location"].keys()
+                #                                               or event["location"]["address"].split(" - ")[0] == "Narva mnt 18"):
+                if event["state"]["code"] == "confirmed":
 
                     # If the course passes all checks, add it to the lookup table
-                    # Some different courses have the same name, necessitating duplicate removal via set insertion
+                    # Some unique courses share names, necessitating duplicate removal via set insertion
                     if not tabled:
                         course_names.add(info["title"]["en"])
                         print(info["title"]["en"])

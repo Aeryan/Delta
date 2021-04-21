@@ -1,7 +1,5 @@
 """
-Custom component for fuzzy employee name extraction.
-Rasa's RegexEntityExtractor used as reference
-https://github.com/RasaHQ/rasa/blob/main/rasa/nlu/extractors/regex_entity_extractor.py
+Custom component for fuzzy course event extraction.
 """
 
 import typing
@@ -23,23 +21,23 @@ if typing.TYPE_CHECKING:
     from rasa.nlu.model import Metadata
 
 
-class EmployeeExtractor(EntityExtractor):
+class CourseEventExtractor(EntityExtractor):
 
     defaults = {
-        # Threshold for similarity between employee name and matching substring, in percentage
-        "match_threshold": 50,
-        # Path to file containing the employee lookup table
-        "file_path": "data/employee.yml",
+        # Threshold for similarity between course event name and matching substring, in percentage
+        "match_threshold": 80,
+        # Path to file containing the course event lookup table
+        "file_path": "data/course_event.yml",
     }
 
     def __init__(self, component_config: Optional[Dict[Text, Any]] = None):
         super().__init__(component_config)
         with open(self.defaults['file_path'], "r") as f:
             lines = f.readlines()
-        self.employees = []
+        self.course_events = []
         self.match_threshold = self.component_config["match_threshold"]
         for line in lines[4:]:
-            self.employees.append(line.replace("      - ", "").replace("\n", ""))
+            self.course_events.append(line.replace("      - ", "").replace("\n", ""))
 
     def train(
         self,
@@ -51,11 +49,11 @@ class EmployeeExtractor(EntityExtractor):
 
     def _extract_entities(self, message: Message) -> List[Dict[Text, Any]]:
         entities = []
-        best_match = process.extractOne(message.get(TEXT), self.employees)
+        best_match = process.extractOne(message.get(TEXT), self.course_events)
 
         if best_match[1] >= self.match_threshold:
             entities.append({
-                ENTITY_ATTRIBUTE_TYPE: "employee",
+                ENTITY_ATTRIBUTE_TYPE: "course_event",
                 ENTITY_ATTRIBUTE_VALUE: best_match[0],
             })
 

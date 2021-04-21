@@ -21,129 +21,6 @@ class ActionResetAllSlots(Action):
         return [AllSlotsReset()]
 
 
-def search_transparent_rooms(cursor, room_capacity, preferred=True):
-    cursor.execute("SELECT room_number FROM rooms WHERE available = true AND room_capacity >= {0} ORDER BY room_capacity ASC, transparent DESC;".format(room_capacity))
-    q = cursor.fetchone()
-    if q is not None:
-        result = [preferred, q]
-    else:
-        result = [False, None]
-
-    return result
-
-
-class ActionCheckRooms(Action):
-    def name(self) -> Text:
-        return "room_search"
-
-    def run(self,
-            dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        num_people = tracker.get_slot('num_people')
-        glass_walls = tracker.get_slot('glass_walls')
-        print(type(num_people), num_people)
-        if type(num_people) == list:
-            num_people = num_people[1]
-
-        conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
-        cur = conn.cursor()
-        if glass_walls:
-            result = search_transparent_rooms(cur, num_people)
-        else:
-            cur.execute("SELECT room_number FROM rooms WHERE available = true AND room_capacity >= {0} AND transparent = false ORDER BY room_capacity ASC;".format(num_people))
-            q = cur.fetchone()
-            if q is not None:
-                result = [True, q]
-
-            else:
-                result = search_transparent_rooms(cur, num_people, preferred=False)
-
-        cur.close()
-        conn.close()
-
-        if result[1] is not None:
-            partial_match = True
-        else:
-            partial_match = False
-
-        return [SlotSet("room_search_perfect_match", result[0]),
-                SlotSet("room_search_partial_match", partial_match),
-                SlotSet("room_search_result", result[1])
-                ]
-
-
-class ActionUtterRoomSearchResults(Action):
-    def name(self) -> Text:
-        return "room_search_results"
-    
-    def run(self,
-            dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
-        room_num = tracker.get_slot('room_search_result')
-        if tracker.get_slot('room_search_perfect_match'):
-            string = "Room " + str(room_num[0]) + " is available."
-            print(string)
-            dispatcher.utter_message(text=string)
-            return [FollowupAction(name="room_accept_form")]
-        elif tracker.get_slot('room_search_partial_match'):
-            dispatcher.utter_message(text="No available rooms with opaque walls and sufficient space were found. Room " + str(room_num) + " is available, but has transparent walls.")
-            return [FollowupAction(name="room_accept_form")]
-        else:
-            # dispatcher.utter_message(text="No available rooms were found.")
-            # return [FollowupAction(name="reset_all_slots")]
-            return [FollowupAction(name="utter_room_search_failure")]
-
-
-class ActionFinalizeRoomSearch(Action):
-    def name(self) -> Text:
-        return "room_search_finalize"
-
-    def run(self,
-            dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-        if tracker.get_slot("room_search_feedback"):
-            room_num = tracker.get_slot("room_search_result")[0]
-            conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
-            cur = conn.cursor()
-            cur.execute("UPDATE rooms SET available=false WHERE room_number = " + str(room_num))
-            conn.commit()
-            cur.close()
-            conn.close()
-
-            dispatcher.utter_message(text="Done.")
-        else:
-            dispatcher.utter_message(text="Alright.")
-
-        return []
-
-
-class ActionRoomCheck(Action):
-    def name(self) -> Text:
-        return "room_check"
-
-    def run(self,
-            dispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
-        cur = conn.cursor()
-        room_nr = tracker.get_slot('check_room')
-        cur.execute("SELECT available FROM rooms WHERE room_number = " + str(room_nr) + ";")
-        if cur.fetchone()[0]:
-            dispatcher.utter_message(str(room_nr) + " is currently available.")
-        else:
-            dispatcher.utter_message(str(room_nr) + " is currently not available.")
-
-        cur.close()
-        conn.close()
-        return []
-
-
 class ActionSearchOffices(Action):
     def name(self) -> Text:
         return "office_search"
@@ -215,26 +92,18 @@ class ActionCourseEventResponse(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        course_title_raw = tracker.get_slot("course")
-        course_event_raw = tracker.get_slot("course_event")
+        course_title = tracker.get_slot("course")
+        course_event = tracker.get_slot("course_event")
 
         conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
         cur = conn.cursor()
-
-        # Any extracted course title is present in the database
-        # See above TODO
-        cur.execute("SELECT course_title FROM course_events WHERE course_title % '" + course_title_raw + "';")
-        course_title = cur.fetchone()[0]
-
-        cur.execute("SELECT event_type FROM course_events WHERE event_type % '" + course_event_raw + "';")
-        course_event = cur.fetchone()[0]
 
         cur.execute("SELECT week_nr FROM ut_weeks WHERE monday <= '" + str(datetime.date.today())
                     + "' AND sunday >= '" + str(datetime.date.today()) + "';")
         current_week = str(cur.fetchone()[0])
 
         cur.execute("SELECT weekday, begin_time, end_time, location, notes_et, notes_en FROM course_events WHERE course_title = '"
-                    + course_title
+                    + course_title.replace("'", "''")
                     + "' AND week = " + current_week
                     + " AND event_type = '" + course_event
                     + "';")
@@ -280,3 +149,126 @@ class ActionCourseEventResponse(Action):
 
         return [AllSlotsReset(),
                 FollowupAction("utter_offer_additional_help")]
+
+
+# def search_transparent_rooms(cursor, room_capacity, preferred=True):
+#     cursor.execute("SELECT room_number FROM rooms WHERE available = true AND room_capacity >= {0} ORDER BY room_capacity ASC, transparent DESC;".format(room_capacity))
+#     q = cursor.fetchone()
+#     if q is not None:
+#         result = [preferred, q]
+#     else:
+#         result = [False, None]
+#
+#     return result
+
+
+# class ActionCheckRooms(Action):
+#     def name(self) -> Text:
+#         return "room_search"
+#
+#     def run(self,
+#             dispatcher: CollectingDispatcher,
+#             tracker: Tracker,
+#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+#         num_people = tracker.get_slot('num_people')
+#         glass_walls = tracker.get_slot('glass_walls')
+#         print(type(num_people), num_people)
+#         if type(num_people) == list:
+#             num_people = num_people[1]
+#
+#         conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
+#         cur = conn.cursor()
+#         if glass_walls:
+#             result = search_transparent_rooms(cur, num_people)
+#         else:
+#             cur.execute("SELECT room_number FROM rooms WHERE available = true AND room_capacity >= {0} AND transparent = false ORDER BY room_capacity ASC;".format(num_people))
+#             q = cur.fetchone()
+#             if q is not None:
+#                 result = [True, q]
+#
+#             else:
+#                 result = search_transparent_rooms(cur, num_people, preferred=False)
+#
+#         cur.close()
+#         conn.close()
+#
+#         if result[1] is not None:
+#             partial_match = True
+#         else:
+#             partial_match = False
+#
+#         return [SlotSet("room_search_perfect_match", result[0]),
+#                 SlotSet("room_search_partial_match", partial_match),
+#                 SlotSet("room_search_result", result[1])
+#                 ]
+
+
+# class ActionUtterRoomSearchResults(Action):
+#     def name(self) -> Text:
+#         return "room_search_results"
+#
+#     def run(self,
+#             dispatcher: CollectingDispatcher,
+#             tracker: Tracker,
+#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+#
+#         room_num = tracker.get_slot('room_search_result')
+#         if tracker.get_slot('room_search_perfect_match'):
+#             string = "Room " + str(room_num[0]) + " is available."
+#             print(string)
+#             dispatcher.utter_message(text=string)
+#             return [FollowupAction(name="room_accept_form")]
+#         elif tracker.get_slot('room_search_partial_match'):
+#             dispatcher.utter_message(text="No available rooms with opaque walls and sufficient space were found. Room " + str(room_num) + " is available, but has transparent walls.")
+#             return [FollowupAction(name="room_accept_form")]
+#         else:
+#             # dispatcher.utter_message(text="No available rooms were found.")
+#             # return [FollowupAction(name="reset_all_slots")]
+#             return [FollowupAction(name="utter_room_search_failure")]
+
+
+# class ActionFinalizeRoomSearch(Action):
+#     def name(self) -> Text:
+#         return "room_search_finalize"
+#
+#     def run(self,
+#             dispatcher: CollectingDispatcher,
+#             tracker: Tracker,
+#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+#
+#         if tracker.get_slot("room_search_feedback"):
+#             room_num = tracker.get_slot("room_search_result")[0]
+#             conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
+#             cur = conn.cursor()
+#             cur.execute("UPDATE rooms SET available=false WHERE room_number = " + str(room_num))
+#             conn.commit()
+#             cur.close()
+#             conn.close()
+#
+#             dispatcher.utter_message(text="Done.")
+#         else:
+#             dispatcher.utter_message(text="Alright.")
+#
+#         return []
+
+
+# class ActionRoomCheck(Action):
+#     def name(self) -> Text:
+#         return "room_check"
+#
+#     def run(self,
+#             dispatcher,
+#             tracker: Tracker,
+#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+#         conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
+#         cur = conn.cursor()
+#         room_nr = tracker.get_slot('check_room')
+#         cur.execute("SELECT available FROM rooms WHERE room_number = " + str(room_nr) + ";")
+#         if cur.fetchone()[0]:
+#             dispatcher.utter_message(str(room_nr) + " is currently available.")
+#         else:
+#             dispatcher.utter_message(str(room_nr) + " is currently not available.")
+#
+#         cur.close()
+#         conn.close()
+#         return []

@@ -21,27 +21,30 @@ pipeline:
    - name: FallbackClassifier
      threshold: 0.3
 # Custom
-# Course name extraction using lookup table
-   - name: RegexEntityExtractor
-     case_sensitive: False
-     use_lookup_tables: True
-     use_regexes: False
 # Employee extraction using fuzzy matching
    - name: "components.employee_extractor.EmployeeExtractor"
      match_threshold: 55
-# Number recognition (suboptimal)
-   - name: "DucklingEntityExtractor"
-     url: "http://localhost:8000"
-     dimensions: ["number"]
-     timezone: "Europe/Tallinn"
-     timeout: 3
+# Course title extraction using fuzzy matching
+   - name: "components.course_extractor.CourseTitleExtractor"
+     match_threshold: 80
+# Course event extraction using fuzzy matching
+   - name: "components.course_event_extractor.CourseEventExtractor"
+     match_threshold: 80
+# Value extraction using lookup table
+#   - name: RegexEntityExtractor
+#     case_sensitive: False
+#     use_lookup_tables: True
+#     use_regexes: False
+# Number recognition for room booking
+#   - name: "DucklingEntityExtractor"
+#     url: "http://localhost:8000"
+#     dimensions: ["number"]
+#     timezone: "Europe/Tallinn"
+#     timeout: 3
 
 # Configuration for Rasa Core.
 # https://rasa.com/docs/rasa/core/policies/
 policies:
-# # No configuration for policies was provided. The following default policies were used to train your model.
-# # If you'd like to customize them, uncomment and adjust the policies.
-# # See https://rasa.com/docs/rasa/policies for more information.
    - name: MemoizationPolicy
    - name: TEDPolicy
      max_history: 10

@@ -19,89 +19,48 @@ intents:
     use_entities: []
 - location_challenge:
     use_entities: []
-- room_help_request:
-    use_entities: []
 - request_general_help:
     use_entities: []
-- request_room:
-    use_entities:
-      - number
-- check_room:
-    use_entities:
-      - number
-- inform:
-    use_entities:
-      - number
 - exit_form:
     use_entities: []
 - request_employee_office:
     use_entities:
       - employee
-- request_lecture_data:
-    use_entities:
-      - course
 - out_of_scope:
-    use_entities:
-      - number
-- out_of_scope_specific_room:
-    use_entities:
-      - number
+    use_entities: []
 - request_course_event_data:
     use_entities:
       - course
       - course_event
+- inform_course:
+    use_entities:
+      - course
+- inform_course_event:
+    use_entities:
+      - course_event
+    ignore_entities:
+      - course
+      - employee
+#- room_help_request:
+#    use_entities: []
+#- request_room:
+#    use_entities:
+#      - number
+#- check_room:
+#    use_entities:
+#      - number
+#- inform:
+#    use_entities:
+#      - number
+#- out_of_scope_specific_room:
+#    use_entities:
+#      - number
 entities:
-- number
 - employee
 - course
 - course_event
+#- number
 slots:
-  num_people:
-    type: rasa.shared.core.slots.FloatSlot
-    initial_value: null
-    auto_fill: true
-    influence_conversation: false
-    max_value: 100.0
-    min_value: 0.0
-  glass_walls:
-    type: rasa.shared.core.slots.TextSlot
-    initial_value: null
-    auto_fill: false
-    influence_conversation: false
-  requested_slot:
-    type: rasa.shared.core.slots.TextSlot
-    initial_value: null
-    auto_fill: true
-    influence_conversation: false
-  room_search_feedback:
-    type: rasa.shared.core.slots.BooleanSlot
-    initial_value: null
-    auto_fill: false
-    influence_conversation: false
-  room_search_partial_match:
-    type: rasa.shared.core.slots.BooleanSlot
-    initial_value: null
-    auto_fill: false
-    influence_conversation: false
-  room_search_perfect_match:
-    type: rasa.shared.core.slots.BooleanSlot
-    initial_value: null
-    auto_fill: false
-    influence_conversation: false
-  room_search_result:
-    type: rasa.shared.core.slots.FloatSlot
-    initial_value: null
-    auto_fill: true
-    influence_conversation: false
-    max_value: 10000.0
-    min_value: 1.0
-  check_room:
-    type: rasa.shared.core.slots.FloatSlot
-    initial_value: null
-    auto_fill: true
-    influence_conversation: false
-    max_value: 10000.0
-    min_value: 0.0
   employee:
     type: rasa.shared.core.slots.TextSlot
     initial_value: null
@@ -127,20 +86,63 @@ slots:
     initial_value: null
     auto_fill: true
     influence_conversation: false
+#  num_people:
+#    type: rasa.shared.core.slots.FloatSlot
+#    initial_value: null
+#    auto_fill: true
+#    influence_conversation: false
+#    max_value: 100.0
+#    min_value: 0.0
+#  glass_walls:
+#    type: rasa.shared.core.slots.TextSlot
+#    initial_value: null
+#    auto_fill: false
+#    influence_conversation: false
+#  requested_slot:
+#    type: rasa.shared.core.slots.TextSlot
+#    initial_value: null
+#    auto_fill: true
+#    influence_conversation: false
+#  room_search_feedback:
+#    type: rasa.shared.core.slots.BooleanSlot
+#    initial_value: null
+#    auto_fill: false
+#    influence_conversation: false
+#  room_search_partial_match:
+#    type: rasa.shared.core.slots.BooleanSlot
+#    initial_value: null
+#    auto_fill: false
+#    influence_conversation: false
+#  room_search_perfect_match:
+#    type: rasa.shared.core.slots.BooleanSlot
+#    initial_value: null
+#    auto_fill: false
+#    influence_conversation: false
+#  room_search_result:
+#    type: rasa.shared.core.slots.FloatSlot
+#    initial_value: null
+#    auto_fill: true
+#    influence_conversation: false
+#    max_value: 10000.0
+#    min_value: 1.0
+#  check_room:
+#    type: rasa.shared.core.slots.FloatSlot
+#    initial_value: null
+#    auto_fill: true
+#    influence_conversation: false
+#    max_value: 10000.0
+#    min_value: 0.0
 responses:
   utter_ok:
   - text: Okay.
   utter_greet:
   - text: Hello!
-  utter_cheer_up:
-  - image: https://i.imgur.com/nGF1K8f.jpg
-    text: 'Here is something to cheer you up:'
-  utter_did_that_help:
-  - text: Did that help you?
   utter_happy:
   - text: Great, carry on!
   utter_bye:
   - text: Have a nice day!
+  utter_bye_2:
+  - text: See you again soon!
   utter_iamabot:
   - text: I am a bot, powered by Rasa.
   utter_ask_rephrase:
@@ -151,29 +153,12 @@ responses:
   - text: How can I help you?
   utter_offer_additional_help:
   - text: Is there anything else I can help you with?
-  utter_room_help:
-  - text: To book a room, just let me know you need a room, I'll ask you a few questions and we'll find a room that fits your needs.
   utter_current_location:
   - text: Due to the worldwide pandemic we are currently online.
-  utter_ask_room_search_form_num_people:
-  - text: How many people should the room fit?
-  utter_ask_room_search_form_glass_walls:
-  - text: Is it okay if the walls are see-through?
-  utter_submit:
-  - text: Okay, checking available rooms.
-  utter_slots_values:
-  - text: |-
-      I am going to run a search using these parameters:
-       - number of people: {num_people}
-       - glass walls: {glass_walls}
-  utter_ask_room_search_feedback:
-  - text: Shall I mark this room as "in use" for the next hour?
   utter_task_finalized:
   - text: Done.
-  utter_room_search_failure:
-  - text: No available rooms were found.
   utter_general_help:
-  - text: I can provide you with room numbers and starting times of this week's course events (lectures, practical sessions etc.); and office numbers of Delta employees.
+  - text: I can assist you with office numbers of Delta employees and room numbers and starting times of this week's course events (lectures, practical sessions etc.).
   utter_name_not_found:
   - text: The provided name did not match that of any employee.
   utter_ask_office_employee_suggestion_feedback:
@@ -182,10 +167,31 @@ responses:
   - text: The office of {employee} is listed as {office_search_result}.
   utter_office_no_result:
   - text: I don't know of {employee} having an office in Delta.
+  utter_ask_course:
+  - text: Please specify a course.
+  utter_ask_course_event:
+  - text: Please specify, which course events should be listed (lectures, practical sessions, exams etc.).
   utter_out_of_scope:
   - text: I'm afraid I can't handle that request. Maybe ask the building administrator for help?
-  utter_out_of_scope_specific_room:
-  - text: Sorry, I can't book specific rooms. You'll have to speak to the building administrator for that.
+#  utter_room_help:
+#  - text: To book a room, just let me know you need a room, I'll ask you a few questions and we'll find a room that fits your needs.
+#  utter_ask_room_search_form_num_people:
+#  - text: How many people should the room fit?
+#  utter_ask_room_search_form_glass_walls:
+#  - text: Is it okay if the walls are see-through?
+#  utter_submit:
+#  - text: Okay, checking available rooms.
+#  utter_slots_values:
+#  - text: |-
+#      I am going to run a search using these parameters:
+#       - number of people: {num_people}
+#       - glass walls: {glass_walls}
+#  utter_ask_room_search_feedback:
+#  - text: Shall I mark this room as "in use" for the next hour?
+#  utter_room_search_failure:
+#  - text: No available rooms were found.
+#  utter_out_of_scope_specific_room:
+#  - text: Sorry, I can't book specific rooms. You'll have to speak to the building administrator for that.
 actions:
 - reset_all_slots
 - room_search
@@ -196,34 +202,6 @@ actions:
 - office_search_parse_suggestion_reply
 - course_event_data_response
 forms:
-  room_search_form:
-    num_people:
-    - entity: number
-      intent:
-      - inform
-      - request_room
-      type: from_entity
-    glass_walls:
-    - intent: affirm
-      type: from_intent
-      value: true
-    - intent: deny
-      type: from_intent
-      value: false
-  room_accept_form:
-    room_search_feedback:
-    - intent: affirm
-      type: from_intent
-      value: true
-    - intent: deny
-      type: from_intent
-      value: false
-  room_check_form:
-    check_room:
-    - entity: number
-      intent:
-      - check_room
-      type: from_entity
   office_employee_suggestion_form:
     office_employee_suggestion_feedback:
     - intent: affirm
@@ -231,5 +209,47 @@ forms:
       value: true
     - intent: deny
       type: from_intent
-      value: false
+      value: false1
+  course_event_query_form:
+    course:
+    - entity: course
+      type: from_entity
+      intent:
+      - inform_course
+      - request_course_event_data
+      not_intent: inform_course_event
+    course_event:
+    - entity: course_event
+      type: from_entity
+      intent:
+      - inform_course_event
+      - request_course_event_data
+#  room_search_form:
+#    num_people:
+#    - entity: number
+#      intent:
+#      - inform
+#      - request_room
+#      type: from_entity
+#    glass_walls:
+#    - intent: affirm
+#      type: from_intent
+#      value: true
+#    - intent: deny
+#      type: from_intent
+#      value: false
+#  room_accept_form:
+#    room_search_feedback:
+#    - intent: affirm
+#      type: from_intent
+#      value: true
+#    - intent: deny
+#      type: from_intent
+#      value: false
+#  room_check_form:
+#    check_room:
+#    - entity: number
+#      intent:
+#      - check_room
+#      type: from_entity
 e2e_actions: []

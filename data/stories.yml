@@ -7,7 +7,7 @@ stories:
     - action: utter_offer_additional_help
     - intent: deny
     - action: utter_ok
-    - action: utter_bye
+    - action: utter_bye_2
 
 - story: additional assistance accept
   steps:
@@ -16,19 +16,6 @@ stories:
     - action: utter_ok
     - action: utter_offer_help
 
-# Room search
-- story: room search success
-  steps:
-  - intent: request_room
-  - action: room_search_form
-  - active_loop: room_search_form
-  - active_loop: null
-  - action: utter_submit
-  - action: room_search
-  # room_search_results forces either room_accept_form or utter_room_search_failure FollowUpAction,
-  # each of which triggers a follow-up story
-  - action: room_search_results
-
 - story: form exit
   steps:
   - intent: exit_form
@@ -36,24 +23,6 @@ stories:
   - active_loop: null
   - action: reset_all_slots
   - action: utter_ok
-  - action: utter_offer_additional_help
-
-- story: room search failure
-  steps:
-  - action: utter_room_search_failure
-  - action: reset_all_slots
-  - action: utter_offer_additional_help
-
-# TODO: room search refusal
-- story: room search acceptance
-  steps:
-  - action: room_accept_form
-  - active_loop: room_accept_form
-  - active_loop: null
-  - slot_was_set:
-      - room_search_feedback: lmaowhydoesitcheckforwhetheritchangedratherthanifitchangedtospecificvaluewhatisthis
-  - action: room_search_finalize
-  - action: reset_all_slots
   - action: utter_offer_additional_help
 
 # Employee office search
@@ -66,37 +35,51 @@ stories:
   - active_loop: null
   - action: office_search_parse_suggestion_reply
 
+# Course event search
+
+- story: respond to course event query
+  steps:
+    - or:
+      - intent: request_course_event_data
+      - intent: inform_course
+      - intent: inform_course_event
+    - action: course_event_query_form
+    - active_loop: course_event_query_form
+    - active_loop: null
+    - action: course_event_data_response
+
+# Room search
+#- story: room search success
+#  steps:
+#  - intent: request_room
+#  - action: room_search_form
+#  - active_loop: room_search_form
+#  - active_loop: null
+#  - action: utter_submit
+#  - action: room_search
+  # room_search_results forces either room_accept_form or utter_room_search_failure FollowUpAction,
+  # each of which triggers a follow-up story
+#  - action: room_search_results
+
+#- story: room search failure
+#  steps:
+#  - action: utter_room_search_failure
+#  - action: reset_all_slots
+#  - action: utter_offer_additional_help
+
+#- story: room search acceptance
+#  steps:
+#  - action: room_accept_form
+#  - active_loop: room_accept_form
+#  - active_loop: null
+#  - slot_was_set:
+#      - room_search_feedback: lmaowhydoesitcheckforwhetheritchangedratherthanifitchangedtospecificvaluewhatisthis
+#  - action: room_search_finalize
+#  - action: reset_all_slots
+#  - action: utter_offer_additional_help
+
 # Remade into a rule. When a form is required, remake as story
 #- story: office search success
 #  steps:
 #    - intent: request_employee_office
 #    - action: office_search
-
-# Defaults
-
-#- story: happy path
-#  steps:
-#  - intent: greet
-#  - action: utter_greet
-#  - intent: mood_great
-#  - action: utter_happy
-
-#- story: sad path 1
-#  steps:
-#  - intent: greet
-#  - action: utter_greet
-#  - intent: mood_unhappy
-#  - action: utter_cheer_up
-#  - action: utter_did_that_help
-#  - intent: affirm
-#  - action: utter_happy
-
-#- story: sad path 2
-#  steps:
-#  - intent: greet
-#  - action: utter_greet
-#  - intent: mood_unhappy
-#  - action: utter_cheer_up
-#  - action: utter_did_that_help
-#  - intent: deny
-#  - action: utter_bye

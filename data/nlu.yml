@@ -63,11 +63,6 @@ nlu:
   examples: |
     - where am I?
     - where are we?
-- intent: room_help_request
-  examples: |
-    - how do I book rooms?
-    - how to book?
-    - what do I need to do in order to book a room?
 - intent: request_general_help
   examples: |
     - what can you do?
@@ -75,35 +70,6 @@ nlu:
     - how can you help me?
     - what questions can you answer?
     - what can I ask you about?
-- intent: request_room
-  examples: |
-    - are there any free rooms?
-    - i'm looking for a free room
-    - are any rooms available?
-    - room please
-    - room
-    - i need a room
-    - i need a room for [three](number)
-- intent: check_room
-  examples: |
-    - is [1037](number) free?
-    - is anyone in room [2021](number)?
-    - is [3003](number) taken?
-- intent: inform
-  examples: |
-    - [one](number)
-    - [one](number) person
-    - [two](number) persons
-    - [two](number) people
-    - three
-    - four
-    - five
-    - six
-    - seven
-    - eight
-    - nine
-    - ten
-    - 10
 - intent: exit_form
   examples: |
     - nevermind
@@ -114,7 +80,6 @@ nlu:
     - exit
     - leave
     - break
-# Rasa automatically looks up values from .yml files in data/
 - intent: request_employee_office
   examples: |
     - Where is [Jaan Aru](employee)'s office?
@@ -132,46 +97,63 @@ nlu:
     - Where can I find [School-based Youth Work Practice](course)'s [individual lesson](course_event)?
     - When is the next [practical session](course_event) of [Pedagogical Practicum](course)?
     - Where is the [resit](course_event) of [Geriatrics](course)?
+    - Where is [Camp Work](course)?
+    - When is [Project Work II](course)?
+- intent: inform_course
+  examples: |
+    - It's [Calculus I](course)
+    - I meant [Geriatrics](course)
+    - Tell me about [Public Presentation](course)
+    - [Fuzzy Logic and Soft Computing](course), please
+- intent: inform_course_event
+  examples: |
+    - The [lecture](course_event)
+    - I meant the [seminar](course_event)
+    - Tell me about the [qolloqium](course_event)
+    - [practical session](course_event), please
+    - Where is the [exam](course_event)?
+    - When is the [exam](course_event)?
 - intent: out_of_scope
   examples: |
-    - I left my hat in [three thousand and seven](number), can I get in the room to retrieve it?
+    - I left my hat in two thousand and seven, can I get in the room to retrieve it?
     - How many people are in the building?
-- intent: out_of_scope_specific_room
-  examples: |
-    - I need room [1020](number)
-    - I'd like to book room [1037](number)
-    - I need access to [two thousand and twenty](number)
-    - I'd like to use [2008](number) for the next hour
-#- intent: mood_great
+#- intent: room_help_request
 #  examples: |
-#    - good
-#    - perfect
-#    - great
-#    - amazing
-#    - feeling like a king
-#    - wonderful
-#    - I am feeling very good
-#    - I am great
-#    - I am amazing
-#    - I am going to save the world
-#    - super stoked
-#    - extremely good
-#    - so so perfect
-#    - so good
-#    - so perfect
-#- intent: mood_unhappy
+#    - how do I book rooms?
+#    - how to book?
+#    - what do I need to do in order to book a room?
+#- intent: request_room
 #  examples: |
-#    - my day was horrible
-#    - I am sad
-#    - I don't feel very well
-#    - I am disappointed
-#    - super sad
-#    - I'm so sad
-#    - sad
-#    - very sad
-#    - unhappy
-#    - not good
-#    - not very good
-#    - extremly sad
-#    - so saad
-#    - so sad
+#    - are there any free rooms?
+#    - i'm looking for a free room
+#    - are any rooms available?
+#    - room please
+#    - room
+#    - i need a room
+#    - i need a room for [three](number)
+#- intent: check_room
+#  examples: |
+#    - is [1037](number) free?
+#    - is anyone in room [2021](number)?
+#    - is [3003](number) taken?
+#- intent: inform
+#  examples: |
+#    - [one](number)
+#    - [one](number) person
+#    - [two](number) persons
+#    - [two](number) people
+#    - three
+#    - four
+#    - five
+#    - six
+#    - seven
+#    - eight
+#    - nine
+#    - ten
+#    - 10
+#- intent: out_of_scope_specific_room
+#  examples: |
+#    - I need room [1020](number)
+#    - I'd like to book room [1037](number)
+#    - I need access to [two thousand and twenty](number)
+#    - I'd like to use [2008](number) for the next hour

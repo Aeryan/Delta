@@ -170,7 +170,7 @@ responses:
   utter_ask_course:
   - text: Please specify a course.
   utter_ask_course_event:
-  - text: Please specify, which course events should be listed (lectures, practical sessions, exams etc.).
+  - text: Please specify which course events should be listed (lectures, practical sessions, exams etc.).
   utter_out_of_scope:
   - text: I'm afraid I can't handle that request. Maybe ask the building administrator for help?
 #  utter_room_help:

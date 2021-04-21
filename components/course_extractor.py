@@ -51,13 +51,10 @@ class CourseTitleExtractor(EntityExtractor):
     def _extract_entities(self, message: Message) -> List[Dict[Text, Any]]:
         entities = []
         # Workaround to avoid unnecessary entity extraction
-        print(message.get(INTENT))
-        print(message.get(ENTITIES))
         if message.get(INTENT)['name'] == "inform_course_event":
             return entities
 
         best_match = process.extractOne(message.get(TEXT), self.course_titles)
-        print(best_match)
         if best_match[1] >= self.match_threshold:
             entities.append({
                 ENTITY_ATTRIBUTE_TYPE: "course",

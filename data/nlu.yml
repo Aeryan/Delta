@@ -65,6 +65,7 @@ nlu:
     - where are we?
 - intent: request_general_help
   examples: |
+    - help
     - what can you do?
     - what do you do?
     - how can you help me?

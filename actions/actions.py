@@ -120,29 +120,31 @@ class ActionCourseEventResponse(Action):
             for i in range(len(results)):
                 result = results[i]
 
+                response_string = ""
+
                 # Sensible sentence starts
                 if len(results) == 1:
-                    primer = "It"
+                    response_string += "It"
                 else:
-                    primer = "The " + num2words(i+1, to='ordinal')
+                    response_string += "The " + num2words(i+1, to='ordinal')
 
                 # Location
                 if result[3] is None:
-                    dispatcher.utter_message(primer + " has no designated location.")
+                    response_string += " has no designated location. It takes place "
                 elif "Narva mnt 18" not in result[3]:
-                    dispatcher.utter_message(primer + " takes place in " + result[3] + ".")
+                    response_string += " takes place in " + result[3]
                 else:
-                    dispatcher.utter_message(primer + " takes place in room " + result[3].split(" - ")[1] + ".")
+                    response_string += " takes place in room " + result[3].split(" - ")[1]
                 # Time
-                dispatcher.utter_message("It takes place on " + WEEKDAYS[result[0]] + " between " + str(result[1]) + " and " + str(result[2]) + ".")
+                response_string += ", on " + WEEKDAYS[result[0]] + " between " + str(result[1]).rsplit(":", 1)[0] + " and " + str(result[2]).rsplit(":", 1)[0] + "."
 
                 if result[4] != 'NULL':
-                    dispatcher.utter_message("The following (probably Estonian) note is attached:")
-                    dispatcher.utter_message(result[4])
+                    response_string += " The following (probably Estonian) note is attached: "
+                    response_string += result[4]
                 if result[5] != 'NULL':
-                    dispatcher.utter_message("The following note is attached:")
-                    dispatcher.utter_message(result[5])
-                dispatcher.utter_message("\n")
+                    response_string += " The following note is attached: "
+                    response_string += result[5]
+                dispatcher.utter_message(response_string)
 
         cur.close()
         conn.close()

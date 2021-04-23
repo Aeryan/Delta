@@ -14,6 +14,7 @@ from rasa.shared.nlu.constants import (
     ENTITY_ATTRIBUTE_VALUE,
     TEXT,
     ENTITY_ATTRIBUTE_TYPE,
+    PREDICTED_CONFIDENCE_KEY
 )
 from fuzzywuzzy import process
 
@@ -55,6 +56,7 @@ class CourseEventExtractor(EntityExtractor):
             entities.append({
                 ENTITY_ATTRIBUTE_TYPE: "course_event",
                 ENTITY_ATTRIBUTE_VALUE: best_match[0],
+                PREDICTED_CONFIDENCE_KEY: best_match[1]
             })
 
         return entities

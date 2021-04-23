@@ -19,11 +19,11 @@ pipeline:
 #   - name: ResponseSelector
 #     epochs: 100
    - name: FallbackClassifier
-     threshold: 0.3
+     threshold: 0.4
 # Custom
 # Employee extraction using fuzzy matching
    - name: "components.employee_extractor.EmployeeExtractor"
-     match_threshold: 55
+     match_threshold: 80
 # Course title extraction using fuzzy matching
    - name: "components.course_extractor.CourseTitleExtractor"
      match_threshold: 80

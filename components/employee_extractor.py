@@ -16,6 +16,7 @@ from rasa.shared.nlu.constants import (
     ENTITY_ATTRIBUTE_VALUE,
     TEXT,
     ENTITY_ATTRIBUTE_TYPE,
+    INTENT,
     PREDICTED_CONFIDENCE_KEY
 )
 from fuzzywuzzy import process
@@ -52,8 +53,11 @@ class EmployeeExtractor(EntityExtractor):
 
     def _extract_entities(self, message: Message) -> List[Dict[Text, Any]]:
         entities = []
-        best_match = process.extractOne(message.get(TEXT), self.employees)
+        # Workaround to avoid unnecessary entity extraction
+        if message.get(INTENT)['name'] not in {"request_employee_office"}:
+            return entities
 
+        best_match = process.extractOne(message.get(TEXT), self.employees)
         if best_match[1] >= self.match_threshold:
             entities.append({
                 ENTITY_ATTRIBUTE_TYPE: "employee",

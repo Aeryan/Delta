@@ -14,6 +14,7 @@ from rasa.shared.nlu.constants import (
     ENTITY_ATTRIBUTE_VALUE,
     TEXT,
     ENTITY_ATTRIBUTE_TYPE,
+    INTENT,
     PREDICTED_CONFIDENCE_KEY
 )
 from fuzzywuzzy import process
@@ -50,8 +51,11 @@ class CourseEventExtractor(EntityExtractor):
 
     def _extract_entities(self, message: Message) -> List[Dict[Text, Any]]:
         entities = []
-        best_match = process.extractOne(message.get(TEXT), self.course_events)
+        # Workaround to avoid unnecessary entity extraction
+        if message.get(INTENT)['name'] not in {"inform_course_event", "request_course_event_data"}:
+            return entities
 
+        best_match = process.extractOne(message.get(TEXT), self.course_events)
         if best_match[1] >= self.match_threshold:
             entities.append({
                 ENTITY_ATTRIBUTE_TYPE: "course_event",

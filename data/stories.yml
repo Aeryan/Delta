@@ -23,7 +23,7 @@ stories:
   - active_loop: null
   - action: reset_all_slots
   - action: utter_ok
-  - action: utter_offer_additional_help
+#  - action: utter_offer_additional_help
 
 # Employee office search
 
@@ -77,9 +77,3 @@ stories:
 #  - action: room_search_finalize
 #  - action: reset_all_slots
 #  - action: utter_offer_additional_help
-
-# Remade into a rule. When a form is required, remake as story
-#- story: office search success
-#  steps:
-#    - intent: request_employee_office
-#    - action: office_search

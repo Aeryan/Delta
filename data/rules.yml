@@ -5,9 +5,7 @@ rules:
     conversation_start: true
     steps:
       - intent: initmsg
-      - action: utter_greet
-      - action: utter_iamabot
-      - action: utter_general_help
+      - action: utter_init_response
 
   - rule: Fallback
     steps:
@@ -36,17 +34,32 @@ rules:
       - intent: bot_challenge
       - action: utter_iamabot
 
-  - rule: List capabilities anytime the user asks
+  - rule: General help
     steps:
       - intent: request_general_help
-      - action: utter_general_help
+      - action: display_general_help
+
+  - rule: Functionality help
+    steps:
+      - intent: request_functionality_help
+      - action: utter_functionality_help
+
+  - rule: Office search help
+    steps:
+      - intent: request_office_help
+      - action: utter_office_search_help
+
+  - rule: Course event search help
+    steps:
+      - intent: request_course_event_help
+      - action: utter_course_event_search_help
 
   - rule: State the current location anytime the user asks
     steps:
       - intent: location_challenge
       - action: utter_current_location
 
-  - rule: office search initiation
+  - rule: office search initialisation
     steps:
       - intent: request_employee_office
       - action: office_search
@@ -55,13 +68,13 @@ rules:
     steps:
       - action: utter_office_result
       - action: reset_all_slots
-      - action: utter_offer_additional_help
+#      - action: utter_offer_additional_help
 
   - rule: office no result print followup
     steps:
       - action: utter_office_no_result
       - action: reset_all_slots
-      - action: utter_offer_additional_help
+#      - action: utter_offer_additional_help
 
   - rule: out-of-scope
     steps:

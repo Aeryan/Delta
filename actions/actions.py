@@ -4,7 +4,7 @@ from num2words import num2words
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import SlotSet, FollowupAction, AllSlotsReset
+from rasa_sdk.events import SlotSet, FollowupAction, AllSlotsReset, SessionStarted, ActionExecuted
 
 WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
@@ -19,6 +19,23 @@ class ActionResetAllSlots(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         return [AllSlotsReset()]
+
+
+class ActionUtterGeneralHelp(Action):
+    def name(self) -> Text:
+        return "display_general_help"
+
+    def run(self,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        dispatcher.utter_message(text='This is the general help message.')
+        dispatcher.utter_message(text='To learn about my competencies, you can ask me "What can you do?".')
+        dispatcher.utter_message(text='For help on employee office searches, you can ask me "How to search for employee offices?"')
+        dispatcher.utter_message(text='For help on course event data searches, you can ask me "How to search for course events?"')
+
+        return []
 
 
 class ActionSearchOffices(Action):
@@ -56,7 +73,7 @@ class ActionSearchOffices(Action):
                 FollowupAction(name="utter_office_result")]
 
 
-# TODO: Needs better naming
+# Deprecated by fuzzy matching extractor
 class ActionParseEmployeeSuggestionReply(Action):
     def name(self) -> Text:
         return "office_search_parse_suggestion_reply"
@@ -73,12 +90,14 @@ class ActionParseEmployeeSuggestionReply(Action):
             cur.close()
             conn.close()
             return [SlotSet("office_search_result", result),
-                    FollowupAction("utter_office_result")]
+                    FollowupAction("utter_office_result")
+                    ]
 
         else:
             dispatcher.utter_message(text="Alright.")
             return [AllSlotsReset(),
-                    FollowupAction("utter_offer_additional_help")]
+                    FollowupAction("utter_offer_additional_help")
+                    ]
 
 
 # TODO: Only limited course titles are added to the lookup table.

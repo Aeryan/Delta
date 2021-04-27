@@ -21,6 +21,12 @@ intents:
     use_entities: []
 - request_general_help:
     use_entities: []
+- request_functionality_help:
+    use_entities: []
+- request_office_help:
+    use_entities: []
+- request_course_event_help:
+    use_entities: []
 - exit_form:
     use_entities: []
 - request_employee_office:
@@ -143,6 +149,8 @@ responses:
   - text: Have a nice day!
   utter_bye_2:
   - text: See you again soon!
+  utter_init_response:
+  - text: Hello, I'm Deltabot! Type your message to begin or 'help' to learn more about me.
   utter_iamabot:
   - text: I am a bot, powered by Rasa.
   utter_ask_rephrase:
@@ -157,8 +165,12 @@ responses:
   - text: Due to the worldwide pandemic we are currently online.
   utter_task_finalized:
   - text: Done.
-  utter_general_help:
-  - text: I can assist you with office numbers of Delta employees and room numbers and starting times of this week's course events (lectures, practical sessions etc.).
+  utter_office_search_help:
+  - text: To get the office numbers of Delta employees, ask me something like "Where is the office of Mark Fišel?"
+  utter_course_event_search_help:
+  - text: To get information on course events, ask me something like "Where is the lecture of Calculus I?"
+  utter_functionality_help:
+  - text: I can find office numbers of Delta employees. I can also list room numbers and starting times of this week's course events, such as lectures or exams.
   utter_name_not_found:
   - text: The provided name did not match that of any employee.
   utter_ask_office_employee_suggestion_feedback:
@@ -194,13 +206,14 @@ responses:
 #  - text: Sorry, I can't book specific rooms. You'll have to speak to the building administrator for that.
 actions:
 - reset_all_slots
-- room_search
-- room_search_finalize
-- room_search_results
-- room_check
+- display_general_help
 - office_search
 - office_search_parse_suggestion_reply
 - course_event_data_response
+#- room_search
+#- room_search_finalize
+#- room_search_results
+#- room_check
 forms:
   office_employee_suggestion_form:
     office_employee_suggestion_feedback:

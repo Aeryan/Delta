@@ -5,87 +5,107 @@ nlu:
     - initmsg
 - intent: greet
   examples: |
-    - tere
-    - hey
-    - hello
-    - hi
-    - hello there
-    - good morning
-    - good evening
-    - moin
-    - hey there
-    - let's go
-    - hey dude
-    - goodmorning
-    - goodevening
-    - good afternoon
+    - Tere
+    - Hey
+    - Hello
+    - Hi
+    - Hello there
+    - Good morning
+    - Good evening
+    - Moin
+    - Hey there
+    - Let's go
+    - Hey dude
+    - Goodmorning
+    - Goodevening
+    - Good afternoon
 - intent: goodbye
   examples: |
-    - good afternoon
+    - Good afternoon
     - cu
-    - good by
-    - cee you later
-    - good night
-    - bye
-    - goodbye
-    - have a nice day
-    - see you around
-    - bye bye
-    - see you later
+    - Good byE
+    - See you later
+    - Good night
+    - Bye
+    - Goodbye
+    - Have a nice day
+    - See you around
+    - Bye bye
+    - See you later
 - intent: affirm
   examples: |
-    - yes
-    - y
-    - indeed
-    - of course
-    - that sounds good
-    - correct
-    - ok
-    - okay
-    - sure
+    - Yes
+    - Y
+    - Indeed
+    - Of course
+    - That sounds good
+    - Correct
+    - Ok
+    - Okay
+    - Sure
 - intent: deny
   examples: |
-    - no
-    - n
-    - never
+    - No
+    - N
+    - Never
     - I don't think so
-    - don't like that
-    - no way
-    - not really
+    - Don't like that
+    - No way
+    - Not really
 - intent: bot_challenge
   examples: |
-    - what are you
-    - are you a bot?
-    - are you a human?
-    - am I talking to a bot?
-    - am I talking to a human?
+    - What are you
+    - Are you a bot?
+    - Are you a human?
+    - Am I talking to a bot?
+    - Am I talking to a human?
 - intent: location_challenge
   examples: |
-    - where am I?
-    - where are we?
+    - Where am I?
+    - Where are we?
 - intent: request_general_help
   examples: |
-    - help
-    - what can you do?
-    - what do you do?
-    - how can you help me?
-    - what questions can you answer?
-    - what can I ask you about?
+    - Help
+    - Help me
+    - I need help
+    - What do I do?
+    - How does this work?
+    - How do I search?
+- intent: request_functionality_help
+  examples: |
+    - What can you do?
+    - What do you do?
+    - How can you help me?
+    - What questions can you answer?
+    - What can I ask you about?
+- intent: request_office_help
+  examples: |
+    - How to search for employee offices?
+    - How do I search for employee offices?
+    - How do I get employee offices?
+- intent: request_course_event_help
+  examples: |
+    - How to search for course events?
+    - How do I search for course events?
+    - How do I get course events?
+- synonym: course events
+  examples: |
+    - course event data
 - intent: exit_form
   examples: |
-    - nevermind
-    - forget it
+    - Nevermind
+    - Forget it
     - I changed my mind
-    - cancel
-    - quit
-    - exit
-    - leave
-    - break
+    - Cancel
+    - Quit
+    - Exit
+    - Leave
+    - Break
 - intent: request_employee_office
   examples: |
     - Where is [Jaan Aru](employee)'s office?
     - Where is the office of [Mark Fišel](employee)?
-    - Can you tell me where [Piret Orav](employee)'s office is?
+    - Can you tell me where [Krista Fischer](employee)'s office is?
     - How do I get to the office of [Raul Vicente Zafra](employee)?
     - How can I get to [Ahmed Mahmoud Hany Aly Awad](employee)'s office?
     - Where can I find [Jaak Vilo](employee)?
@@ -118,6 +138,11 @@ nlu:
   examples: |
     - I left my hat in two thousand and seven, can I get in the room to retrieve it?
     - How many people are in the building?
+    - How do I get there?
+    - Where is that?
+    - Where is room 1037?
+    - Can you guide me there?
+    - Show me the way please
 #- intent: room_help_request
 #  examples: |
 #    - how do I book rooms?

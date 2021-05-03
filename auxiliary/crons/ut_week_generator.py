@@ -1,9 +1,17 @@
 import psycopg2
 import datetime
 
+# Andmebaasi seaded
+DATABASE_HOST = "localhost"
+DATABASE_PORT = 5432
+DATABASE_NAME = "delta"
+DATABASE_USER = "postgres"
+DATABASE_PASSWORD = "postgres"
+
+# Õppeaasta alguskuupäev, siin 31. august 2020
 START_OF_YEAR = datetime.date(2020, 8, 31)
 
-conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
+conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
 cur = conn.cursor()
 
 cur.execute("TRUNCATE TABLE ut_weeks;")

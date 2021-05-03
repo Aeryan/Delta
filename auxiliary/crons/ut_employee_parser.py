@@ -4,15 +4,22 @@ import re
 import psycopg2
 import os
 
+# Andmebaasi seaded
+DATABASE_HOST = "localhost"
+DATABASE_PORT = 5432
+DATABASE_NAME = "delta"
+DATABASE_USER = "postgres"
+DATABASE_PASSWORD = "postgres"
+
 # TODO: Majandusteaduskonnal on teistsugune kujundus, see vajab eraldi töötlust
 
 pages = [
-    # CS
+    # ATI
     requests.get("https://www.cs.ut.ee/et/kontakt/arvutiteaduse-instituut"),
-    # MS
+    # matemaatika ja statistika instituut
     requests.get("https://www.math.ut.ee/et/kontakt/matemaatika-statistika-instituut")]
 
-conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
+conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
 cur = conn.cursor()
 
 

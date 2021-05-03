@@ -6,12 +6,19 @@ import psycopg2
 import re
 import os
 
-# Example: "2021"
+# Otsitav aasta, näiteks "2021"
 YEAR_CODE = "2020"
-# Options are "spring" and "autumn"
+# Otsitav semester, kas "spring" või "autumn"
 SEMESTER_CODE = "spring"
-# Set of captured course names
+# Leitud kursusenimede hulk
 course_names = set()
+
+# Andmebaasi seaded
+DATABASE_HOST = "localhost"
+DATABASE_PORT = 5432
+DATABASE_NAME = "delta"
+DATABASE_USER = "postgres"
+DATABASE_PASSWORD = "postgres"
 
 
 # Yield all courses with valid English titles
@@ -63,7 +70,7 @@ def stringify(string):
 # Valid event must take place in Delta and be of status "confirmed"
 def save_course_version_data(course_version_id):
     # Connect to the database
-    conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
+    conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
     cur = conn.cursor()
 
     r = requests.get("https://ois2.ut.ee/api/timetable/courses/{}".format(course_version_id)).json()
@@ -126,7 +133,7 @@ def save_course_version_data(course_version_id):
 
 def update_course_data():
     # Empty the database of old data
-    conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
+    conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
     cur = conn.cursor()
     cur.execute("TRUNCATE TABLE course_events;")
     cur.close()
@@ -149,7 +156,7 @@ def update_course_data():
             course_file.write('\n      - ' + course_name)
 
     # Update course event lookup table
-    conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
+    conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
     cur = conn.cursor()
     cur.execute("SELECT DISTINCT event_type FROM course_events;")
 

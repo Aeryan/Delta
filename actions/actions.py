@@ -6,7 +6,15 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, FollowupAction, AllSlotsReset, SessionStarted, ActionExecuted
 
-WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+# Andmebaasi seaded
+DATABASE_HOST = "localhost"
+DATABASE_PORT = 5432
+DATABASE_NAME = "delta"
+DATABASE_USER = "postgres"
+DATABASE_PASSWORD = "postgres"
+
+# Nädalapäevade nimetused
+WEEKDAYS = {0: "Monday", 1: "Tuesday", 2: "Wednesday", 3: "Thursday", 4: "Friday", 5: "Saturday", 6: "Sunday"}
 
 
 class ActionResetAllSlots(Action):
@@ -50,7 +58,7 @@ class ActionSearchOffices(Action):
         if type(tracker.get_slot('employee')) != str:
             return []
         name = tracker.get_slot('employee').title()
-        conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
+        conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
         cur = conn.cursor()
 
         # If exact matching fails, offer to repeat query with closest match
@@ -83,7 +91,7 @@ class ActionParseEmployeeSuggestionReply(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         if tracker.get_slot("office_employee_suggestion_feedback"):
-            conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
+            conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
             cur = conn.cursor()
             cur.execute("SELECT room_nr FROM offices WHERE name = '" + tracker.get_slot("office_search_result") + "';")
             result = cur.fetchone()[0]
@@ -114,7 +122,7 @@ class ActionCourseEventResponse(Action):
         course_title = tracker.get_slot("course")
         course_event = tracker.get_slot("course_event")
 
-        conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
+        conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
         cur = conn.cursor()
 
         cur.execute("SELECT week_nr FROM ut_weeks WHERE monday <= '" + str(datetime.date.today())
@@ -197,7 +205,7 @@ class ActionCourseEventResponse(Action):
 #         if type(num_people) == list:
 #             num_people = num_people[1]
 #
-#         conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
+#         conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
 #         cur = conn.cursor()
 #         if glass_walls:
 #             result = search_transparent_rooms(cur, num_people)
@@ -259,7 +267,7 @@ class ActionCourseEventResponse(Action):
 #
 #         if tracker.get_slot("room_search_feedback"):
 #             room_num = tracker.get_slot("room_search_result")[0]
-#             conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
+#             conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
 #             cur = conn.cursor()
 #             cur.execute("UPDATE rooms SET available=false WHERE room_number = " + str(room_num))
 #             conn.commit()
@@ -281,7 +289,7 @@ class ActionCourseEventResponse(Action):
 #             dispatcher,
 #             tracker: Tracker,
 #             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#         conn = psycopg2.connect(host="localhost", port=5432, database="delta", user="postgres", password="postgres")
+#         conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
 #         cur = conn.cursor()
 #         room_nr = tracker.get_slot('check_room')
 #         cur.execute("SELECT available FROM rooms WHERE room_number = " + str(room_nr) + ";")

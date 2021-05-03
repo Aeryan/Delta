@@ -1,0 +1,10 @@
+[Unit]
+Description=Rasa-Action
+After=multi-user.target
+[Service]
+Type=simple
+WorkingDirectory=/home/ubuntu/Rasa/Delta
+ExecStart=/home/ubuntu/Rasa/rasa_env_3_7_10/bin/python3.7 -m rasa run actions
+User=root
+Group=daemon
+Restart=on-failure

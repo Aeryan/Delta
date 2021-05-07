@@ -1,5 +1,7 @@
 """
-Custom component for fuzzy course title extraction.
+Komponent kursusenimede hägusaks eraldamiseks.
+Loodud Rasa Open Source komponendi RegexEntityExtractor põhjal.
+https://github.com/RasaHQ/rasa/blob/main/rasa/nlu/extractors/regex_entity_extractor.py
 """
 
 import typing
@@ -25,10 +27,11 @@ if typing.TYPE_CHECKING:
 
 class CourseTitleExtractor(EntityExtractor):
 
+    # Vaikeväärtused
     defaults = {
-        # Threshold for similarity between course title and matching substring, in percentage
+        # Kursusenime ja teksti vastavuse lävend
         "match_threshold": 90,
-        # Path to file containing the course title lookup table
+        # Kursusenimede andmetabeli asukoht
         "file_path": "data/course.yml",
     }
 
@@ -51,7 +54,7 @@ class CourseTitleExtractor(EntityExtractor):
 
     def _extract_entities(self, message: Message) -> List[Dict[Text, Any]]:
         entities = []
-        # Workaround to avoid unnecessary entity extraction
+        # Väärtuste ebavajaliku eraldamise vältimine kavatsuse kontrolli abil
         if message.get(INTENT)['name'] not in {"inform_course", "request_course_event_data"}:
             return entities
 
@@ -72,8 +75,6 @@ class CourseTitleExtractor(EntityExtractor):
         message.set(ENTITIES, message.get(ENTITIES, []) + extracted_entities, add_to_output=True)
 
     def persist(self, file_name: Text, model_dir: Text) -> Optional[Dict[Text, Any]]:
-        """Persist this component to disk for future loading."""
-
         pass
 
     @classmethod

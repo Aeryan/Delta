@@ -1,3 +1,7 @@
+# ATI ning matemaatika ja statistikainstituudi töötajate ja nende kabinettide numbrite parser
+# Allikateks on veebilehed, mis on toodud välja muutujas 'pages'
+# Tööaeg ATI sülearvutil ~1 minut
+
 from bs4 import BeautifulSoup
 import requests
 import re
@@ -11,7 +15,7 @@ DATABASE_NAME = "delta"
 DATABASE_USER = "postgres"
 DATABASE_PASSWORD = "postgres"
 
-# TODO: Majandusteaduskonnal on teistsugune kujundus, see vajab eraldi töötlust
+# Majandusteaduskonna töötajate lehel on siintoodutest erinev kujundus, mille töötlust antud skript ei võimalda
 
 pages = [
     # ATI
@@ -38,7 +42,6 @@ for page in pages:
         room_info = re.findall(r"r \d+", i.find("td", {"class": "views-field-field-ut-employee-phone"}).text)
         if len(room_info) > 0:
             room_nr = room_info[0].replace("r ", "")
-            # cur.execute("SELECT room_nr FROM offices WHERE name = '" + name + "';")
             if name in updated.keys():
                 if not updated[name]:
                     cur.execute("UPDATE offices SET room_nr = " + room_nr + " WHERE name = '" + name + "';")

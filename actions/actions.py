@@ -1,3 +1,5 @@
+# Rasa Action Serveri käivitatavad käsud
+
 import psycopg2
 import datetime
 from num2words import num2words

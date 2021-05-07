@@ -1,9 +1,9 @@
-# Configuration for Rasa NLU.
+# Rasa NLU konfiguratsioon.
 # https://rasa.com/docs/rasa/nlu/components/
 language: en
 
 pipeline:
-# Defaults
+# Vaikeväärtused
    - name: WhitespaceTokenizer
    - name: RegexFeaturizer
    - name: LexicalSyntacticFeaturizer
@@ -20,29 +20,29 @@ pipeline:
 #     epochs: 100
    - name: FallbackClassifier
      threshold: 0.4
-# Custom
-# Employee extraction using fuzzy matching
+# Lisakomponendid
+# Töötajanime hägune tuvastus
    - name: "components.employee_extractor.EmployeeExtractor"
      match_threshold: 80
-# Course title extraction using fuzzy matching
+# Kursuse pealkirja hägune tuvastus
    - name: "components.course_extractor.CourseTitleExtractor"
      match_threshold: 80
-# Course event extraction using fuzzy matching
+# Kursuse sündmuse hägune tuvastus
    - name: "components.course_event_extractor.CourseEventExtractor"
      match_threshold: 80
-# Value extraction using lookup table
+# Andmetabeli põhjal väärtuste eraldamine - lahendatud spetsiaalsete komponentidega
 #   - name: RegexEntityExtractor
 #     case_sensitive: False
 #     use_lookup_tables: True
 #     use_regexes: False
-# Number recognition for room booking
+# Numbrite tuvastus tubade broneerimisel
 #   - name: "DucklingEntityExtractor"
 #     url: "http://localhost:8000"
 #     dimensions: ["number"]
 #     timezone: "Europe/Tallinn"
 #     timeout: 3
 
-# Configuration for Rasa Core.
+# Rasa Core konfiguratsioon.
 # https://rasa.com/docs/rasa/core/policies/
 policies:
    - name: MemoizationPolicy

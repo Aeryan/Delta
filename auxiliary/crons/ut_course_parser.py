@@ -1,5 +1,6 @@
-# Course data extractor using the API of  Student Information System 2
-# Runtime ~20 minutes on a CS laptop
+# Kursuste teabe pärija
+# Andmete allikas on ÕIS2 API
+# Tööaeg on ATI sülearvutil ~20 minutit
 
 import requests
 import psycopg2
@@ -21,8 +22,8 @@ DATABASE_USER = "postgres"
 DATABASE_PASSWORD = "postgres"
 
 
-# Yield all courses with valid English titles
-# Valid course must contain a word
+# Funktsioon kõigi sobivate kursuste tagastamiseks
+# Sobiv kursus peab omama ingliskeelset pealkirja, mis sisaldab vähemalt üht sõna
 def get_courses():
     counter = 1
     while True:
@@ -35,8 +36,8 @@ def get_courses():
             break
 
 
-# Get all valid versions of given course
-# Valid course must take place in year YEAR_CODE and semester SEMESTER_CODE, and be of status "confirmed
+# Funktsioon sisendkursuse sobivate versioonide leidmiseks
+# Sobiv versioon peab toimuma aastal YEAR_CODE ja semestril SEMESTER_CODE ning omama staatust "confirmed
 def get_course_versions(course_id):
     r = requests.get("https://ois2.ut.ee/api/courses/{}/versions/".format(course_id)).json()
     if type(r) == dict:
@@ -47,10 +48,9 @@ def get_course_versions(course_id):
     return
 
 
-# Integer generator to convert strings such as "n-m" into individual values
+# Täisarvude generaator sõnede (näiteks "n-m") järjenditeks muundamiseks
 def week_generator(week_string):
-    # A dictionary is used to weed out possible duplicates
-    # (weeks are used as part of the primary key in the database table)
+    # Võimalike koopiate välja praakimiseks kasutan sõnastikku
     weeks = {}
     for substring in week_string.split(","):
         if "-" in substring:
@@ -62,17 +62,19 @@ def week_generator(week_string):
     return list(dict.fromkeys(weeks))
 
 
+# Funktsioon SQLisõbralike sõnede loomiseks
 def stringify(string):
     return "'" + string + "'"
 
 
-# Save all valid events of the given course to the database
-# Valid event must take place in Delta and be of status "confirmed"
+# Funktsioon kõigi sobivate sündmuste andmebaasi salvestamiseks
+# Sobiv sündmus peab omama staatust "confirmed"
 def save_course_version_data(course_version_id):
-    # Connect to the database
+    # Andmebaasiga ühendumine
     conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
     cur = conn.cursor()
 
+    # Päring ja kõigi saadud vastete läbivaatus
     r = requests.get("https://ois2.ut.ee/api/timetable/courses/{}".format(course_version_id)).json()
     if "events" in r.keys():
         info = r["info"]
@@ -81,27 +83,23 @@ def save_course_version_data(course_version_id):
         for event in r["events"]:
             print("\t\tEvent ", event["uuid"])
             for week in week_generator(event["time"]["academic_weeks"]):
-                # Store all events regardless of their location
-
-                # if event["state"]["code"] == "confirmed" and (event["location"] == {}
-                #                                               or "notes" in event["location"].keys()
-                #                                               or event["location"]["address"].split(" - ")[0] == "Narva mnt 18"):
+                # Sündmuse sobivuse kontroll
                 if event["state"]["code"] == "confirmed":
 
-                    # If the course passes all checks, add it to the lookup table
-                    # Some unique courses share names, necessitating duplicate removal via set insertion
+                    # Kui kursus on senini läbinud kõik kontrollid, lisan selle juturoboti keeletuvastuse andmetabelisse
+                    # Mõned nimed võivad korduda, selle vältimiseks hoiustan nimesid hulgas
                     if not tabled:
                         course_names.add(info["title"]["en"])
                         print(info["title"]["en"])
                         tabled = True
 
-                    # Read most descriptive available event type
+                    # Salvestan kirjeldatuist kõige täpsema välja sisu
                     if "study_work_type" in event.keys():
                         event_type = event["study_work_type"]["en"]
                     else:
                         event_type = event["event_type"]["en"]
 
-                    # Read available notes
+                    # Salvestan olemasolevad märkused
                     notes = {"et": "NULL", "en": "NULL"}
                     for keycode in ["et", "en"]:
                         if keycode in event["notes"].keys():
@@ -109,7 +107,7 @@ def save_course_version_data(course_version_id):
                         if "notes" in event["location"].keys():
                             notes[keycode] = ("" if notes[keycode] == 'NULL' else notes[keycode] + " ") + event["location"]["notes"]
 
-                    # Insert data into the PSQL table
+                    # Andmete sisestus andmebaasi
                     cur.execute("INSERT INTO course_events (event_uuid, course_uuid, course_title, course_language_code, course_version_uuid, event_type, week, weekday, begin_time, end_time, location, notes_et, notes_en) VALUES ("
                                 + stringify(event["uuid"]) + ", "
                                 + stringify(info["course_uuid"]) + ", "
@@ -131,31 +129,32 @@ def save_course_version_data(course_version_id):
     conn.close()
 
 
+# Funktsioon kursuste teabe uuendamiseks
 def update_course_data():
-    # Empty the database of old data
+    # Vanade andmete eemaldus
     conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
     cur = conn.cursor()
-    cur.execute("TRUNCATE TABLE course_events;")
+    cur.execute("TRUNCATE TABLE course_events RESTART IDENTITY;")
     cur.close()
     conn.commit()
     conn.close()
 
-    # Enter all relevant course versions into the database
+    # Kõigi asjakohase kursuseversioonide salvestamine
     for course in get_courses():
         for course_version in get_course_versions(course):
             print("\tVersion ", course_version)
             save_course_version_data(course_version)
 
-    # Empty the course lookup table of old data and add the header
+    # Juturoboti andmetabeli tühjendus ja korrektse päise lisamine
     with open(os.path.join("..", "..", "data", "course.yml"), 'w') as course_file:
         course_file.write('version: "2.0"\nnlu:\n  - lookup: course\n    examples: |')
 
-    # Add all unique course names to the lookup table
+    # Kõigi unikaalsete kursusenimede andmetabelisse lisamine
     with open(os.path.join("..", "..", "data", "course.yml"), 'a') as course_file:
         for course_name in course_names:
             course_file.write('\n      - ' + course_name)
 
-    # Update course event lookup table
+    # Kursusesündmuste tabeli uuendus
     conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
     cur = conn.cursor()
     cur.execute("SELECT DISTINCT event_type FROM course_events;")
@@ -170,7 +169,4 @@ def update_course_data():
     conn.close()
 
 
-# import datetime
-# start = datetime.datetime.now()
 update_course_data()
-# print(datetime.datetime.now()-start)

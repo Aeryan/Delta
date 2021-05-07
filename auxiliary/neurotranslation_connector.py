@@ -1,3 +1,5 @@
+# Vaheserver TartuNLP tõlkemootori abil sisendsõnumite inglise keelde ja väljundi eesti keelde tõlkimiseks
+
 import requests
 
 DEBUG = True

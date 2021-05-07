@@ -16,7 +16,7 @@ Eeldused:
 
 Juturobotiga käsureal vestlemiseks läbi järgnevad sammud:
 
-1. Liigu lähtekoodi asukohta (kaust Delta/).
+1. Liigu lähtekoodi juurkausta _Delta/_.
 2. Käivita vajalike pakettide installimine käsuga "pip install -r requirements.txt".
 3. Loo andmebaasi koopia _auxiliary/delta_backup.sql_ abil PostgreSQL andmebaas ja muuda vajadusel _actions.actions.py_
 alguses asuvaid andmebaasiligipääsu parameetreid.

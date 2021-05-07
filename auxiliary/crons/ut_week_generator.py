@@ -1,3 +1,6 @@
+# Õppenädalate ning nende algus- ja lõppkuupäevade generaator
+# Tööaeg ATI sülearvutil ~1 minut
+
 import psycopg2
 import datetime
 

@@ -1,6 +1,6 @@
 """
-Custom component for fuzzy employee name extraction.
-Rasa's RegexEntityExtractor used as reference
+Komponent töötajate nimede hägusaks eraldamiseks.
+Loodud Rasa Open Source komponendi RegexEntityExtractor põhjal.
 https://github.com/RasaHQ/rasa/blob/main/rasa/nlu/extractors/regex_entity_extractor.py
 """
 
@@ -27,10 +27,11 @@ if typing.TYPE_CHECKING:
 
 class EmployeeExtractor(EntityExtractor):
 
+    # Vaikeväärtused
     defaults = {
-        # Threshold for similarity between employee name and matching substring, in percentage
+        # töötaja nime ja teksti vastavuse lävend
         "match_threshold": 50,
-        # Path to file containing the employee lookup table
+        # Töötajate nimede andmetabeli asukoht
         "file_path": "data/employee.yml",
     }
 
@@ -53,7 +54,7 @@ class EmployeeExtractor(EntityExtractor):
 
     def _extract_entities(self, message: Message) -> List[Dict[Text, Any]]:
         entities = []
-        # Workaround to avoid unnecessary entity extraction
+        # Väärtuste ebavajaliku eraldamise vältimine kavatsuse kontrolli abil
         if message.get(INTENT)['name'] not in {"request_employee_office"}:
             return entities
 
@@ -74,8 +75,6 @@ class EmployeeExtractor(EntityExtractor):
         message.set(ENTITIES, message.get(ENTITIES, []) + extracted_entities, add_to_output=True)
 
     def persist(self, file_name: Text, model_dir: Text) -> Optional[Dict[Text, Any]]:
-        """Persist this component to disk for future loading."""
-
         pass
 
     @classmethod

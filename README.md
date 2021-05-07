@@ -20,6 +20,7 @@ Juturobotiga käsureal vestlemiseks läbi järgnevad sammud:
 2. Käivita vajalike pakettide installimine käsuga "pip install -r requirements.txt".
 3. Loo andmebaasi koopia _auxiliary/delta_backup.sql_ abil PostgreSQL andmebaas ja muuda vajadusel _actions.actions.py_
 alguses asuvaid andmebaasiligipääsu parameetreid.
+4. Treeni juturoboti mudel käsuga "rasa train"
 4. Käivita Rasa Action Server käsuga "rasa run actions".
 5. Käivita juturobot käsureal käsuga "rasa shell".
 
@@ -29,7 +30,7 @@ Käsureavestlusest väljumiseks kasuta klahvikombinatsiooni Ctrl+C.
 
 Juturoboti alaliselt veebile avamiseks läbi järgnevad sammud: 
 
-1. Soorita kiirkäivituse sammud 1-3.
+1. Soorita kiirkäivituse sammud 1-4.
 2. VALIKULINE: uuenda andmebaasi seis kaustas _auxiliary/crons/_ asuvate skriptide käivitamisega, parandades vajadusel 
 skriptide alguses olevaid parameetreid andmebaasiligipääsu ja vaatlusaja osas.
 3. Sea üles Nginx server, kasutades konfiguratsiooni _auxiliary/rasa.conf_. Vajadusel paranda konfiguratsioonifailis

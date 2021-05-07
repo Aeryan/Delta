@@ -20,9 +20,11 @@ Juturobotiga käsureal vestlemiseks läbi järgnevad sammud:
 2. Käivita vajalike pakettide installimine käsuga "pip install -r requirements.txt".
 3. Loo andmebaasi koopia _auxiliary/delta_backup.sql_ abil PostgreSQL andmebaas ja muuda vajadusel _actions.actions.py_
 alguses asuvaid andmebaasiligipääsu parameetreid.
-4. Treeni juturoboti mudel käsuga "rasa train"
-4. Käivita Rasa Action Server käsuga "rasa run actions".
-5. Käivita juturobot käsureal käsuga "rasa shell".
+4. Loo juturoboti andmetabelid ja uuenda andmebaasi seis kaustas _auxiliary/crons/_ asuvate skriptide käivitamisega,
+parandades vajadusel skriptide alguses olevaid parameetreid andmebaasiligipääsu ja vaatlusaja osas.
+5. Naase projekti juurkausta _Delta/_ ja treeni juturoboti mudel käsuga "rasa train"
+6. Käivita Rasa Action Server käsuga "rasa run actions".
+7. Käivita juturobot käsureal käsuga "rasa shell".
 
 Käsureavestlusest väljumiseks kasuta klahvikombinatsiooni Ctrl+C.
 
@@ -30,14 +32,12 @@ Käsureavestlusest väljumiseks kasuta klahvikombinatsiooni Ctrl+C.
 
 Juturoboti alaliselt veebile avamiseks läbi järgnevad sammud: 
 
-1. Soorita kiirkäivituse sammud 1-4.
-2. VALIKULINE: uuenda andmebaasi seis kaustas _auxiliary/crons/_ asuvate skriptide käivitamisega, parandades vajadusel 
-skriptide alguses olevaid parameetreid andmebaasiligipääsu ja vaatlusaja osas.
-3. Sea üles Nginx server, kasutades konfiguratsiooni _auxiliary/rasa.conf_. Vajadusel paranda konfiguratsioonifailis
+1. Soorita kiirkäivituse sammud 1-5.
+2. Sea üles Nginx server, kasutades konfiguratsiooni _auxiliary/rasa.conf_. Vajadusel paranda konfiguratsioonifailis
 muutuja _root_ väärtus selliseks, et see osutaks faili _front.html_ asukohale.
-4. Paiguta kaustas _auxiliary/services/_ olevad failid kausta _/etc/systemd/service/_, parandades vajadusel
+3. Paiguta kaustas _auxiliary/services/_ olevad failid kausta _/etc/systemd/service/_, parandades vajadusel
 nendes kirjeldatud kaustade asukohad.
-5. Käivita süsteemiteenused järgnevate käskudega:
+4. Käivita süsteemiteenused järgnevate käskudega:
     1. "service rasa-actions start"
     2. "service rasa-core start"
     3. "service rasa-logger start"

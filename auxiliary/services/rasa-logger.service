@@ -4,7 +4,7 @@ After=rasa-core.service
 [Service]
 Type=simple
 WorkingDirectory=/home/ubuntu/Rasa/Delta/auxiliary/
-ExecStart=/home/ubuntu/Rasa/rasa_env_3_7_10/bin/python3.7 /home/ubuntu/Rasa/Del$
+ExecStart=/home/ubuntu/Rasa/rasa_env_3_7_10/bin/python3.7 /home/ubuntu/Rasa/Delta/auxiliary/logger.py
 User=root
 Group=daemon
 Restart=on-failure

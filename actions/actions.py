@@ -161,11 +161,11 @@ class ActionCourseEventResponse(Action):
                 if result[3] is None:
                     response_string += " has no designated location. It takes place "
                 elif "Narva mnt 18" not in result[3]:
-                    response_string += " takes place in " + result[3]
+                    response_string += " takes place in " + result[3] + ", "
                 else:
-                    response_string += " takes place in room " + result[3].split(" - ")[1]
+                    response_string += " takes place in room " + result[3].split(" - ")[1] + ", "
                 # Time
-                response_string += ", on " + WEEKDAYS[result[0]] + " between " + str(result[1]).rsplit(":", 1)[0] + " and " + str(result[2]).rsplit(":", 1)[0] + "."
+                response_string += "on " + WEEKDAYS[result[0]] + " between " + str(result[1]).rsplit(":", 1)[0] + " and " + str(result[2]).rsplit(":", 1)[0] + "."
 
                 if result[4] != 'NULL':
                     response_string += " The following (probably Estonian) note is attached: "

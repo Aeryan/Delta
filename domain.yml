@@ -217,27 +217,29 @@ actions:
 #- room_check
 forms:
   office_employee_suggestion_form:
-    office_employee_suggestion_feedback:
-    - intent: affirm
-      type: from_intent
-      value: true
-    - intent: deny
-      type: from_intent
-      value: false1
+    required_slots:
+      office_employee_suggestion_feedback:
+      - intent: affirm
+        type: from_intent
+        value: true
+      - intent: deny
+        type: from_intent
+        value: false1
   course_event_query_form:
-    course:
-    - entity: course
-      type: from_entity
-      intent:
-      - inform_course
-      - request_course_event_data
-      not_intent: inform_course_event
-    course_event:
-    - entity: course_event
-      type: from_entity
-      intent:
-      - inform_course_event
-      - request_course_event_data
+    required_slots:
+      course:
+      - entity: course
+        type: from_entity
+        intent:
+        - inform_course
+        - request_course_event_data
+        not_intent: inform_course_event
+      course_event:
+      - entity: course_event
+        type: from_entity
+        intent:
+        - inform_course_event
+        - request_course_event_data
 #  room_search_form:
 #    num_people:
 #    - entity: number

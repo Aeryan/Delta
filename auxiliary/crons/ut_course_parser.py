@@ -27,7 +27,10 @@ DATABASE_PASSWORD = "postgres"
 def get_courses():
     counter = 1
     while True:
-        r = requests.get("https://ois2.ut.ee/api/courses?start={}&take=1".format(counter+1)).json()[0]
+        r = requests.get("https://ois2.ut.ee/api/courses?start={}&take=1".format(counter)).json()
+        if not r:
+            break
+        r = r[0]
         if r and re.match(r"\w+", r["title"]["en"]):
             print("Course ", r["uuid"])
             yield r["uuid"]

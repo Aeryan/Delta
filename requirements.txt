@@ -2,3 +2,5 @@ rasa==2.8.*
 bs4==0.0.*
 fuzzywuzzy[speedup]==0.18.*
 num2words==0.5.*
+estnltk==1.6.9b
+

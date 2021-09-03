@@ -141,51 +141,51 @@ slots:
 #    min_value: 0.0
 responses:
   utter_ok:
-  - text: Okay.
+  - text: Olgu.
   utter_greet:
-  - text: Hello!
+  - text: Tere!
   utter_happy:
-  - text: Great, carry on!
+  - text: Super, jätka samas vaimus!
   utter_bye:
-  - text: Have a nice day!
+  - text: Head päeva!
   utter_bye_2:
-  - text: See you again soon!
+  - text: Peatse jällenägemiseni!
   utter_init_response:
-  - text: Hello, I'm Deltabot! Type your message to begin or 'help' to learn more about me.
+  - text: Tere, mina olen Deltabot! Alustamiseks kirjuta oma sõnuml. Kui jääd hätta, ära karda minult abi küsida!
   utter_iamabot:
-  - text: I am a bot, powered by Rasa.
+  - text: Ma olen (jutu)robot, ehitatud Rasa ja Pythoni abil.
   utter_ask_rephrase:
-  - text: Sorry, I didn't quite understand the last message. Could you rephrase?
+  - text: Vabandust, ma ei saanud viimasest sõnumist aru. Palun proovi seda teisiti sõnastada.
   utter_default:
-  - text: Sorry, I didn't quite understand the last message. Could you rephrase?
+  - text: Vabandust, ma ei saanud viimasest sõnumist aru. Palun proovi seda teisiti sõnastada
   utter_offer_help:
-  - text: How can I help you?
+  - text: Kuidas ma sind aidata saan?
   utter_offer_additional_help:
-  - text: Is there anything else I can help you with?
+  - text: Kas ma saan sind veel millegagi aidata?
   utter_current_location:
-  - text: Due to the worldwide pandemic we are currently online.
+  - text: Hetkel suhtleme me veebis.
   utter_task_finalized:
-  - text: Done.
+  - text: Tehtud.
   utter_office_search_help:
-  - text: To get the office numbers of Delta employees, ask me something like "Where is the office of Mark Fišel?"
+  - text: Delta töötajate kabinetinumbreid saad näiteks päringuga "Kus on Mark Fišeli kabinet?"
   utter_course_event_search_help:
-  - text: To get information on course events, ask me something like "Where is the lecture of Calculus I?"
+  - text: Kursuste toimumise teavet saad päringuga stiilis "Kus on Kõrgema Matemaatika I loeng?"
   utter_functionality_help:
-  - text: I can find office numbers of Delta employees. I can also list room numbers and starting times of this week's course events, such as lectures or exams.
+  - text: Ma oskan leida Delta töötajate kabinetinumbreid. Samuti oskan ma jagada teavet kursuste selle nädala toimumiste kohta, näiteks loengute ja praktikumide toimumisaegu ja -paiku.
   utter_name_not_found:
-  - text: The provided name did not match that of any employee.
+  - text: Ma ei tea Deltas ühtki selle nimega töötajat.
   utter_ask_office_employee_suggestion_feedback:
-  - text: Did you mean {office_search_result}?
+  - text: Kas sa tahtsid öelda {office_search_result}?
   utter_office_result:
-  - text: The office of {employee} is listed as {office_search_result}.
+  - text: Tõõtaja {employee} kontoriks on märgitud {office_search_result}.
   utter_office_no_result:
-  - text: I don't know of {employee} having an office in Delta.
+  - text: Minu teada {employee} Deltas kontorit ei oma.
   utter_ask_course:
-  - text: Please specify a course.
+  - text: Palun ütle kursuse nimi.
   utter_ask_course_event:
-  - text: Please specify which course events should be listed (lectures, practical sessions, exams etc.).
+  - text: Palun täpsusta kursuse sündmus (loeng, praktikum, eksam vms.).
   utter_out_of_scope:
-  - text: I'm afraid I can't handle that request. Maybe ask the building administrator for help?
+  - text: Ma ei oska selle päringuga aidata. Ehk on maja administraator abiks?
 #  utter_room_help:
 #  - text: To book a room, just let me know you need a room, I'll ask you a few questions and we'll find a room that fits your needs.
 #  utter_ask_room_search_form_num_people:

@@ -9,11 +9,7 @@ import psycopg2
 import os
 
 # Andmebaasi seaded
-DATABASE_HOST = "localhost"
-DATABASE_PORT = 5432
-DATABASE_NAME = "delta"
-DATABASE_USER = "postgres"
-DATABASE_PASSWORD = "postgres"
+from database_settings import *
 
 # Majandusteaduskonna töötajate lehel on siintoodutest erinev kujundus, mille töötlust antud skript ei võimalda
 

@@ -5,34 +5,34 @@
 import requests
 import psycopg2
 import re
-import os
-
-# Otsitav aasta, näiteks "2021"
-YEAR_CODE = "2020"
-# Otsitav semester, kas "spring" või "autumn"
-SEMESTER_CODE = "spring"
-# Leitud kursusenimede hulk
-course_names = set()
 
 # Andmebaasi seaded
-DATABASE_HOST = "localhost"
-DATABASE_PORT = 5432
-DATABASE_NAME = "delta"
-DATABASE_USER = "postgres"
-DATABASE_PASSWORD = "postgres"
+from database_settings import *
+
+# Otsitav aasta, näiteks "2021"
+YEAR_CODE = "2021"
+# Otsitav semester, kas "spring" või "autumn"
+SEMESTER_CODE = "autumn"
 
 
 # Funktsioon kõigi sobivate kursuste tagastamiseks
 # Sobiv kursus peab omama ingliskeelset pealkirja, mis sisaldab vähemalt üht sõna
-def get_courses():
+def get_courses(course_titles_backup):
     counter = 1
     while True:
         r = requests.get("https://ois2.ut.ee/api/courses?start={}&take=1".format(counter)).json()
         if not r:
             break
         r = r[0]
-        if r and re.match(r"\w+", r["title"]["en"]):
+        if r and re.match(r"\w+", r["title"]["et"]):
+            print("\n", counter)
+            print(r["title"]["en"] + "/" + r["title"]["et"])
             print("Course ", r["uuid"])
+
+            # Pealkirjade varundamine
+            course_titles_backup["en"] = r["title"]["en"]
+            course_titles_backup["et"] = r["title"]["et"]
+
             yield r["uuid"]
             counter += 1
         else:
@@ -72,16 +72,11 @@ def stringify(string):
 
 # Funktsioon kõigi sobivate sündmuste andmebaasi salvestamiseks
 # Sobiv sündmus peab omama staatust "confirmed"
-def save_course_version_data(course_version_id):
-    # Andmebaasiga ühendumine
-    conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
-    cur = conn.cursor()
-
+def save_course_version_data(course_version_id, course_titles_backup, cur):
     # Päring ja kõigi saadud vastete läbivaatus
     r = requests.get("https://ois2.ut.ee/api/timetable/courses/{}".format(course_version_id)).json()
     if "events" in r.keys():
         info = r["info"]
-        tabled = False
 
         for event in r["events"]:
             print("\t\tEvent ", event["uuid"])
@@ -89,47 +84,42 @@ def save_course_version_data(course_version_id):
                 # Sündmuse sobivuse kontroll
                 if event["state"]["code"] == "confirmed":
 
-                    # Kui kursus on senini läbinud kõik kontrollid, lisan selle juturoboti keeletuvastuse andmetabelisse
-                    # Mõned nimed võivad korduda, selle vältimiseks hoiustan nimesid hulgas
-                    if not tabled:
-                        course_names.add(info["title"]["en"])
-                        print(info["title"]["en"])
-                        tabled = True
-
                     # Salvestan kirjeldatuist kõige täpsema välja sisu
                     if "study_work_type" in event.keys():
-                        event_type = event["study_work_type"]["en"]
+                        event_type_en = event["study_work_type"]["en"]
+                        event_type_et = event["study_work_type"]["et"]
                     else:
-                        event_type = event["event_type"]["en"]
+                        event_type_en = event["event_type"]["en"]
+                        event_type_et = event["event_type"]["et"]
 
                     # Salvestan olemasolevad märkused
-                    notes = {"et": "NULL", "en": "NULL"}
-                    for keycode in ["et", "en"]:
+                    notes = {"en": "NULL", "et": "NULL"}
+                    for keycode in ["en", "et"]:
                         if keycode in event["notes"].keys():
                             notes[keycode] = event["notes"][keycode]
                         if "notes" in event["location"].keys():
                             notes[keycode] = ("" if notes[keycode] == 'NULL' else notes[keycode] + " ") + event["location"]["notes"]
 
                     # Andmete sisestus andmebaasi
-                    cur.execute("INSERT INTO course_events (event_uuid, course_uuid, course_title, course_language_code, course_version_uuid, event_type, week, weekday, begin_time, end_time, location, notes_et, notes_en) VALUES ("
+                    cur.execute("INSERT INTO course_events (event_uuid, course_uuid, course_title_en, course_title_et, "
+                                + "course_language_code, course_version_uuid, event_type_en, event_type_et, "
+                                + "week, weekday, begin_time, end_time, location, notes_en, notes_et) VALUES ("
                                 + stringify(event["uuid"]) + ", "
                                 + stringify(info["course_uuid"]) + ", "
-                                + stringify(info["title"]["en"].replace("'", "''")) + ", "
+                                + (stringify(info["title"]["en"].replace("'", "''")) if "en" in info["title"].keys() else stringify(course_titles_backup["en"].replace("'", "''"))) + ", "
+                                + (stringify(info["title"]["et"].replace("'", "''")) if "et" in info["title"].keys() else stringify(course_titles_backup["et"].replace("'", "''"))) + ", "
                                 + stringify(info["language"]["code"]) + ", "
                                 + stringify(info["course_version_uuid"]) + ", "
-                                + stringify(event_type) + ", "
+                                + stringify(event_type_en) + ", "
+                                + stringify(event_type_et) + ", "
                                 + str(week) + ", "
                                 + (stringify(event["time"]["weekday"]["code"]) if "weekday" in event["time"].keys() else "NULL") + ", "
                                 + (stringify(event["time"]["begin_time"]) if "begin_time" in event["time"].keys() else "NULL") + ", "
                                 + (stringify(event["time"]["end_time"]) if "end_time" in event["time"].keys() else "NULL") + ", "
                                 + (stringify(event["location"]["address"]) if "address" in event["location"].keys() else "NULL") + ", "
-                                + stringify(notes["et"].replace("'", "''")) + ", "
-                                + stringify(notes["en"].replace("'", "''"))
+                                + stringify(notes["en"].replace("'", "''")) + ", "
+                                + stringify(notes["et"].replace("'", "''"))
                                 + ");")
-
-    cur.close()
-    conn.commit()
-    conn.close()
 
 
 # Funktsioon kursuste teabe uuendamiseks
@@ -138,34 +128,14 @@ def update_course_data():
     conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
     cur = conn.cursor()
     cur.execute("TRUNCATE TABLE course_events RESTART IDENTITY;")
-    cur.close()
-    conn.commit()
-    conn.close()
 
+    # Kursuste genereerimisel jäävad mällu kursuse pealkirjad juhuks, kui versioonides need puuduvad
+    course_titles_backup = {"en": "NULL", "et": "NULL"}
     # Kõigi asjakohase kursuseversioonide salvestamine
-    for course in get_courses():
+    for course in get_courses(course_titles_backup):
         for course_version in get_course_versions(course):
             print("\tVersion ", course_version)
-            save_course_version_data(course_version)
-
-    # Juturoboti andmetabeli tühjendus ja korrektse päise lisamine
-    with open(os.path.join("..", "..", "data", "course.yml"), 'w') as course_file:
-        course_file.write('version: "2.0"\nnlu:\n  - lookup: course\n    examples: |')
-
-    # Kõigi unikaalsete kursusenimede andmetabelisse lisamine
-    with open(os.path.join("..", "..", "data", "course.yml"), 'a') as course_file:
-        for course_name in course_names:
-            course_file.write('\n      - ' + course_name)
-
-    # Kursusesündmuste tabeli uuendus
-    conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
-    cur = conn.cursor()
-    cur.execute("SELECT DISTINCT event_type FROM course_events;")
-
-    with open(os.path.join("..", "..", "data", "course_event.yml"), 'w') as course_event_file:
-        course_event_file.write('version: "2.0"\nnlu:\n  - lookup: course_event\n    examples: |')
-        for course_event in map(lambda x: x[0], cur.fetchall()):
-            course_event_file.write('\n      - ' + course_event)
+            save_course_version_data(course_version, course_titles_backup, cur)
 
     cur.close()
     conn.commit()

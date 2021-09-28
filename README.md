@@ -35,7 +35,7 @@ Juturoboti alaliselt veebile avamiseks läbi järgnevad sammud:
 1. Soorita kiirkäivituse sammud 1-5.
 2. Sea üles Nginx server, kasutades konfiguratsiooni _auxiliary/rasa.conf_. Vajadusel paranda konfiguratsioonifailis
 muutuja _root_ väärtus selliseks, et see osutaks faili _front.html_ asukohale.
-3. Paiguta kaustas _auxiliary/services/_ olevad failid kausta _/etc/systemd/service/_, parandades vajadusel
+3. Paiguta kaustas _auxiliary/services/_ olevad failid kausta _/etc/systemd/system/_, parandades vajadusel
 nendes kirjeldatud kaustade asukohad.
 4. Käivita süsteemiteenused järgnevate käskudega:
     1. "service rasa-actions start"

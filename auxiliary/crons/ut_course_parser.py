@@ -6,6 +6,7 @@ import requests
 import psycopg2
 import re
 
+from components.helper_functions import stringify
 # Andmebaasi seaded
 from database_settings import *
 
@@ -63,11 +64,6 @@ def week_generator(week_string):
             weeks[int(substring)] = ""
 
     return list(dict.fromkeys(weeks))
-
-
-# Funktsioon SQLisõbralike sõnede loomiseks
-def stringify(string):
-    return "'" + string + "'"
 
 
 # Funktsioon kõigi sobivate sündmuste andmebaasi salvestamiseks

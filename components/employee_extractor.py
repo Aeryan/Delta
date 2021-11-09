@@ -5,6 +5,8 @@ https://github.com/RasaHQ/rasa/blob/main/rasa/nlu/extractors/regex_entity_extrac
 """
 
 import typing
+from components.helper_functions import parse_nlu
+from components.levenshtein import manual_levenshtein
 from typing import Any, Optional, Text, Dict, List
 
 from rasa.nlu.extractors.extractor import EntityExtractor
@@ -30,19 +32,32 @@ class EmployeeExtractor(EntityExtractor):
     # Vaikeväärtused
     defaults = {
         # töötaja nime ja teksti vastavuse lävend
-        "match_threshold": 50,
+        "match_threshold": 80,
         # Töötajate nimede andmetabeli asukoht
-        "file_path": "data/employee.yml",
+        "employee_file_path": "data/employee.yml",
     }
 
     def __init__(self, component_config: Optional[Dict[Text, Any]] = None):
         super().__init__(component_config)
-        with open(self.defaults['file_path'], "r") as f:
-            lines = f.readlines()
         self.employees = []
         self.match_threshold = self.component_config["match_threshold"]
-        for line in lines[4:]:
-            self.employees.append(line.replace("      - ", "").replace("\n", ""))
+
+        # Töötajate nimede mällu lugemine
+        with open(self.defaults['employee_file_path'], "r") as f:
+            for line in f.readlines()[4:]:
+                self.employees.append(line.replace("      - ", "").replace("\n", ""))
+
+        # Kavatsustes esinevate sõnade mällu lugemine
+        self.intent_words = parse_nlu(["- intent: request_employee_office\n"])
+
+    def remove_intent_words(self, text):
+        text_list = text.split(" ")
+        for word in text.split(" "):
+            # best_match = process.extractOne(word, self.intent_words)
+            best_match = manual_levenshtein(word, self.intent_words)
+            if best_match[1] < 2:
+                text_list.remove(word)
+        return " ".join(text_list)
 
     def train(
         self,
@@ -57,8 +72,7 @@ class EmployeeExtractor(EntityExtractor):
         # Väärtuste ebavajaliku eraldamise vältimine kavatsuse kontrolli abil
         if message.get(INTENT)['name'] not in {"request_employee_office"}:
             return entities
-
-        best_match = process.extractOne(message.get(TEXT), self.employees)
+        best_match = process.extractOne(self.remove_intent_words(message.get(TEXT)), self.employees)
         if best_match[1] >= self.match_threshold:
             entities.append({
                 ENTITY_ATTRIBUTE_TYPE: "employee",

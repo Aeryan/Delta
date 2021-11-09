@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title>Deltabot</title>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.7/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.7/dist/semantic.min.js"></script>
+</head>
+<body style="background-color: #f1f1f1;">
+    <div class="ui container">
+        <div class="ui grid">
+            <div class="four wide computer sixteen wide mobile column">
+                <div style="overflow: hidden;">
+                    <div class="ui large buttons" style="display: flex; justify-content: center; align-items: center">
+                        <button class="ui disabled button">ET</button>
+                        <button class="ui button" onclick="location.href = '/en';">EN</button>
+                    </div>
+                </div>
+                <div class="ui segment" style="text-align: center">
+                    Deltabot eesti keeles<br><br>Whenever you break the chatbot, feel free to refresh the page and attempt to break it again in a different way!
+                </div>
+            </div>
+            <div class="twelve wide computer sixteen wide mobile column">
+                <div class="ui segment" style="background-color: #f1f1f1; max-height: 95vh; padding-left: 3px; padding-right: 3px;">
+                    <div class="ui segment" style="overflow: auto; max-height: 85vh; padding: 0; background-color: #f1f1f1; border: hidden; box-shadow: none;">
+                        <div id="textdiv"></div>
+                        <div class="ui hidden divider" id="chatbox_bottom" style="margin: 0"></div>
+                    </div>
+                </div>
+                <div class="ui fluid action input" style="max-width: 90%; margin: auto;">
+                    <input type="text" id="user_input" style="border-color: white;" placeholder="Ask a question..." onsubmit="postMsg(false)">
+                    <button class="ui icon button" style="background-color: white; padding: 0;">
+                        <i class="big play circle icon" id="submit_btn" style="color: #b79a33;" onclick="postMsg(false)"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function get_webhook_location() {
+            return "/et/webhook"
+        }
+    </script>
+    <script src="../media/front.js"></script>
+</body>
+</html>

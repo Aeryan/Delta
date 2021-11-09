@@ -102,6 +102,12 @@ nlu:
     - Exit
     - Leave
     - Break
+- intent: request_room_guide
+  examples: |
+    - Where is room [3062](room_of_interest)?
+    - Where is [3121](room_of_interest)?
+    - How can I get to [3019](room_of_interest)?
+    - How to get to [1037](room_of_interest)?
 - intent: request_employee_office
   examples: |
     - Where is [Jaan Aru](employee)'s office?
@@ -144,43 +150,3 @@ nlu:
     - Where is room 1037?
     - Can you guide me there?
     - Show me the way please
-#- intent: room_help_request
-#  examples: |
-#    - how do I book rooms?
-#    - how to book?
-#    - what do I need to do in order to book a room?
-#- intent: request_room
-#  examples: |
-#    - are there any free rooms?
-#    - i'm looking for a free room
-#    - are any rooms available?
-#    - room please
-#    - room
-#    - i need a room
-#    - i need a room for [three](number)
-#- intent: check_room
-#  examples: |
-#    - is [1037](number) free?
-#    - is anyone in room [2021](number)?
-#    - is [3003](number) taken?
-#- intent: inform
-#  examples: |
-#    - [one](number)
-#    - [one](number) person
-#    - [two](number) persons
-#    - [two](number) people
-#    - three
-#    - four
-#    - five
-#    - six
-#    - seven
-#    - eight
-#    - nine
-#    - ten
-#    - 10
-#- intent: out_of_scope_specific_room
-#  examples: |
-#    - I need room [1020](number)
-#    - I'd like to book room [1037](number)
-#    - I need access to [two thousand and twenty](number)
-#    - I'd like to use [2008](number) for the next hour

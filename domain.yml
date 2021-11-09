@@ -30,6 +30,9 @@ intents:
     use_entities: []
 - exit_form:
     use_entities: []
+- request_room_guide:
+    use_entities:
+      - room_of_interest
 - request_employee_office:
     use_entities:
       - employee
@@ -48,25 +51,11 @@ intents:
     ignore_entities:
       - course
       - employee
-#- room_help_request:
-#    use_entities: []
-#- request_room:
-#    use_entities:
-#      - number
-#- check_room:
-#    use_entities:
-#      - number
-#- inform:
-#    use_entities:
-#      - number
-#- out_of_scope_specific_room:
-#    use_entities:
-#      - number
 entities:
 - employee
 - course
 - course_event
-#- number
+- room_of_interest
 slots:
   employee:
     type: rasa.shared.core.slots.TextSlot
@@ -93,52 +82,11 @@ slots:
     initial_value: null
     auto_fill: true
     influence_conversation: false
-#  num_people:
-#    type: rasa.shared.core.slots.FloatSlot
-#    initial_value: null
-#    auto_fill: true
-#    influence_conversation: false
-#    max_value: 100.0
-#    min_value: 0.0
-#  glass_walls:
-#    type: rasa.shared.core.slots.TextSlot
-#    initial_value: null
-#    auto_fill: false
-#    influence_conversation: false
-#  requested_slot:
-#    type: rasa.shared.core.slots.TextSlot
-#    initial_value: null
-#    auto_fill: true
-#    influence_conversation: false
-#  room_search_feedback:
-#    type: rasa.shared.core.slots.BooleanSlot
-#    initial_value: null
-#    auto_fill: false
-#    influence_conversation: false
-#  room_search_partial_match:
-#    type: rasa.shared.core.slots.BooleanSlot
-#    initial_value: null
-#    auto_fill: false
-#    influence_conversation: false
-#  room_search_perfect_match:
-#    type: rasa.shared.core.slots.BooleanSlot
-#    initial_value: null
-#    auto_fill: false
-#    influence_conversation: false
-#  room_search_result:
-#    type: rasa.shared.core.slots.FloatSlot
-#    initial_value: null
-#    auto_fill: true
-#    influence_conversation: false
-#    max_value: 10000.0
-#    min_value: 1.0
-#  check_room:
-#    type: rasa.shared.core.slots.FloatSlot
-#    initial_value: null
-#    auto_fill: true
-#    influence_conversation: false
-#    max_value: 10000.0
-#    min_value: 0.0
+  room_of_interest:
+    type: rasa.shared.core.slots.FloatSlot
+    initial_value: null
+    auto_fill: true
+    influence_conversation: false
 responses:
   utter_ok:
   - text: Okay.
@@ -178,43 +126,29 @@ responses:
   - text: Did you mean {office_search_result}?
   utter_office_result:
   - text: The office of {employee} is listed as {office_search_result}.
-  utter_office_no_result:
+  utter_office_no_office:
   - text: I don't know of {employee} having an office in Delta.
+  utter_office_unrecognized_name:
+  - text: I don't recognize that name.
   utter_ask_course:
   - text: Please specify a course.
   utter_ask_course_event:
   - text: Please specify which course events should be listed (lectures, practical sessions, exams etc.).
   utter_out_of_scope:
   - text: I'm afraid I can't handle that request. Maybe ask the building administrator for help?
-#  utter_room_help:
-#  - text: To book a room, just let me know you need a room, I'll ask you a few questions and we'll find a room that fits your needs.
-#  utter_ask_room_search_form_num_people:
-#  - text: How many people should the room fit?
-#  utter_ask_room_search_form_glass_walls:
-#  - text: Is it okay if the walls are see-through?
-#  utter_submit:
-#  - text: Okay, checking available rooms.
-#  utter_slots_values:
-#  - text: |-
-#      I am going to run a search using these parameters:
-#       - number of people: {num_people}
-#       - glass walls: {glass_walls}
-#  utter_ask_room_search_feedback:
-#  - text: Shall I mark this room as "in use" for the next hour?
-#  utter_room_search_failure:
-#  - text: No available rooms were found.
-#  utter_out_of_scope_specific_room:
-#  - text: Sorry, I can't book specific rooms. You'll have to speak to the building administrator for that.
+  utter_offer_room_guide:
+  - text: Would you like to see a map of this room's location?
+  utter_there_you_go:
+  - text: There you go!
+  utter_here_you_are:
+  - text: Here you are!
 actions:
 - reset_all_slots
 - display_general_help
 - office_search
 - office_search_parse_suggestion_reply
 - course_event_data_response
-#- room_search
-#- room_search_finalize
-#- room_search_results
-#- room_check
+- draw_location_map
 forms:
   office_employee_suggestion_form:
     required_slots:
@@ -240,32 +174,4 @@ forms:
         intent:
         - inform_course_event
         - request_course_event_data
-#  room_search_form:
-#    num_people:
-#    - entity: number
-#      intent:
-#      - inform
-#      - request_room
-#      type: from_entity
-#    glass_walls:
-#    - intent: affirm
-#      type: from_intent
-#      value: true
-#    - intent: deny
-#      type: from_intent
-#      value: false
-#  room_accept_form:
-#    room_search_feedback:
-#    - intent: affirm
-#      type: from_intent
-#      value: true
-#    - intent: deny
-#      type: from_intent
-#      value: false
-#  room_check_form:
-#    check_room:
-#    - entity: number
-#      intent:
-#      - check_room
-#      type: from_entity
 e2e_actions: []

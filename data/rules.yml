@@ -60,6 +60,13 @@ rules:
       - intent: location_challenge
       - action: utter_current_location
 
+  - rule: room_guide
+    steps:
+      - intent: request_room_guide
+      - action: draw_location_map
+      - action: utter_here_you_are
+      - action: reset_all_slots
+
   - rule: office search initialisation
     steps:
       - intent: request_employee_office
@@ -68,7 +75,8 @@ rules:
   - rule: office result print followup
     steps:
       - action: utter_office_result
-      - action: reset_all_slots
+      - action: utter_offer_room_guide
+#      - action: reset_all_slots
 #      - action: utter_offer_additional_help
 
   - rule: office no result print followup
@@ -76,6 +84,26 @@ rules:
       - action: utter_office_no_result
       - action: reset_all_slots
 #      - action: utter_offer_additional_help
+
+  - rule: office bad name print followup
+    steps:
+      - action: utter_office_unrecognized_name
+      - action: reset_all_slots
+
+  - rule: accept room location presentation
+    steps:
+      - action: utter_offer_room_guide
+      - intent: affirm
+      - action: draw_location_map
+      - action: utter_there_you_go
+      - action: reset_all_slots
+
+  - rule: decline room location presentation
+    steps:
+      - action: utter_offer_room_guide
+      - intent: deny
+      - action: reset_all_slots
+      - action: utter_offer_additional_help
 
   - rule: out-of-scope
     steps:

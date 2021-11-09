@@ -1,8 +1,11 @@
 # Rasa Action Serveri käivitatavad käsud
+import os
 
 import psycopg2
 import datetime
+import json
 from num2words import num2words
+from PIL import Image, ImageDraw
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
@@ -58,7 +61,7 @@ class ActionSearchOffices(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         if type(tracker.get_slot('employee')) != str:
-            return []
+            return [FollowupAction(name="utter_office_unrecognized_name")]
         name = tracker.get_slot('employee').title()
         conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
         cur = conn.cursor()
@@ -182,124 +185,28 @@ class ActionCourseEventResponse(Action):
                 FollowupAction("utter_offer_additional_help")]
 
 
-# def search_transparent_rooms(cursor, room_capacity, preferred=True):
-#     cursor.execute("SELECT room_number FROM rooms WHERE available = true AND room_capacity >= {0} ORDER BY room_capacity ASC, transparent DESC;".format(room_capacity))
-#     q = cursor.fetchone()
-#     if q is not None:
-#         result = [preferred, q]
-#     else:
-#         result = [False, None]
-#
-#     return result
+class ActionDrawLocationMap(Action):
+    def name(self) -> Text:
+        return "draw_location_map"
 
+    def run(self,
+            dispatcher: "CollectingDispatcher",
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-# class ActionCheckRooms(Action):
-#     def name(self) -> Text:
-#         return "room_search"
-#
-#     def run(self,
-#             dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#         num_people = tracker.get_slot('num_people')
-#         glass_walls = tracker.get_slot('glass_walls')
-#         print(type(num_people), num_people)
-#         if type(num_people) == list:
-#             num_people = num_people[1]
-#
-#         conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
-#         cur = conn.cursor()
-#         if glass_walls:
-#             result = search_transparent_rooms(cur, num_people)
-#         else:
-#             cur.execute("SELECT room_number FROM rooms WHERE available = true AND room_capacity >= {0} AND transparent = false ORDER BY room_capacity ASC;".format(num_people))
-#             q = cur.fetchone()
-#             if q is not None:
-#                 result = [True, q]
-#
-#             else:
-#                 result = search_transparent_rooms(cur, num_people, preferred=False)
-#
-#         cur.close()
-#         conn.close()
-#
-#         if result[1] is not None:
-#             partial_match = True
-#         else:
-#             partial_match = False
-#
-#         return [SlotSet("room_search_perfect_match", result[0]),
-#                 SlotSet("room_search_partial_match", partial_match),
-#                 SlotSet("room_search_result", result[1])
-#                 ]
+        room_nr = tracker.get_slot("office_search_result")
+        if room_nr is None:
+            room_nr = tracker.get_slot("room_of_interest")
 
+        if str(room_nr) + ".png" not in os.listdir("../auxiliary/media/location_images/"):
+            img = Image.open(f"../auxiliary/delta_map/delta_{room_nr // 1000}.png")
+            with open("../auxiliary/delta_map/pixel_map.json") as f:
+                center = json.load(f)[str(room_nr)]
+            if not center:
+                dispatcher.utter_message("Sorry, I don't have the mapping for that room just yet.")
+                return [FollowupAction("utter_offer_additional_help")]
+            ImageDraw.Draw(img).ellipse([center[0]-5, center[1]-5, center[0]+5, center[1]+5], fill=(255, 0, 0))
+            img.save(f"../auxiliary/media/location_images/{room_nr}.png")
+        dispatcher.utter_message(f"!img /media/location_images/{room_nr}.png")
 
-# class ActionUtterRoomSearchResults(Action):
-#     def name(self) -> Text:
-#         return "room_search_results"
-#
-#     def run(self,
-#             dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#
-#         room_num = tracker.get_slot('room_search_result')
-#         if tracker.get_slot('room_search_perfect_match'):
-#             string = "Room " + str(room_num[0]) + " is available."
-#             print(string)
-#             dispatcher.utter_message(text=string)
-#             return [FollowupAction(name="room_accept_form")]
-#         elif tracker.get_slot('room_search_partial_match'):
-#             dispatcher.utter_message(text="No available rooms with opaque walls and sufficient space were found. Room " + str(room_num) + " is available, but has transparent walls.")
-#             return [FollowupAction(name="room_accept_form")]
-#         else:
-#             # dispatcher.utter_message(text="No available rooms were found.")
-#             # return [FollowupAction(name="reset_all_slots")]
-#             return [FollowupAction(name="utter_room_search_failure")]
-
-
-# class ActionFinalizeRoomSearch(Action):
-#     def name(self) -> Text:
-#         return "room_search_finalize"
-#
-#     def run(self,
-#             dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#
-#         if tracker.get_slot("room_search_feedback"):
-#             room_num = tracker.get_slot("room_search_result")[0]
-#             conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
-#             cur = conn.cursor()
-#             cur.execute("UPDATE rooms SET available=false WHERE room_number = " + str(room_num))
-#             conn.commit()
-#             cur.close()
-#             conn.close()
-#
-#             dispatcher.utter_message(text="Done.")
-#         else:
-#             dispatcher.utter_message(text="Alright.")
-#
-#         return []
-
-
-# class ActionRoomCheck(Action):
-#     def name(self) -> Text:
-#         return "room_check"
-#
-#     def run(self,
-#             dispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#         conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
-#         cur = conn.cursor()
-#         room_nr = tracker.get_slot('check_room')
-#         cur.execute("SELECT available FROM rooms WHERE room_number = " + str(room_nr) + ";")
-#         if cur.fetchone()[0]:
-#             dispatcher.utter_message(str(room_nr) + " is currently available.")
-#         else:
-#             dispatcher.utter_message(str(room_nr) + " is currently not available.")
-#
-#         cur.close()
-#         conn.close()
-#         return []
+        return []

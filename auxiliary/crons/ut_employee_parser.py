@@ -1,22 +1,26 @@
 # ATI ning matemaatika ja statistikainstituudi töötajate ja nende kabinettide numbrite parser
 # Allikateks on veebilehed, mis on toodud välja muutujas 'pages'
-# Tööaeg ATI sülearvutil ~1 minut
+# Tööaeg ATI sülearvutil ~minut
 
 from bs4 import BeautifulSoup
 import requests
 import re
 import psycopg2
 import os
-
+from components.helper_functions import stringify
 # Andmebaasi seaded
 from database_settings import *
 
-# Majandusteaduskonna töötajate lehel on siintoodutest erinev kujundus, mille töötlust antud skript ei võimalda
 
+# Kui see väärtus on tõene, lisanduvad andmetabelis mitteesinevad nimed selle lõppu,
+# vastasel juhul luuakse värske andmetabel puhtalt andmebaasis oleva teabe põhjal.
+APPEND_TO_EXISTING = True
+
+# Majandusteaduskonna töötajate lehel on siintoodutest erinev kujundus, mille töötlust antud skript ei võimalda
 pages = [
     # ATI
     requests.get("https://www.cs.ut.ee/et/kontakt/arvutiteaduse-instituut"),
-    # matemaatika ja statistika instituut
+    # Matemaatika ja Statistika Instituut
     requests.get("https://www.math.ut.ee/et/kontakt/matemaatika-statistika-instituut")]
 
 conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
@@ -43,23 +47,35 @@ for page in pages:
                     cur.execute("UPDATE offices SET room_nr = " + room_nr + " WHERE name = '" + name + "';")
                     updated[name] = True
             else:
-                cur.execute("INSERT INTO offices(name, room_nr) VALUES ('" + name + "', " + room_nr + ");")
+                cur.execute("INSERT INTO offices(name, room_nr) VALUES (" + stringify(name) + ", " + room_nr + ");")
                 updated[name] = True
         else:
             if name in updated.keys():
                 if not updated[name]:
-                    cur.execute("UPDATE offices SET room_nr = NULL WHERE name = '" + name + "';")
+                    cur.execute("UPDATE offices SET room_nr = NULL WHERE name = " + stringify(name) + ";")
                     updated[name] = True
             else:
-                cur.execute("INSERT INTO offices(name, room_nr) VALUES ('" + name + "', NULL);")
+                cur.execute("INSERT INTO offices(name, room_nr) VALUES (" + stringify(name) + ", NULL);")
                 updated[name] = True
 
-with open(os.path.join("..", "..", "data", "employee.yml"), 'w') as employee_file:
-    employee_file.write('version: "2.0"\nnlu:\n  - lookup: employee\n    examples: |')
+existing_names = []
+if APPEND_TO_EXISTING:
+    write_mode = "a"
+    with open(os.path.join("..", "..", "data", "employee.yml")) as employee_file:
+        for line in employee_file.readlines():
+            if line.startswith("      - "):
+                existing_names.append(line.replace("      - ", "").replace("\n", ""))
+else:
+    write_mode = "w"
+
+with open(os.path.join("..", "..", "data", "employee.yml"), write_mode) as employee_file:
+    if not APPEND_TO_EXISTING:
+        employee_file.write('version: "2.0"\nnlu:\n  - lookup: employee\n    examples: |')
     for name in updated.keys():
         if not updated[name]:
             cur.execute("DELETE FROM offices WHERE name = '" + name + "';")
-        employee_file.write('\n      - ' + name)
+        if name not in existing_names:
+            employee_file.write('\n      - ' + name)
 
 employee_file.close()
 conn.commit()

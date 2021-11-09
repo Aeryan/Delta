@@ -19,7 +19,7 @@ pipeline:
 #   - name: ResponseSelector
 #     epochs: 100
    - name: FallbackClassifier
-     threshold: 0.4
+     threshold: 0.2
 # Lisakomponendid
 # Töötajanime hägune tuvastus
    - name: "components.employee_extractor.EmployeeExtractor"
@@ -30,17 +30,8 @@ pipeline:
 # Kursuse sündmuse hägune tuvastus
    - name: "components.course_event_extractor.CourseEventExtractor"
      match_threshold: 80
-# Andmetabeli põhjal väärtuste eraldamine - lahendatud spetsiaalsete komponentidega
-#   - name: RegexEntityExtractor
-#     case_sensitive: False
-#     use_lookup_tables: True
-#     use_regexes: False
-# Numbrite tuvastus tubade broneerimisel
-#   - name: "DucklingEntityExtractor"
-#     url: "http://localhost:8000"
-#     dimensions: ["number"]
-#     timezone: "Europe/Tallinn"
-#     timeout: 3
+# Ruuminumbri tuvastus
+   - name: "components.room_number_extractor.RoomNumberExtractor"
 
 # Rasa Core konfiguratsioon.
 # https://rasa.com/docs/rasa/core/policies/

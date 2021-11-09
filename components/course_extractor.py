@@ -5,6 +5,8 @@ https://github.com/RasaHQ/rasa/blob/main/rasa/nlu/extractors/regex_entity_extrac
 """
 
 import typing
+from components.helper_functions import parse_nlu
+from components.levenshtein import manual_levenshtein
 from typing import Any, Optional, Text, Dict, List
 
 from rasa.nlu.extractors.extractor import EntityExtractor

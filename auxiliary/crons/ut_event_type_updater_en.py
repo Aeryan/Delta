@@ -34,7 +34,7 @@ def update_course_tables(keep_existing):
         write_mode = "w"
 
     with open(os.path.join("data", "course_event.yml"), write_mode) as course_event_file:
-        if keep_existing:
+        if not keep_existing:
             course_event_file.write('version: "2.0"\nnlu:\n  - lookup: course_event\n    examples: |')
         for course_event in course_event_types:
             if course_event not in existing_events:
@@ -51,7 +51,7 @@ def update_course_tables(keep_existing):
     cur.execute("SELECT course_title_en FROM course_events;")
 
     for i in cur.fetchall():
-        course_titles.add(i[0])
+        course_titles.add(i[0].replace("''", "'"))
 
     existing_names = []
     if keep_existing:
@@ -65,7 +65,7 @@ def update_course_tables(keep_existing):
 
     # Kõigi unikaalsete kursusenimede andmetabelisse lisamine
     with open(os.path.join("data", "course.yml"), write_mode) as course_file:
-        if keep_existing:
+        if not keep_existing:
             course_file.write('version: "2.0"\nnlu:\n  - lookup: course\n    examples: |')
         for course_name in course_titles:
             if course_name not in existing_names:

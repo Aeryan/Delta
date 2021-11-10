@@ -1,14 +1,24 @@
 # Õppenädalate ning nende algus- ja lõppkuupäevade generaator
+# Käsurealt käivitades võib õppeaasta alguskuupäeva anda argumendiga formaadis DD-MM-YYYY (nt. 30-08-2021)
 # Tööaeg ATI sülearvutil ~1 minut
 
+import re
+import sys
 import psycopg2
 import datetime
 
 # Andmebaasi seaded
-from database_settings import *
+from auxiliary.database_settings import *
 
-# Õppeaasta alguskuupäev, siin 31. august 2020
-START_OF_YEAR = datetime.date(2021, 8, 30)
+# Õppeaasta alguskuupäev, siin 30. august 2020
+START_DATE = "30-08-2021"
+
+date_string = sys.argv[1]
+if date_string is None:
+    date_string = START_DATE
+elif re.fullmatch(r"\d\d-\d\d-\d\d\d\d", date_string) is None:
+    raise ValueError('Incorrect date string: expected format is DD-MM-YYYY')
+START_OF_YEAR = datetime.datetime.strptime(date_string, "%d-%m-%Y").date()
 
 conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
 cur = conn.cursor()

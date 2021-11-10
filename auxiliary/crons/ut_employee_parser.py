@@ -9,7 +9,7 @@ import psycopg2
 import os
 from components.helper_functions import stringify
 # Andmebaasi seaded
-from database_settings import *
+from auxiliary.database_settings import *
 
 
 # Kui see väärtus on tõene, lisanduvad andmetabelis mitteesinevad nimed selle lõppu,
@@ -61,14 +61,14 @@ for page in pages:
 existing_names = []
 if APPEND_TO_EXISTING:
     write_mode = "a"
-    with open(os.path.join("..", "..", "data", "employee.yml")) as employee_file:
+    with open(os.path.join("data", "employee.yml")) as employee_file:
         for line in employee_file.readlines():
             if line.startswith("      - "):
                 existing_names.append(line.replace("      - ", "").replace("\n", ""))
 else:
     write_mode = "w"
 
-with open(os.path.join("..", "..", "data", "employee.yml"), write_mode) as employee_file:
+with open(os.path.join("data", "employee.yml"), write_mode) as employee_file:
     if not APPEND_TO_EXISTING:
         employee_file.write('version: "2.0"\nnlu:\n  - lookup: employee\n    examples: |')
     for name in updated.keys():

@@ -8,7 +8,7 @@ import re
 
 from components.helper_functions import stringify
 # Andmebaasi seaded
-from database_settings import *
+from auxiliary.database_settings import *
 
 # Otsitav aasta, näiteks "2021"
 YEAR_CODE = "2021"

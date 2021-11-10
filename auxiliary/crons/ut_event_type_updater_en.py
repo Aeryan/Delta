@@ -4,7 +4,7 @@ import psycopg2
 import os
 
 # Andmebaasi seaded
-from database_settings import *
+from auxiliary.database_settings import *
 
 # Kui see väärtus on tõene, lisanduvad andmetabelis mitteesinevad nimed selle lõppu,
 # vastasel juhul luuakse värske andmetabel puhtalt andmebaasis oleva teabe põhjal.
@@ -26,14 +26,14 @@ def update_course_tables(keep_existing):
     existing_events = []
     if keep_existing:
         write_mode = "a"
-        with open(os.path.join("..", "..", "data", "course_event.yml")) as course_event_file:
+        with open(os.path.join("data", "course_event.yml")) as course_event_file:
             for line in course_event_file.readlines():
                 if line.startswith("      - "):
                     existing_events.append(line.replace("      - ", "").replace("\n", ""))
     else:
         write_mode = "w"
 
-    with open(os.path.join("..", "..", "data", "course_event.yml"), write_mode) as course_event_file:
+    with open(os.path.join("data", "course_event.yml"), write_mode) as course_event_file:
         if keep_existing:
             course_event_file.write('version: "2.0"\nnlu:\n  - lookup: course_event\n    examples: |')
         for course_event in course_event_types:
@@ -56,7 +56,7 @@ def update_course_tables(keep_existing):
     existing_names = []
     if keep_existing:
         write_mode = "a"
-        with open(os.path.join("..", "..", "data", "course.yml")) as course_file:
+        with open(os.path.join("data", "course.yml")) as course_file:
             for line in course_file.readlines():
                 if line.startswith("      - "):
                     existing_names.append(line.replace("      - ", "").replace("\n", ""))
@@ -64,7 +64,7 @@ def update_course_tables(keep_existing):
         write_mode = "w"
 
     # Kõigi unikaalsete kursusenimede andmetabelisse lisamine
-    with open(os.path.join("..", "..", "data", "course.yml"), write_mode) as course_file:
+    with open(os.path.join("data", "course.yml"), write_mode) as course_file:
         if keep_existing:
             course_file.write('version: "2.0"\nnlu:\n  - lookup: course\n    examples: |')
         for course_name in course_titles:

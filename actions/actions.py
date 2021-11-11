@@ -75,15 +75,15 @@ class ActionSearchOffices(Action):
             result = cur.fetchone()
             cur.close()
             conn.close()
-            return [SlotSet("office_search_result", result[1]),
-                    FollowupAction(name="utter_name_not_found")]
+            print("This is result[1]")
+            print(result[1])
+            return [SlotSet("office_search_result", result[1])]
 
         cur.close()
         conn.close()
         if result[0] is None:
-            return [FollowupAction(name="utter_office_no_result")]
-        return [SlotSet("office_search_result", result[0]),
-                FollowupAction(name="utter_office_result")]
+            return []
+        return [SlotSet("office_search_result", result[0])]
 
 
 # Deprecated by fuzzy matching extractor
@@ -211,8 +211,16 @@ class ActionDrawLocationMap(Action):
             img.save(f"../auxiliary/media/location_images/{room_nr}.png")
         dispatcher.utter_message(f"!img /media/location_images/{room_nr}.png")
 
-        return [AllSlotsReset(),
-                FollowupAction("utter_there_you_go")]
+        return []
+
+
+def room_has_mapping(room_nr):
+    if str(room_nr) + ".png" not in os.listdir("../auxiliary/media/location_images/"):
+        with open("../auxiliary/delta_map/delta_pixel_map.json") as f:
+            pixel_map = json.load(f)
+        if f"delta_{room_nr // 1000}.png" not in os.listdir("../auxiliary/delta_map/") or str(room_nr) not in pixel_map.keys() or pixel_map[str(room_nr)] == []:
+            return False
+    return True
 
 
 class ActionCheckRoomMapping(Action):
@@ -228,11 +236,4 @@ class ActionCheckRoomMapping(Action):
         if room_nr is None:
             room_nr = tracker.get_slot("room_of_interest")
 
-        room_is_mapped = True
-        if str(room_nr) + ".png" not in os.listdir("../auxiliary/media/location_images/"):
-            with open("../auxiliary/delta_map/delta_pixel_map.json") as f:
-                pixel_map = json.load(f)
-            if f"delta_{room_nr // 1000}.png" not in os.listdir("../auxiliary/delta_map/") or str(room_nr) not in pixel_map.keys() or pixel_map[str(room_nr)] == []:
-                room_is_mapped = False
-
-        return [SlotSet("room_is_mapped", room_is_mapped)]
+        return [SlotSet("room_is_mapped", room_has_mapping(room_nr))]

@@ -41,10 +41,81 @@ stories:
 
 # Employee office search
 
-- story: office search name suggestion
+- story: office search no result
   steps:
-  - action: utter_name_not_found
-  - action: office_employee_suggestion_form
-  - active_loop: office_employee_suggestion_form
-  - active_loop: null
-  - action: office_search_parse_suggestion_reply
+  - intent: request_employee_office
+  - action: office_search
+  - slot_was_set:
+    - office_search_result: false
+  - action: utter_office_no_office
+
+- story: office search success
+  steps:
+  - intent: request_employee_office
+  - action: office_search
+  - slot_was_set:
+    - office_search_result: true
+  - action: utter_office_result
+  - action: check_room_mapping
+
+- story: office guide available
+  steps:
+  - action: check_room_mapping
+  - slot_was_set:
+    - room_is_mapped: True
+  - action: utter_offer_room_guide
+
+- story: office guide not available
+  steps:
+  - action: check_room_mapping
+  - slot_was_set:
+    - room_is_mapped: False
+  - action: reset_all_slots
+
+- story: office guide accept
+  steps:
+  - action: utter_offer_room_guide
+  - intent: affirm
+  - checkpoint: perform_room_guide
+
+- story: office guide decline
+  steps:
+  - action: utter_offer_room_guide
+  - intent: deny
+  - action: utter_ok
+  - action: utter_offer_additional_help
+
+#- story: office search name suggestion
+#  steps:
+#  - action: utter_name_not_found
+#  - action: office_employee_suggestion_form
+#  - active_loop: office_employee_suggestion_form
+#  - active_loop: null
+#  - action: office_search_parse_suggestion_reply
+
+# Room guide
+
+- story: room guide no mapping
+  steps:
+  - intent: request_room_guide
+  - action: check_room_mapping
+  - slot_was_set:
+    - room_is_mapped: False
+  - action: utter_room_no_mapping
+  - action: reset_all_slots
+  - action: utter_offer_additional_help
+
+- story: room guide success
+  steps:
+  - intent: request_room_guide
+  - action: check_room_mapping
+  - slot_was_set:
+    - room_is_mapped: True
+  - checkpoint: perform_room_guide
+
+- story: perform room_guide
+  steps:
+  - checkpoint: perform_room_guide
+  - action: draw_location_map
+  - action: utter_there_you_go
+  - action: reset_all_slots

@@ -58,37 +58,37 @@ entities:
 - room_of_interest
 slots:
   employee:
-    type: rasa.shared.core.slots.TextSlot
+    type: text
     initial_value: null
     auto_fill: true
     influence_conversation: false
   office_search_result:
-    type: rasa.shared.core.slots.TextSlot
+    type: text
     initial_value: null
-    auto_fill: true
-    influence_conversation: false
+    auto_fill: false
+    influence_conversation: true
   office_employee_suggestion_feedback:
-    type: rasa.shared.core.slots.BooleanSlot
+    type: text
     initial_value: null
     auto_fill: false
     influence_conversation: false
   course:
-    type: rasa.shared.core.slots.TextSlot
+    type: text
     initial_value: null
     auto_fill: true
     influence_conversation: false
   course_event:
-    type: rasa.shared.core.slots.TextSlot
+    type: text
     initial_value: null
     auto_fill: true
     influence_conversation: false
   room_of_interest:
-    type: rasa.shared.core.slots.FloatSlot
+    type: float
     initial_value: null
     auto_fill: true
     influence_conversation: false
   room_is_mapped:
-    type: rasa.shared.core.slots.BooleanSlot
+    type: bool
     initial_value: null
     auto_fill: false
     influence_conversation: true
@@ -144,9 +144,13 @@ responses:
   utter_offer_room_guide:
   - text: Would you like to see a map of this room's location?
   utter_there_you_go:
-  - text: There you go!
-  utter_here_you_are:
-  - text: Here you are!
+    - condition:
+        - type: slot
+          name: office_search_result
+          value: null
+      text: Here you are!
+
+    - text: There you go!
   utter_room_no_mapping:
   - text: Sorry, I don't have the mapping for that room just yet.
 actions:

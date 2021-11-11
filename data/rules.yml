@@ -64,8 +64,8 @@ rules:
     steps:
       - intent: request_room_guide
       - action: draw_location_map
-#      - action: utter_here_you_are
       - action: reset_all_slots
+      - action: utter_here_you_are
 
   - rule: office search initialisation
     steps:
@@ -76,14 +76,11 @@ rules:
     steps:
       - action: utter_office_result
       - action: utter_offer_room_guide
-#      - action: reset_all_slots
-#      - action: utter_offer_additional_help
 
   - rule: office no result print followup
     steps:
       - action: utter_office_no_result
       - action: reset_all_slots
-#      - action: utter_offer_additional_help
 
   - rule: office bad name print followup
     steps:
@@ -95,8 +92,8 @@ rules:
       - action: utter_offer_room_guide
       - intent: affirm
       - action: draw_location_map
-#      - action: utter_there_you_go
       - action: reset_all_slots
+      - action: utter_there_you_go
 
   - rule: decline room location presentation
     steps:

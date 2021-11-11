@@ -201,15 +201,13 @@ class ActionDrawLocationMap(Action):
         if str(room_nr) + ".png" not in os.listdir("../auxiliary/media/location_images/"):
             with open("../auxiliary/delta_map/delta_pixel_map.json") as f:
                 pixel_map = json.load(f)
-
-            if str(room_nr) not in pixel_map.keys() or f"../auxiliary/delta_map/delta_{room_nr // 1000}.png" not in os.listdir("../auxiliary/delta_map/"):
+            if str(room_nr) not in pixel_map.keys() or f"delta_{room_nr // 1000}.png" not in os.listdir("../auxiliary/delta_map/"):
                 dispatcher.utter_message("Sorry, I don't have the mapping for that room just yet.")
                 return []
-
             center = pixel_map[str(room_nr)]
             img = Image.open(f"../auxiliary/delta_map/delta_{room_nr // 1000}.png")
             ImageDraw.Draw(img).ellipse([center[0]-5, center[1]-5, center[0]+5, center[1]+5], fill=(255, 0, 0))
             img.save(f"../auxiliary/media/location_images/{room_nr}.png")
         dispatcher.utter_message(f"!img /media/location_images/{room_nr}.png")
 
-        return [FollowupAction("utter_there_you_go")]
+        return []

@@ -5,104 +5,125 @@ rules:
   - rule: Initialize conversation
     conversation_start: true
     steps:
-      - intent: initmsg
-      - action: utter_init_response
+    - intent: initmsg
+    - action: utter_init_response
 
   - rule: Fallback
     steps:
-      - intent: nlu_fallback
-      - action: utter_ask_rephrase
+    - intent: nlu_fallback
+    - action: utter_ask_rephrase
 
   - rule: Greet user
     conversation_start: true
     steps:
-      - intent: greet
-      - action: utter_greet
+    - intent: greet
+    - action: utter_greet
 
   - rule: Respond to greet
     steps:
-      - intent: greet
-      - action: utter_greet
-      - action: utter_offer_help
+    - intent: greet
+    - action: utter_greet
+    - action: utter_offer_help
 
   - rule: Say goodbye anytime the user says goodbye
     steps:
-      - intent: goodbye
-      - action: utter_bye
+    - intent: goodbye
+    - action: utter_bye
 
   - rule: Say 'I am a bot' anytime the user challenges
     steps:
-      - intent: bot_challenge
-      - action: utter_iamabot
+    - intent: bot_challenge
+    - action: utter_iamabot
 
   - rule: General help
     steps:
-      - intent: request_general_help
-      - action: display_general_help
+    - intent: request_general_help
+    - action: display_general_help
 
   - rule: Functionality help
     steps:
-      - intent: request_functionality_help
-      - action: utter_functionality_help
+    - intent: request_functionality_help
+    - action: utter_functionality_help
 
   - rule: Office search help
     steps:
-      - intent: request_office_help
-      - action: utter_office_search_help
+    - intent: request_office_help
+    - action: utter_office_search_help
 
   - rule: Course event search help
     steps:
-      - intent: request_course_event_help
-      - action: utter_course_event_search_help
+    - intent: request_course_event_help
+    - action: utter_course_event_search_help
 
   - rule: State the current location anytime the user asks
     steps:
-      - intent: location_challenge
-      - action: utter_current_location
-
-  - rule: room_guide
-    steps:
-      - intent: request_room_guide
-      - action: draw_location_map
-      - action: reset_all_slots
-      - action: utter_here_you_are
+    - intent: location_challenge
+    - action: utter_current_location
 
   - rule: office search initialisation
     steps:
-      - intent: request_employee_office
-      - action: office_search
+    - intent: request_employee_office
+    - action: office_search
 
   - rule: office result print followup
     steps:
-      - action: utter_office_result
-      - action: utter_offer_room_guide
+    - action: utter_office_result
+    - action: utter_offer_room_guide
 
   - rule: office no result print followup
     steps:
-      - action: utter_office_no_result
-      - action: reset_all_slots
+    - action: utter_office_no_result
+    - action: reset_all_slots
 
   - rule: office bad name print followup
     steps:
-      - action: utter_office_unrecognized_name
-      - action: reset_all_slots
+    - action: utter_office_unrecognized_name
+    - action: reset_all_slots
+
+  - rule: room_guide
+    steps:
+    - intent: request_room_guide
+    - action: check_room_mapping
+    wait_for_user_input: false
+#      - action: draw_location_map
+#      - action: reset_all_slots
+#      - action: utter_here_you_are
 
   - rule: accept room location presentation
     steps:
-      - action: utter_offer_room_guide
-      - intent: affirm
-      - action: draw_location_map
-      - action: reset_all_slots
-      - action: utter_there_you_go
+    - action: utter_offer_room_guide
+    - intent: affirm
+    - action: check_room_mapping
+    wait_for_user_input: false
+#      - action: reset_all_slots
+#      - action: utter_there_you_go
 
   - rule: decline room location presentation
     steps:
-      - action: utter_offer_room_guide
-      - intent: deny
-      - action: reset_all_slots
-      - action: utter_offer_additional_help
+    - action: utter_offer_room_guide
+    - intent: deny
+    - action: reset_all_slots
+    - action: utter_ok
+    - action: utter_offer_additional_help
+
+  - rule: display room location fail
+    steps:
+    - action: check_room_mapping
+    - slot_was_set:
+      - room_is_mapped: false
+    - action: utter_room_no_mapping
+    - action: utter_offer_additional_help
+
+  - rule: display room location success
+    steps:
+    - action: check_room_mapping
+    - slot_was_set:
+      - room_is_mapped: true
+    - action: draw_location_map
+    - action: utter_there_you_go
+    wait_for_user_input: false
 
   - rule: out-of-scope
     steps:
-      - intent: out_of_scope
-      - action: utter_out_of_scope
+    - intent: out_of_scope
+    - action: utter_out_of_scope

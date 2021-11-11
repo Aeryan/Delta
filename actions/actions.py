@@ -134,10 +134,10 @@ class ActionCourseEventResponse(Action):
                     + "' AND sunday >= '" + str(datetime.date.today()) + "';")
         current_week = str(cur.fetchone()[0])
 
-        cur.execute("SELECT weekday, begin_time, end_time, location, notes_et, notes_en FROM course_events WHERE course_title = '"
+        cur.execute("SELECT weekday, begin_time, end_time, location, notes_et, notes_en FROM course_events WHERE course_title_en = '"
                     + course_title.replace("'", "''")
                     + "' AND week = " + current_week
-                    + " AND event_type = '" + course_event
+                    + " AND event_type_en = '" + course_event
                     + "';")
 
         results = cur.fetchall()
@@ -201,13 +201,38 @@ class ActionDrawLocationMap(Action):
         if str(room_nr) + ".png" not in os.listdir("../auxiliary/media/location_images/"):
             with open("../auxiliary/delta_map/delta_pixel_map.json") as f:
                 pixel_map = json.load(f)
-            if str(room_nr) not in pixel_map.keys() or f"delta_{room_nr // 1000}.png" not in os.listdir("../auxiliary/delta_map/"):
-                dispatcher.utter_message("Sorry, I don't have the mapping for that room just yet.")
-                return []
+            # if f"delta_{room_nr // 1000}.png" not in os.listdir("../auxiliary/delta_map/") or str(room_nr) not in pixel_map.keys() or pixel_map[str(room_nr)] == []:
+            #     dispatcher.utter_message("Sorry, I don't have the mapping for that room just yet.")
+            #     return [AllSlotsReset(),
+            #             FollowupAction("utter_offer_additional_help")]
             center = pixel_map[str(room_nr)]
             img = Image.open(f"../auxiliary/delta_map/delta_{room_nr // 1000}.png")
             ImageDraw.Draw(img).ellipse([center[0]-5, center[1]-5, center[0]+5, center[1]+5], fill=(255, 0, 0))
             img.save(f"../auxiliary/media/location_images/{room_nr}.png")
         dispatcher.utter_message(f"!img /media/location_images/{room_nr}.png")
 
-        return []
+        return [AllSlotsReset(),
+                FollowupAction("utter_there_you_go")]
+
+
+class ActionCheckRoomMapping(Action):
+    def name(self) -> Text:
+        return "check_room_mapping"
+
+    def run(self,
+            dispatcher: "CollectingDispatcher",
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        room_nr = tracker.get_slot("office_search_result")
+        if room_nr is None:
+            room_nr = tracker.get_slot("room_of_interest")
+
+        room_is_mapped = True
+        if str(room_nr) + ".png" not in os.listdir("../auxiliary/media/location_images/"):
+            with open("../auxiliary/delta_map/delta_pixel_map.json") as f:
+                pixel_map = json.load(f)
+            if f"delta_{room_nr // 1000}.png" not in os.listdir("../auxiliary/delta_map/") or str(room_nr) not in pixel_map.keys() or pixel_map[str(room_nr)] == []:
+                room_is_mapped = False
+
+        return [SlotSet("room_is_mapped", room_is_mapped)]

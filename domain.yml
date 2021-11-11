@@ -87,6 +87,11 @@ slots:
     initial_value: null
     auto_fill: true
     influence_conversation: false
+  room_is_mapped:
+    type: rasa.shared.core.slots.BooleanSlot
+    initial_value: null
+    auto_fill: false
+    influence_conversation: true
 responses:
   utter_ok:
   - text: Okay.
@@ -142,6 +147,8 @@ responses:
   - text: There you go!
   utter_here_you_are:
   - text: Here you are!
+  utter_room_no_mapping:
+  - text: Sorry, I don't have the mapping for that room just yet.
 actions:
 - reset_all_slots
 - display_general_help
@@ -149,6 +156,7 @@ actions:
 - office_search_parse_suggestion_reply
 - course_event_data_response
 - draw_location_map
+- check_room_mapping
 forms:
   office_employee_suggestion_form:
     required_slots:

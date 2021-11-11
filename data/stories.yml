@@ -26,16 +26,6 @@ stories:
   - action: utter_ok
 #  - action: utter_offer_additional_help
 
-# Employee office search
-
-- story: office search name suggestion
-  steps:
-  - action: utter_name_not_found
-  - action: office_employee_suggestion_form
-  - active_loop: office_employee_suggestion_form
-  - active_loop: null
-  - action: office_search_parse_suggestion_reply
-
 # Course event search
 
 - story: respond to course event query
@@ -49,32 +39,12 @@ stories:
     - active_loop: null
     - action: course_event_data_response
 
-# Room search
-#- story: room search success
-#  steps:
-#  - intent: request_room
-#  - action: room_search_form
-#  - active_loop: room_search_form
-#  - active_loop: null
-#  - action: utter_submit
-#  - action: room_search
-  # room_search_results forces either room_accept_form or utter_room_search_failure FollowUpAction,
-  # each of which triggers a follow-up story
-#  - action: room_search_results
+# Employee office search
 
-#- story: room search failure
-#  steps:
-#  - action: utter_room_search_failure
-#  - action: reset_all_slots
-#  - action: utter_offer_additional_help
-
-#- story: room search acceptance
-#  steps:
-#  - action: room_accept_form
-#  - active_loop: room_accept_form
-#  - active_loop: null
-#  - slot_was_set:
-#      - room_search_feedback: lmaowhydoesitcheckforwhetheritchangedratherthanifitchangedtospecificvaluewhatisthis
-#  - action: room_search_finalize
-#  - action: reset_all_slots
-#  - action: utter_offer_additional_help
+- story: office search name suggestion
+  steps:
+  - action: utter_name_not_found
+  - action: office_employee_suggestion_form
+  - active_loop: office_employee_suggestion_form
+  - active_loop: null
+  - action: office_search_parse_suggestion_reply

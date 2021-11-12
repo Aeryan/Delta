@@ -47,6 +47,8 @@ stories:
   - slot_was_set:
     - office_search_result: null
   - action: utter_office_no_office
+  - action: reset_all_slots
+  - action: utter_offer_additional_help
 
 - story: office search success no mapping
   steps:
@@ -73,6 +75,7 @@ stories:
   - action: utter_offer_room_guide
   - intent: deny
   - action: utter_ok
+  - action: reset_all_slots
   - action: utter_offer_additional_help
 
 - story: office search success with mapping accept

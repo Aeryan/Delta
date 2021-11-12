@@ -24,7 +24,6 @@ stories:
   - active_loop: null
   - action: reset_all_slots
   - action: utter_ok
-#  - action: utter_offer_additional_help
 
 # Course event search
 
@@ -46,10 +45,10 @@ stories:
   - intent: request_employee_office
   - action: office_search
   - slot_was_set:
-    - office_search_result: false
+    - office_search_result: null
   - action: utter_office_no_office
 
-- story: office search success
+- story: office search success no mapping
   steps:
   - intent: request_employee_office
   - action: office_search
@@ -57,41 +56,38 @@ stories:
     - office_search_result: true
   - action: utter_office_result
   - action: check_room_mapping
-
-- story: office guide available
-  steps:
-  - action: check_room_mapping
   - slot_was_set:
-    - room_is_mapped: True
-  - action: utter_offer_room_guide
-
-- story: office guide not available
-  steps:
-  - action: check_room_mapping
-  - slot_was_set:
-    - room_is_mapped: False
+    - room_is_mapped: false
   - action: reset_all_slots
 
-- story: office guide accept
+- story: office search success with mapping decline
   steps:
-  - action: utter_offer_room_guide
-  - intent: affirm
-  - checkpoint: perform_room_guide
-
-- story: office guide decline
-  steps:
+  - intent: request_employee_office
+  - action: office_search
+  - slot_was_set:
+    - office_search_result: true
+  - action: utter_office_result
+  - action: check_room_mapping
+  - slot_was_set:
+    - room_is_mapped: true
   - action: utter_offer_room_guide
   - intent: deny
   - action: utter_ok
   - action: utter_offer_additional_help
 
-#- story: office search name suggestion
-#  steps:
-#  - action: utter_name_not_found
-#  - action: office_employee_suggestion_form
-#  - active_loop: office_employee_suggestion_form
-#  - active_loop: null
-#  - action: office_search_parse_suggestion_reply
+- story: office search success with mapping accept
+  steps:
+  - intent: request_employee_office
+  - action: office_search
+  - slot_was_set:
+    - office_search_result: true
+  - action: utter_office_result
+  - action: check_room_mapping
+  - slot_was_set:
+    - room_is_mapped: true
+  - action: utter_offer_room_guide
+  - intent: affirm
+  - checkpoint: perform_room_guide
 
 # Room guide
 
@@ -100,7 +96,7 @@ stories:
   - intent: request_room_guide
   - action: check_room_mapping
   - slot_was_set:
-    - room_is_mapped: False
+    - room_is_mapped: false
   - action: utter_room_no_mapping
   - action: reset_all_slots
   - action: utter_offer_additional_help
@@ -110,7 +106,7 @@ stories:
   - intent: request_room_guide
   - action: check_room_mapping
   - slot_was_set:
-    - room_is_mapped: True
+    - room_is_mapped: true
   - checkpoint: perform_room_guide
 
 - story: perform room_guide

@@ -10,26 +10,32 @@ import datetime
 # Andmebaasi seaded
 from auxiliary.database_settings import *
 
-# Õppeaasta alguskuupäev, siin 30. august 2020
+# Õppeaasta alguskuupäev, siin 30. august 2021
 START_DATE = "30-08-2021"
 
-date_string = sys.argv[1]
-if date_string is None:
-    date_string = START_DATE
-elif re.fullmatch(r"\d\d-\d\d-\d\d\d\d", date_string) is None:
-    raise ValueError('Incorrect date string: expected format is DD-MM-YYYY')
-START_OF_YEAR = datetime.datetime.strptime(date_string, "%d-%m-%Y").date()
 
-conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
-cur = conn.cursor()
+def generate_weeks(start_date):
+    year_start = datetime.datetime.strptime(start_date, "%d-%m-%Y").date()
 
-cur.execute("TRUNCATE TABLE ut_weeks;")
-monday = START_OF_YEAR
-for i in range(52):
-    cur.execute("INSERT INTO ut_weeks (week_nr, monday, sunday) VALUES ("
-                + str(i+1) + ", '" + str(monday) + "', '" + str(monday + datetime.timedelta(days=6)) + "');")
-    monday = monday + datetime.timedelta(days=7)
+    conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
+    cur = conn.cursor()
 
-cur.close()
-conn.commit()
-conn.close()
+    cur.execute("TRUNCATE TABLE ut_weeks;")
+    monday = year_start
+    for i in range(52):
+        cur.execute("INSERT INTO ut_weeks (week_nr, monday, sunday) VALUES ("
+                    + str(i+1) + ", '" + str(monday) + "', '" + str(monday + datetime.timedelta(days=6)) + "');")
+        monday = monday + datetime.timedelta(days=7)
+
+    cur.close()
+    conn.commit()
+    conn.close()
+
+
+if __name__ == '__main__':
+    date_string = sys.argv[1]
+    if date_string is None:
+        date_string = START_DATE
+    elif re.fullmatch(r"\d\d-\d\d-\d\d\d\d", date_string) is None:
+        raise ValueError('Incorrect date string: expected format is DD-MM-YYYY')
+    generate_weeks(date_string)

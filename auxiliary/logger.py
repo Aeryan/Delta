@@ -31,13 +31,12 @@ if __name__ == "__main__":
         # https://docs.python.org/3/howto/sockets.html
         nginx_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         nginx_socket.bind(("localhost", LISTEN_PORT))
-        print("Listening on port", LISTEN_PORT)
-
         conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT,
                                 database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
         cur = conn.cursor()
-
+        print("Listening on port", LISTEN_PORT)
         nginx_socket.listen(5)
+
         while True:
             # Veebiserverilt saadud andmete vastuvõtt ja töötlus
             (clientsocket, address) = nginx_socket.accept()

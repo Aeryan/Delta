@@ -72,6 +72,7 @@ class EmployeeExtractor(EntityExtractor):
         # Väärtuste ebavajaliku eraldamise vältimine kavatsuse kontrolli abil
         if message.get(INTENT)['name'] not in {"request_employee_office"}:
             return entities
+
         best_match = process.extractOne(self.remove_intent_words(message.get(TEXT)), self.employees)
         if best_match[1] >= self.match_threshold:
             entities.append({

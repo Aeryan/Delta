@@ -138,4 +138,5 @@ def update_course_data():
     conn.close()
 
 
-update_course_data()
+if __name__ == '__main__':
+    update_course_data()

@@ -72,4 +72,5 @@ def update_course_tables(keep_existing):
                 course_file.write('\n      - ' + course_name)
 
 
-update_course_tables(APPEND_TO_EXISTING)
+if __name__ == '__main__':
+    update_course_tables(APPEND_TO_EXISTING)

@@ -1,22 +1,22 @@
 # Rasa Action Serveri käivitatavad käsud
 import os
-
+import sys
+import json
 import psycopg2
 import datetime
-import json
-from num2words import num2words
 from PIL import Image, ImageDraw
+from num2words import num2words
+
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, FollowupAction, AllSlotsReset, SessionStarted, ActionExecuted
 
+sys.path.append("../")
+
+
 # Andmebaasi seaded
-DATABASE_HOST = "localhost"
-DATABASE_PORT = 5432
-DATABASE_NAME = "delta"
-DATABASE_USER = "postgres"
-DATABASE_PASSWORD = "postgres"
+from auxiliary.database_settings import *
 
 # Nädalapäevade nimetused
 WEEKDAYS = {1: "Monday", 2: "Tuesday", 3: "Wednesday", 4: "Thursday", 5: "Friday", 6: "Saturday", 7: "Sunday"}
@@ -75,8 +75,6 @@ class ActionSearchOffices(Action):
             result = cur.fetchone()
             cur.close()
             conn.close()
-            print("This is result[1]")
-            print(result[1])
             return [SlotSet("office_search_result", result[1])]
 
         cur.close()

@@ -6,8 +6,9 @@ import requests
 import psycopg2
 import re
 
+from components.helper_functions import stringify
 # Andmebaasi seaded
-from database_settings import *
+from auxiliary.database_settings import *
 
 # Otsitav aasta, näiteks "2021"
 YEAR_CODE = "2021"
@@ -63,11 +64,6 @@ def week_generator(week_string):
             weeks[int(substring)] = ""
 
     return list(dict.fromkeys(weeks))
-
-
-# Funktsioon SQLisõbralike sõnede loomiseks
-def stringify(string):
-    return "'" + string + "'"
 
 
 # Funktsioon kõigi sobivate sündmuste andmebaasi salvestamiseks
@@ -142,4 +138,5 @@ def update_course_data():
     conn.close()
 
 
-update_course_data()
+if __name__ == '__main__':
+    update_course_data()

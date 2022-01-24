@@ -1,9 +1,12 @@
 # Rasa Action Serveri käivitatavad käsud
-
+import os
 import sys
+import json
 import psycopg2
 import datetime
+from PIL import Image, ImageDraw
 from estnltk.vabamorf.morf import synthesize
+
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
@@ -13,7 +16,7 @@ sys.path.append("../")
 from components.tts_preprocess_et.convert import make_ordinal, convert_number
 
 # Andmebaasi seaded
-from database_settings import *
+from auxiliary.database_settings import *
 
 # Nädalapäevade nimetused
 WEEKDAYS = {1: "esmaspäev", 2: "teispäev", 3: "kolmapäev", 4: "neljapäev", 5: "reede", 6: "laupäev", 7: "pühapäev"}
@@ -58,7 +61,7 @@ class ActionSearchOffices(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         if type(tracker.get_slot('employee')) != str:
-            return []
+            return [FollowupAction(name="utter_office_unrecognized_name")]
         name = tracker.get_slot('employee').title()
         conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
         cur = conn.cursor()
@@ -72,15 +75,13 @@ class ActionSearchOffices(Action):
             result = cur.fetchone()
             cur.close()
             conn.close()
-            return [SlotSet("office_search_result", result[1]),
-                    FollowupAction(name="utter_name_not_found")]
+            return [SlotSet("office_search_result", result[1])]
 
         cur.close()
         conn.close()
         if result[0] is None:
-            return [FollowupAction(name="utter_office_no_result")]
-        return [SlotSet("office_search_result", result[0]),
-                FollowupAction(name="utter_office_result")]
+            return []
+        return [SlotSet("office_search_result", result[0])]
 
 
 # Deprecated by fuzzy matching extractor
@@ -178,3 +179,57 @@ class ActionCourseEventResponse(Action):
 
         return [AllSlotsReset(),
                 FollowupAction("utter_offer_additional_help")]
+
+
+class ActionDrawLocationMap(Action):
+    def name(self) -> Text:
+        return "draw_location_map"
+
+    def run(self,
+            dispatcher: "CollectingDispatcher",
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        room_nr = tracker.get_slot("office_search_result")
+        if room_nr is None:
+            room_nr = tracker.get_slot("room_of_interest")
+
+        if str(room_nr) + ".png" not in os.listdir("../auxiliary/media/location_images/"):
+            with open("../auxiliary/delta_map/delta_pixel_map.json") as f:
+                pixel_map = json.load(f)
+            # if f"delta_{room_nr // 1000}.png" not in os.listdir("../auxiliary/delta_map/") or str(room_nr) not in pixel_map.keys() or pixel_map[str(room_nr)] == []:
+            #     dispatcher.utter_message("Sorry, I don't have the mapping for that room just yet.")
+            #     return [AllSlotsReset(),
+            #             FollowupAction("utter_offer_additional_help")]
+            center = pixel_map[str(room_nr)]
+            img = Image.open(f"../auxiliary/delta_map/delta_{room_nr // 1000}.png")
+            ImageDraw.Draw(img).ellipse([center[0]-5, center[1]-5, center[0]+5, center[1]+5], fill=(255, 0, 0))
+            img.save(f"../auxiliary/media/location_images/{room_nr}.png")
+        dispatcher.utter_message(f"!img /media/location_images/{room_nr}.png")
+
+        return []
+
+
+def room_has_mapping(room_nr):
+    if str(room_nr) + ".png" not in os.listdir("../auxiliary/media/location_images/"):
+        with open("../auxiliary/delta_map/delta_pixel_map.json") as f:
+            pixel_map = json.load(f)
+        if f"delta_{room_nr // 1000}.png" not in os.listdir("../auxiliary/delta_map/") or str(room_nr) not in pixel_map.keys() or pixel_map[str(room_nr)] == []:
+            return False
+    return True
+
+
+class ActionCheckRoomMapping(Action):
+    def name(self) -> Text:
+        return "check_room_mapping"
+
+    def run(self,
+            dispatcher: "CollectingDispatcher",
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        room_nr = tracker.get_slot("office_search_result")
+        if room_nr is None:
+            room_nr = tracker.get_slot("room_of_interest")
+
+        return [SlotSet("room_is_mapped", room_has_mapping(room_nr))]

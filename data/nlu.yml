@@ -93,6 +93,13 @@ nlu:
     - Unusta ära
     - Las ta jääda
     - Las see olla
+# TODO: Translate
+- intent: request_room_guide
+  examples: |
+    - Kus on ruum [3062](room_of_interest)?
+    - Kus on [3121](room_of_interest)?
+    - Kuidas jõuda ruumi [3019](room_of_interest)?
+    - Kust ma leian ruumi [1037](room_of_interest)?
 - intent: request_employee_office
   examples: |
     - Kus on [Jaan Aru](employee) kabinet?

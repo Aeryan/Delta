@@ -1,10 +1,10 @@
 [Unit]
-Description=Rasa-Logger
-After=rasa-core.service
+Description=Rasa-Logger-et
+After=rasa-core-et.service
 [Service]
 Type=simple
-WorkingDirectory=/home/ubuntu/Rasa/Delta/auxiliary/
-ExecStart=/home/ubuntu/Rasa/rasa_env_3_7_10/bin/python3.7 /home/ubuntu/Rasa/Delta/auxiliary/logger.py
+WorkingDirectory=/home/ubuntu/Rasa/Delta_et/auxiliary/
+ExecStart=/home/ubuntu/Rasa/Delta_et/delta_env/bin/python3.7  /home/ubuntu/Rasa/Delta_et/auxiliary/logger.py
 User=root
 Group=daemon
 Restart=on-failure

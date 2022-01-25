@@ -211,10 +211,10 @@ class ActionDrawLocationMap(Action):
 
 
 def room_has_mapping(room_nr):
-    if str(room_nr) + ".png" not in os.listdir("../auxiliary/media/location_images/"):
-        with open("../auxiliary/delta_map/delta_pixel_map.json") as f:
+    if str(room_nr) + ".png" not in os.listdir("../../media/location_images/"):
+        with open("../../delta_map/delta_pixel_map.json") as f:
             pixel_map = json.load(f)
-        if f"delta_{room_nr // 1000}.png" not in os.listdir("../auxiliary/delta_map/") or str(room_nr) not in pixel_map.keys() or pixel_map[str(room_nr)] == []:
+        if f"delta_{room_nr // 1000}.png" not in os.listdir("../../delta_map/") or str(room_nr) not in pixel_map.keys() or pixel_map[str(room_nr)] == []:
             return False
     return True
 

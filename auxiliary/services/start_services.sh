@@ -1,3 +1,3 @@
-sudo service rasa-actions start
-sudo service rasa-core start
-sudo service rasa-logger start
+sudo service rasa-actions-en start
+sudo service rasa-core-en start
+sudo service rasa-logger-en start

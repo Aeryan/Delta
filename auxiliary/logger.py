@@ -50,11 +50,11 @@ if __name__ == "__main__":
 
             # Sisendsõnumi salvestus
             clear_latest(cur, str(msg_data_in['sender']))
-            cur.execute("INSERT INTO conversations (user_id, message_timestamp, message, sent_by_user, flagged, annotation, latest) VALUES ("
+            cur.execute("INSERT INTO conversations (user_id, message_timestamp, message, sent_by_user, flagged, annotation, latest, language) VALUES ("
                         + str(msg_data_in['sender'])
                         + ", " + stringify(datetime.now().isoformat(' ')) + ", "
                         + stringify(msg_data_in['message']) + ", "
-                        + "true, false, NULL, true);")
+                        + "true, false, NULL, true, 'en');")
             conn.commit()
 
             # Juturoboti sõnumi vastuvõtt ja töötlus, klientsocketi sulgemine (vastasel juhul tekib viga), teabe edastus
@@ -77,11 +77,11 @@ if __name__ == "__main__":
                 if index == len(msg_data_out) - 1:
                     clear_latest(cur, msg['recipient_id'])
                     latest = 'true'
-                cur.execute("INSERT INTO conversations (user_id, message_timestamp, message, sent_by_user, flagged, annotation, latest) VALUES ("
+                cur.execute("INSERT INTO conversations (user_id, message_timestamp, message, sent_by_user, flagged, annotation, latest, language) VALUES ("
                             + msg['recipient_id'] + ", "
                             + stringify(datetime.now().isoformat(' ')) + ", "
                             + stringify(str(msg['text'])) + ", "
-                            + "false, false, NULL, " + latest + ");")
+                            + "false, false, NULL, " + latest + ", 'en');")
                 conn.commit()
 
     except KeyboardInterrupt as ki:

@@ -2,15 +2,21 @@
 # Allikateks on veebilehed, mis on toodud välja muutujas 'pages'
 # Tööaeg ATI sülearvutil ~1 minut
 
-from bs4 import BeautifulSoup
-import requests
 import re
-import psycopg2
 import os
-from components.helper_functions import stringify
-# Andmebaasi seaded
-from auxiliary.database_settings import *
+import time
+import psycopg2
+import selenium.common.exceptions
 
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+
+# Kui import ei õnnestu, käivita järgnev käsk:
+# export PYTHONPATH="${PYTHONPATH}:/teekond/kausta/Delta_et/"
+from auxiliary.database_settings import *
+from components.helper_functions import stringify
 
 # Kui see väärtus on tõene, lisanduvad andmetabelis mitteesinevad nimed selle lõppu,
 # vastasel juhul luuakse värske andmetabel puhtalt andmebaasis oleva teabe põhjal.
@@ -19,12 +25,16 @@ APPEND_TO_EXISTING = True
 # Majandusteaduskonna töötajate lehel on siintoodutest erinev kujundus, mille töötlust antud skript ei võimalda
 PAGES = [
     # ATI
-    requests.get("https://www.cs.ut.ee/et/kontakt/arvutiteaduse-instituut"),
+    "https://www.cs.ut.ee/et/arvutiteaduse-instituut",
     # Matemaatika ja Statistika Instituut
-    requests.get("https://www.math.ut.ee/et/kontakt/matemaatika-statistika-instituut")]
+    "https://www.math.ut.ee/et/matemaatika-statistika-instituut"]
 
 
 def update_employees(pages, keep_existing=True):
+    headlessoption = Options()
+    headlessoption.add_argument('--headless')
+    driver = webdriver.Chrome(options=headlessoption)
+
     conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
     cur = conn.cursor()
 
@@ -34,15 +44,29 @@ def update_employees(pages, keep_existing=True):
         updated[hit[0]] = False
 
     for page in pages:
-        soup = BeautifulSoup(page.content, 'html.parser')
-        data = []
+        driver.get(page)
+        time.sleep(1)
+        try:
+            compliance_button = driver.find_element(By.XPATH, "/html/body/div[3]/div/div/div[2]/button[1]")
+            compliance_button.click()
+        except selenium.common.exceptions.NoSuchElementException as e:
+            if not str(e).startswith(
+                    'Message: no such element: Unable to locate element: {"method":"xpath","selector":"/html/body/div[4]/div/div/div[2]/button[2]"}'):
+                raise e
+        buttons = list(filter(lambda x: x.text == "Ava", driver.find_elements(By.TAG_NAME, "button")))
+        for button in buttons:
+            button.click()
 
-        src = soup.find_all("tr", {"class": "odd"}) + soup.find_all("tr", {"class": "even"})
-        for i in src:
-            name = re.sub(r"  +", "", re.sub(r"\r", "",  re.sub(r"\n", "", i.find("td", {"class": "views-field-field-ut-employee-lname"}).text))).replace(" -", "")
-            room_info = re.findall(r"r \d+", i.find("td", {"class": "views-field-field-ut-employee-phone"}).text)
-            if len(room_info) > 0:
-                room_nr = room_info[0].replace("r ", "")
+        time.sleep(3)
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        employee_boxes = soup.find_all("article", {"class": "employee-item"})
+
+        for employee_box in employee_boxes:
+            name = employee_box.find_all("div", {"class": "contact-title column"})[0].text.replace("\n", "")
+            room_nr_candidates = list(filter(lambda x: x.text.startswith("r "), employee_box.find_all("div", {
+                "class": "d-flex flex-column contact-data column"})[0].find_all("div")))
+            if len(room_nr_candidates) == 1:
+                room_nr = int(re.match(r"^\d+", room_nr_candidates[0].text.replace("r ", ""))[0])
                 if name in updated.keys():
                     if not updated[name]:
                         cur.execute(f"UPDATE offices SET room_nr = {room_nr} WHERE name = '" + name + "';")

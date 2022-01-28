@@ -6,10 +6,11 @@ import sys
 import psycopg2
 import datetime
 
-# Andmebaasi seaded
+# Kui import ei õnnestu, käivita järgnev käsk:
+# export PYTHONPATH="${PYTHONPATH}:/teekond/kausta/Delta_et/"
 from auxiliary.database_settings import *
 
-# Õppeaasta alguskuupäev, siin 31. august 2020
+# Õppeaasta alguskuupäev
 START_DATE = "30-08-2021"
 
 
@@ -33,9 +34,10 @@ def generate_weeks(start_date):
 
 
 if __name__ == '__main__':
-    date_string = sys.argv[1]
-    if date_string is None:
+    if len(sys.argv) == 1:
         date_string = START_DATE
-    elif re.fullmatch(r"\d\d-\d\d-\d\d\d\d", date_string) is None:
+    else:
+        date_string = sys.argv[1]
+    if re.fullmatch(r"\d\d-\d\d-\d\d\d\d", date_string) is None:
         raise ValueError('Incorrect date string: expected format is DD-MM-YYYY')
     generate_weeks(date_string)

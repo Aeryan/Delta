@@ -3,3 +3,4 @@ bs4==0.0.*
 fuzzywuzzy[speedup]==0.18.*
 estnltk==1.6.9b
 Pillow==9.0.*
+selenium==4.1.*

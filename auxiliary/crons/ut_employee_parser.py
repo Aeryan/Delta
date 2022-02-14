@@ -4,9 +4,7 @@
 
 import re
 import os
-import time
 import psycopg2
-import selenium.common.exceptions
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -14,7 +12,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 
 # Kui import ei õnnestu, käivita järgnev käsk:
-# export PYTHONPATH="${PYTHONPATH}:/teekond/kausta/Delta_et/"
+# export PYTHONPATH="${PYTHONPATH}:/teekond/kausta/Delta_ex/"
 from auxiliary.database_settings import *
 from components.helper_functions import stringify
 
@@ -22,12 +20,14 @@ from components.helper_functions import stringify
 # vastasel juhul luuakse värske andmetabel puhtalt andmebaasis oleva teabe põhjal.
 APPEND_TO_EXISTING = True
 
-# Majandusteaduskonna töötajate lehel on siintoodutest erinev kujundus, mille töötlust antud skript ei võimalda
 PAGES = [
     # ATI
     "https://www.cs.ut.ee/et/arvutiteaduse-instituut",
     # Matemaatika ja Statistika Instituut
-    "https://www.math.ut.ee/et/matemaatika-statistika-instituut"]
+    "https://www.math.ut.ee/et/matemaatika-ja-statistika-instituut"]
+
+
+COMPLIANCE_BUTTON_XPATH = "/html/body/div[3]/div/div/div[2]/button[1]"
 
 
 def update_employees(pages, keep_existing=True):
@@ -45,19 +45,10 @@ def update_employees(pages, keep_existing=True):
 
     for page in pages:
         driver.get(page)
-        time.sleep(1)
-        try:
-            compliance_button = driver.find_element(By.XPATH, "/html/body/div[3]/div/div/div[2]/button[1]")
-            compliance_button.click()
-        except selenium.common.exceptions.NoSuchElementException as e:
-            if not str(e).startswith(
-                    'Message: no such element: Unable to locate element: {"method":"xpath","selector":"/html/body/div[4]/div/div/div[2]/button[2]"}'):
-                raise e
         buttons = list(filter(lambda x: x.text == "Ava", driver.find_elements(By.TAG_NAME, "button")))
         for button in buttons:
-            button.click()
+            driver.execute_script("arguments[0].click();", button)
 
-        time.sleep(3)
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         employee_boxes = soup.find_all("article", {"class": "employee-item"})
 

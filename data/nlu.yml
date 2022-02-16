@@ -145,8 +145,4 @@ nlu:
   examples: |
     - I left my hat in two thousand and seven, can I get in the room to retrieve it?
     - How many people are in the building?
-    - How do I get there?
-    - Where is that?
-    - Where is room 1037?
-    - Can you guide me there?
-    - Show me the way please
+    - When was this built?

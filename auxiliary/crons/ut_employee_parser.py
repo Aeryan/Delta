@@ -4,12 +4,10 @@
 
 import re
 import os
+import requests
 import psycopg2
 
 from bs4 import BeautifulSoup
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
 
 # Kui import ei õnnestu, käivita järgnev käsk:
 # export PYTHONPATH="${PYTHONPATH}:/teekond/kausta/Delta_ex/"
@@ -22,19 +20,38 @@ APPEND_TO_EXISTING = True
 
 PAGES = [
     # ATI
-    "https://www.cs.ut.ee/et/arvutiteaduse-instituut",
+    "https://cs.ut.ee/et/arvutiteaduse-instituut",
     # Matemaatika ja Statistika Instituut
-    "https://www.math.ut.ee/et/matemaatika-ja-statistika-instituut"]
+    "https://math.ut.ee/et/matemaatika-ja-statistika-instituut"]
 
 
-COMPLIANCE_BUTTON_XPATH = "/html/body/div[3]/div/div/div[2]/button[1]"
+def update_database_from_page(ut_soup, updatelist, database_cursor):
+    for employee_box in ut_soup.find_all("article", {"class": "employee-item"}):
+        name = employee_box.find_all("div", {"class": "contact-title column"})[0].text.replace("\n", "")
+        if name == "Rauno Jaaska":
+            print("lmao")
+        room_nr_candidates = list(filter(lambda x: x.text.startswith("r "), employee_box.find_all("div", {
+            "class": "d-flex flex-column contact-data column"})[0].find_all("div")))
+        if len(room_nr_candidates) == 1:
+            room_nr = int(re.match(r"^\d+", room_nr_candidates[0].text.replace("r ", ""))[0])
+            if name in updatelist.keys():
+                if not updatelist[name]:
+                    database_cursor.execute(f"UPDATE offices SET room_nr = {room_nr} WHERE name = '" + name + "';")
+                    updatelist[name] = True
+            else:
+                database_cursor.execute(f"INSERT INTO offices(name, room_nr) VALUES ({stringify(name)}, {room_nr});")
+                updatelist[name] = True
+        else:
+            if name in updatelist.keys():
+                if not updatelist[name]:
+                    database_cursor.execute(f"UPDATE offices SET room_nr = NULL WHERE name = {stringify(name)};")
+                    updatelist[name] = True
+            else:
+                database_cursor.execute(f"INSERT INTO offices(name, room_nr) VALUES ({stringify(name)}, NULL);")
+                updatelist[name] = True
 
 
 def update_employees(pages, keep_existing=True):
-    headlessoption = Options()
-    headlessoption.add_argument('--headless')
-    driver = webdriver.Chrome(options=headlessoption)
-
     conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
     cur = conn.cursor()
 
@@ -44,35 +61,16 @@ def update_employees(pages, keep_existing=True):
         updated[hit[0]] = False
 
     for page in pages:
-        driver.get(page)
-        buttons = list(filter(lambda x: x.text == "Ava", driver.find_elements(By.TAG_NAME, "button")))
-        for button in buttons:
-            driver.execute_script("arguments[0].click();", button)
+        soup = BeautifulSoup(requests.get(page).content, 'html.parser')
+        update_database_from_page(soup, updated, cur)
+        subpage_indices = list(map(lambda x: x.get("data-ajax"),
+                                   soup.find_all("button", {"data-target": re.compile(r'#collapse-\d+'),
+                                                            "data-ajax": re.compile(r"\d+")})))
 
-        soup = BeautifulSoup(driver.page_source, 'html.parser')
-        employee_boxes = soup.find_all("article", {"class": "employee-item"})
-
-        for employee_box in employee_boxes:
-            name = employee_box.find_all("div", {"class": "contact-title column"})[0].text.replace("\n", "")
-            room_nr_candidates = list(filter(lambda x: x.text.startswith("r "), employee_box.find_all("div", {
-                "class": "d-flex flex-column contact-data column"})[0].find_all("div")))
-            if len(room_nr_candidates) == 1:
-                room_nr = int(re.match(r"^\d+", room_nr_candidates[0].text.replace("r ", ""))[0])
-                if name in updated.keys():
-                    if not updated[name]:
-                        cur.execute(f"UPDATE offices SET room_nr = {room_nr} WHERE name = '" + name + "';")
-                        updated[name] = True
-                else:
-                    cur.execute(f"INSERT INTO offices(name, room_nr) VALUES ({stringify(name)}, {room_nr});")
-                    updated[name] = True
-            else:
-                if name in updated.keys():
-                    if not updated[name]:
-                        cur.execute(f"UPDATE offices SET room_nr = NULL WHERE name = '{name}';")
-                        updated[name] = True
-                else:
-                    cur.execute(f"INSERT INTO offices(name, room_nr) VALUES ('{name}', NULL);")
-                    updated[name] = True
+        for index in subpage_indices:
+            subpage = re.match(r'https://\w+.ut.ee/', page)[0] + "et/ut_stucture/employee-output/" + index
+            update_database_from_page(BeautifulSoup(requests.get(subpage).content, 'html.parser'),
+                                      updated, cur)
 
     existing_names = []
     if keep_existing:

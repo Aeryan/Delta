@@ -28,8 +28,6 @@ PAGES = [
 def update_database_from_page(ut_soup, updatelist, database_cursor):
     for employee_box in ut_soup.find_all("article", {"class": "employee-item"}):
         name = employee_box.find_all("div", {"class": "contact-title column"})[0].text.replace("\n", "")
-        if name == "Rauno Jaaska":
-            print("lmao")
         room_nr_candidates = list(filter(lambda x: x.text.startswith("r "), employee_box.find_all("div", {
             "class": "d-flex flex-column contact-data column"})[0].find_all("div")))
         if len(room_nr_candidates) == 1:
@@ -69,7 +67,7 @@ def update_employees(pages, keep_existing=True):
 
         for index in subpage_indices:
             subpage = re.match(r'https://\w+.ut.ee/', page)[0] + "et/ut_stucture/employee-output/" + index
-            update_database_from_page(BeautifulSoup(requests.get(subpage).content, 'html.parser'),
+            update_database_from_page(BeautifulSoup(requests.get(subpage).content, 'html.parser').find("div", {"class": "list-structure-view"}),
                                       updated, cur)
 
     existing_names = []

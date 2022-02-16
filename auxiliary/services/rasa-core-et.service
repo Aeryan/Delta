@@ -4,7 +4,7 @@ After=rasa-actions-et.service
 [Service]
 Type=simple
 WorkingDirectory=/home/ubuntu/Rasa/Delta_et
-ExecStart=/home/ubuntu/Rasa/Delta_et/delta_env/bin/python3.7  -m rasa run --enable-api -p 6006
+ExecStart=/home/ubuntu/Rasa/Delta_et/delta_env_et/bin/python3.7  -m rasa run --enable-api -p 6006
 User=root
 Group=daemon
 Restart=on-failure

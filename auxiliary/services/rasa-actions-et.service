@@ -3,8 +3,8 @@ Description=Rasa-Action-et
 After=multi-user.target
 [Service]
 Type=simple
-WorkingDirectory=/home/ubuntu/Rasa/Delta_et
-ExecStart=/home/ubuntu/Rasa/Delta_et/delta_env/bin/python3.7  -m rasa run actions -p 6055
+WorkingDirectory=/home/ubuntu/Rasa/Delta_et/actions
+ExecStart=/home/ubuntu/Rasa/Delta_et/delta_env_et/bin/python3.7  -m rasa run actions -p 6055
 User=root
 Group=daemon
 Restart=on-failure

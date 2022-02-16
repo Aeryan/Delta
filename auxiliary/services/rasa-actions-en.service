@@ -4,7 +4,7 @@ After=multi-user.target
 [Service]
 Type=simple
 WorkingDirectory=/home/ubuntu/Rasa/Delta_en/actions
-ExecStart=/home/ubuntu/Rasa/Delta_en/delta_env/bin/python3.7 -m rasa run actions
+ExecStart=/home/ubuntu/Rasa/Delta_en/delta_env_en/bin/python3.7 -m rasa run actions
 User=root
 Group=daemon
 Restart=on-failure

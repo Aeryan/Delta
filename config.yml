@@ -26,7 +26,7 @@ pipeline:
      match_threshold: 80
 # Kursuse pealkirja hägune tuvastus
    - name: "components.course_extractor.CourseTitleExtractor"
-     match_threshold: 80
+     match_threshold: 90
 # Kursuse sündmuse hägune tuvastus
    - name: "components.course_event_extractor.CourseEventExtractor"
      match_threshold: 80

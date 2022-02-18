@@ -34,48 +34,14 @@ class ActionSearchOffices(Action):
         conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
         cur = conn.cursor()
 
-        # If exact matching fails, offer to repeat query with closest match
-        # https://www.postgresql.org/docs/13/pgtrgm.html
         cur.execute(f"SELECT room_nr FROM offices WHERE name = '{name}';")
         result = cur.fetchone()
-        if result is None:
-            cur.execute(f"SELECT name FROM (SELECT *, similarity(name, {name}) from offices order by 3 desc) as similar_names;")
-            result = cur.fetchone()
-            cur.close()
-            conn.close()
-            return [SlotSet("office_search_result", result[1])]
 
         cur.close()
         conn.close()
         if result[0] is None:
             return []
         return [SlotSet("office_search_result", result[0])]
-
-
-# class ActionParseEmployeeSuggestionReply(Action):
-#     def name(self) -> Text:
-#         return "office_search_parse_suggestion_reply"
-#
-#     def run(self,
-#             dispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#         if tracker.get_slot("office_employee_suggestion_feedback"):
-#             conn = psycopg2.connect(host=DATABASE_HOST, port=DATABASE_PORT, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASSWORD)
-#             cur = conn.cursor()
-#             cur.execute("SELECT room_nr FROM offices WHERE name = '" + tracker.get_slot("office_search_result") + "';")
-#             result = cur.fetchone()[0]
-#             cur.close()
-#             conn.close()
-#             return [SlotSet("office_search_result", result),
-#                     FollowupAction("utter_office_result")
-#                     ]
-#
-#         else:
-#             dispatcher.utter_message(text="Alright.")
-#             return [AllSlotsReset(),
-#                     FollowupAction("utter_offer_additional_help")
-#                     ]
 
 
 class ActionDrawLocationMap(Action):

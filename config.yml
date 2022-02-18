@@ -23,7 +23,9 @@ pipeline:
 # Lisakomponendid
 # Töötajanime hägune tuvastus
    - name: "components.employee_extractor.EmployeeExtractor"
-     match_threshold: 80
+     no_match_threshold: 20
+     low_match_threshold: 50
+     high_match_threshold: 80
 # Kursuse pealkirja hägune tuvastus
    - name: "components.course_extractor.CourseTitleExtractor"
      match_threshold: 90

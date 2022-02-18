@@ -40,9 +40,41 @@ stories:
 
 # Employee office search
 
+- story: office search high name confidence
+  steps:
+    - intent: request_employee_office
+    - slot_was_set:
+      - employee_confidence: high
+    - checkpoint: perform_office_search
+
+- story: office search no name confidence
+  steps:
+    - intent: request_employee_office
+    - slot_was_set:
+      - employee_confidence: none
+    - action: utter_name_not_found
+
+- story: office search low name confidence suggestion acceptance
+  steps:
+    - intent: request_employee_office
+    - slot_was_set:
+      - employee_confidence: low
+    - action: utter_ask_office_employee_suggestion_feedback
+    - intent: affirm
+    - checkpoint: perform_office_search
+
+- story: office search low name confidence suggestion dismissal
+  steps:
+    - intent: request_employee_office
+    - slot_was_set:
+      - employee_confidence: low
+    - action: utter_ask_office_employee_suggestion_feedback
+    - intent: deny
+    - action: utter_ok_sad
+
 - story: office search no result
   steps:
-  - intent: request_employee_office
+  - checkpoint: perform_office_search
   - action: office_search
   - slot_was_set:
     - office_search_result: null
@@ -52,7 +84,7 @@ stories:
 
 - story: office search success no mapping
   steps:
-  - intent: request_employee_office
+  - checkpoint: perform_office_search
   - action: office_search
   - slot_was_set:
     - office_search_result: true
@@ -64,7 +96,7 @@ stories:
 
 - story: office search success with mapping decline
   steps:
-  - intent: request_employee_office
+  - checkpoint: perform_office_search
   - action: office_search
   - slot_was_set:
     - office_search_result: true
@@ -80,7 +112,7 @@ stories:
 
 - story: office search success with mapping accept
   steps:
-  - intent: request_employee_office
+  - checkpoint: perform_office_search
   - action: office_search
   - slot_was_set:
     - office_search_result: true

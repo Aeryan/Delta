@@ -31,8 +31,10 @@ class EmployeeExtractor(EntityExtractor):
 
     # Vaikeväärtused
     defaults = {
-        # töötaja nime ja teksti vastavuse lävend
-        "match_threshold": 80,
+        # töötaja nime ja teksti vastavuse lävendid
+        "no_match_threshold": 20,
+        "low_match_threshold": 50,
+        "high_match_threshold": 80,
         # Töötajate nimede andmetabeli asukoht
         "employee_file_path": "data/employee.yml",
     }
@@ -40,7 +42,9 @@ class EmployeeExtractor(EntityExtractor):
     def __init__(self, component_config: Optional[Dict[Text, Any]] = None):
         super().__init__(component_config)
         self.employees = []
-        self.match_threshold = self.component_config["match_threshold"]
+        self.no_match_threshold = self.component_config["no_match_threshold"]
+        self.low_match_threshold = self.component_config["low_match_threshold"]
+        self.high_match_threshold = self.component_config["high_match_threshold"]
 
         # Töötajate nimede mällu lugemine
         with open(self.defaults['employee_file_path'], "r") as f:
@@ -72,15 +76,17 @@ class EmployeeExtractor(EntityExtractor):
         # Väärtuste ebavajaliku eraldamise vältimine kavatsuse kontrolli abil
         if message.get(INTENT)['name'] not in {"request_employee_office"}:
             return entities
-
         best_match = process.extractOne(self.remove_intent_words(message.get(TEXT)), self.employees)
-        if best_match[1] >= self.match_threshold:
+        if best_match[1] >= self.no_match_threshold:
             entities.append({
                 ENTITY_ATTRIBUTE_TYPE: "employee",
                 ENTITY_ATTRIBUTE_VALUE: best_match[0],
                 PREDICTED_CONFIDENCE_KEY: best_match[1]
             })
-
+            entities.append({
+                ENTITY_ATTRIBUTE_TYPE: "employee_confidence",
+                ENTITY_ATTRIBUTE_VALUE: "high" if best_match[1] > self.high_match_threshold else "low" if best_match[1] > self.low_match_threshold else "none"
+            })
         return entities
 
     def process(self, message: Message, **kwargs: Any) -> None:

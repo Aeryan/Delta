@@ -53,6 +53,7 @@ intents:
       - employee
 entities:
 - employee
+- employee_confidence
 - course
 - course_event
 - room_of_interest
@@ -62,6 +63,15 @@ slots:
     initial_value: null
     auto_fill: true
     influence_conversation: false
+  employee_confidence:
+    type: categorical
+    values:
+      - none
+      - low
+      - high
+    initial_value: null
+    auto_fill: true
+    influence_conversation: true
   office_search_result:
     type: text
     initial_value: null
@@ -76,12 +86,12 @@ slots:
     type: text
     initial_value: null
     auto_fill: true
-    influence_conversation: false
+    influence_conversation: true
   course_event:
     type: text
     initial_value: null
     auto_fill: true
-    influence_conversation: false
+    influence_conversation: true
   room_of_interest:
     type: float
     initial_value: null
@@ -94,7 +104,9 @@ slots:
     influence_conversation: true
 responses:
   utter_ok:
-  - text: Olgu.
+  - text: Okay.
+  utter_ok_sad:
+  - text: Okay :(
   utter_greet:
   - text: Tere!
   utter_happy:
@@ -126,9 +138,9 @@ responses:
   utter_functionality_help:
   - text: Ma oskan leida Delta töötajate kabinetinumbreid. Samuti oskan ma jagada teavet kursuste selle nädala toimumiste kohta, näiteks loengute ja praktikumide toimumisaegu ja -paiku.
   utter_name_not_found:
-  - text: Ma ei tea Deltas ühtki selle nimega töötajat.
+  - text: I don't recognize that name :(
   utter_ask_office_employee_suggestion_feedback:
-  - text: Kas sa tahtsid öelda {office_search_result}?
+  - text: I don't quite recognize that name. Did you mean {employee}?
   utter_office_result:
   - text: Tõõtaja {employee} kontoriks on märgitud {office_search_result}.
   utter_office_no_office:
@@ -157,20 +169,10 @@ actions:
 - reset_all_slots
 - display_general_help
 - office_search
-- office_search_parse_suggestion_reply
 - course_event_data_response
 - draw_location_map
 - check_room_mapping
 forms:
-  office_employee_suggestion_form:
-    required_slots:
-      office_employee_suggestion_feedback:
-      - intent: affirm
-        type: from_intent
-        value: true
-      - intent: deny
-        type: from_intent
-        value: false1
   course_event_query_form:
     required_slots:
       course:

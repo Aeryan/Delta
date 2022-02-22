@@ -61,12 +61,25 @@ function postMsg(initial) {
                     const img_src = json[i]["text"].split(" ")[1]
 
                     var modal_node = document.createElement("DIV")
-                    modal_node.classList.add("ui", "modal")
+                    modal_node.classList.add("ui", "basic", "modal")
                     modal_node.setAttribute("id", "modal_" + modal_id_counter.toString())
+                    modal_node.style = "max-width: 60%"
                     var modal_image_node = document.createElement("IMG")
                     modal_image_node.src = img_src
+                    modal_image_node.style = "max-width: 100%"
                     modal_node.appendChild(modal_image_node)
                     segment_node.appendChild(modal_node)
+
+                    var action_node = document.createElement("DIV")
+                    action_node.classList.add("actions")
+                    var button_node = document.createElement("DIV")
+                    button_node.classList.add("ui", "black", "inverted", "massive", "basic", "cancel", "button")
+                    button_node.style = "position: fixed; left: 100%; top: 0; box-shadow: none; margin: 0"
+                    var icon_node = document.createElement("I")
+                    icon_node.classList.add("remove", "icon")
+                    button_node.appendChild(icon_node)
+                    action_node.appendChild(button_node)
+                    modal_node.appendChild(action_node)
 
                     var image_node = document.createElement("IMG");
                     image_node.src = img_src

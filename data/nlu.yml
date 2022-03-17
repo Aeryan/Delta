@@ -1,5 +1,5 @@
 # Kasutajalt oodatavad kavatsused ja neile vastavad sisendid olemitega märgendatult
-version: "2.0"
+version: "3.0"
 nlu:
 - intent: initmsg
   examples: |

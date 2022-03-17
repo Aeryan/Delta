@@ -75,7 +75,7 @@ outcome==1.1.0
 packaging==20.9
 pamqp==2.3.0
 partd==1.2.0
-Pillow==9.0.0
+Pillow==9.0.1
 prompt-toolkit==2.0.10
 protobuf==3.19.4
 psycopg2-binary==2.9.3

@@ -1,4 +1,7 @@
+# language = any
+
 import re
+from components.levenshtein import manual_levenshtein
 
 
 def parse_nlu(intents_iterable):
@@ -19,6 +22,18 @@ def parse_nlu(intents_iterable):
                     relevant = True
 
     return intent_words
+
+
+def remove_intent_words(text, intent_words):
+    text_list = text.split(" ")
+    for word in text.split(" "):
+        if word == "I":
+            continue
+        # best_match = process.extractOne(word, self.intent_words)
+        best_match = manual_levenshtein(word, intent_words)
+        if best_match[1] < 2:
+            text_list.remove(word)
+    return " ".join(text_list)
 
 
 # Funktsioon SQLisõbralike sõnede loomiseks

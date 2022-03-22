@@ -1,5 +1,5 @@
 # Vestlussessioonide seaded ja juturoboti teadmiste piirid
-version: '2.0'
+version: '3.0'
 config:
   store_entities_as_slots: true
 session_config:
@@ -61,8 +61,11 @@ slots:
   employee:
     type: text
     initial_value: null
-    auto_fill: true
     influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: employee
+        intent: request_employee_office
   employee_confidence:
     type: categorical
     values:
@@ -70,38 +73,55 @@ slots:
       - low
       - high
     initial_value: null
-    auto_fill: true
     influence_conversation: true
+    mappings:
+      - type: custom
   office_search_result:
     type: text
     initial_value: null
-    auto_fill: false
     influence_conversation: true
+    mappings:
+      - type: custom
   office_employee_suggestion_feedback:
     type: text
     initial_value: null
-    auto_fill: false
     influence_conversation: false
+    mappings:
+      - type: custom
   course:
     type: text
     initial_value: null
-    auto_fill: true
     influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: course
+        intent:
+          - inform_course
+          - request_course_event_data
   course_event:
     type: text
     initial_value: null
-    auto_fill: true
     influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: course_event
+        intent:
+          - inform_course_event
+          - request_course_event_data
   room_of_interest:
     type: float
     initial_value: null
-    auto_fill: true
     influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: room_of_interest
+        intent: request_room_guide
   room_is_mapped:
     type: bool
     initial_value: null
-    auto_fill: false
     influence_conversation: true
+    mappings:
+      - type: custom
 responses:
   utter_ok:
   - text: Okay.
@@ -175,17 +195,6 @@ actions:
 forms:
   course_event_query_form:
     required_slots:
-      course:
-      - entity: course
-        type: from_entity
-        intent:
-        - inform_course
-        - request_course_event_data
-        not_intent: inform_course_event
-      course_event:
-      - entity: course_event
-        type: from_entity
-        intent:
-        - inform_course_event
-        - request_course_event_data
+      - course
+      - course_event
 e2e_actions: []

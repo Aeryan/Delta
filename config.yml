@@ -1,6 +1,8 @@
 # Rasa NLU konfiguratsioon.
 # https://rasa.com/docs/rasa/nlu/components/
-language: en
+language: et
+
+recipe: default.v1
 
 pipeline:
 # Vaikeväärtused
@@ -22,18 +24,18 @@ pipeline:
      threshold: 0.2
 # Lisakomponendid
 # Töötajanime hägune tuvastus
-   - name: "components.employee_extractor.EmployeeExtractor"
+   - name: components.employee_extractor.EmployeeExtractor
      no_match_threshold: 20
      low_match_threshold: 50
      high_match_threshold: 80
 # Kursuse pealkirja hägune tuvastus
-   - name: "components.course_extractor.CourseTitleExtractor"
+   - name: components.course_extractor.CourseTitleExtractor
      match_threshold: 80
 # Kursuse sündmuse hägune tuvastus
-   - name: "components.course_event_extractor.CourseEventExtractor"
+   - name: components.course_event_extractor.CourseEventExtractor
      match_threshold: 80
 # Ruuminumbri tuvastus
-   - name: "components.room_number_extractor.RoomNumberExtractor"
+   - name: components.room_number_extractor.RoomNumberExtractor
 
 # Rasa Core konfiguratsioon.
 # https://rasa.com/docs/rasa/core/policies/

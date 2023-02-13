@@ -101,7 +101,6 @@ class EmployeeExtractor(GraphComponent, EntityExtractorMixin):
 
     def _extract_entities(self, message: Message) -> List[Dict[Text, Any]]:
         entities = []
-        print(self.get_default_config())
         # Väärtuste ebavajaliku eraldamise vältimine kavatsuse kontrolli abil
         if message.get(INTENT)['name'] not in {"request_employee_office"}:
             return entities

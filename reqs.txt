@@ -1,5 +1,4 @@
-rasa==3.0.*
+rasa==3.4.*
 bs4==0.0.*
 fuzzywuzzy[speedup]==0.18.*
 num2words==0.5.*
-Pillow==9.0.*

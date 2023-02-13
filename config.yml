@@ -31,12 +31,14 @@ pipeline:
 # Kursuse pealkirja hägune tuvastus
    - name: components.course_extractor.CourseTitleExtractor
      match_threshold: 90
+# Töötajanime / kursuse pealkirja tuvastus lühivormis küsimisel
+   - name: components.combined_extractor.CombinedExtractor
+     match_threshold: 80
 # Kursuse sündmuse hägune tuvastus
    - name: components.course_event_extractor.CourseEventExtractor
      match_threshold: 80
 # Ruuminumbri tuvastus
    - name: components.room_number_extractor.RoomNumberExtractor
-
 # Rasa Core konfiguratsioon.
 # https://rasa.com/docs/rasa/core/policies/
 policies:

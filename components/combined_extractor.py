@@ -1,7 +1,7 @@
 # language = any
 
 """
-Komponent kursusenimede hägusaks eraldamiseks.
+Komponent töötajate ja kursuste nimede hägusaks eraldamiseks päringutes, kus võib esineda kumbki.
 Loodud Rasa Open Source komponendi RegexEntityExtractor põhjal.
 https://github.com/RasaHQ/rasa/blob/main/rasa/nlu/extractors/regex_entity_extractor.py
 """
@@ -32,16 +32,17 @@ from rasa.shared.nlu.constants import (
 
 
 @DefaultV1Recipe.register(DefaultV1Recipe.ComponentType.ENTITY_EXTRACTOR, is_trainable=False)
-class CourseTitleExtractor(GraphComponent, EntityExtractorMixin):
+class CombinedExtractor(GraphComponent, EntityExtractorMixin):
 
     # Vaikeväärtused
     @staticmethod
     def get_default_config() -> Dict[Text, Any]:
         return {
-                # Kursusenime ja teksti vastavuse lävend
-                "match_threshold": 90,
-                # Kursusenimede andmetabeli asukoht
-                "file_path": "data/course.yml",
+                # Leitud nime ja teksti vastavuse lävend
+                "match_threshold": 80,
+                # Nimede andmetabelite asukohad
+                "employee_file_path": "data/employee.yml",
+                "course_file_path": "data/course.yml"
                 }
 
     @classmethod
@@ -72,19 +73,24 @@ class CourseTitleExtractor(GraphComponent, EntityExtractorMixin):
         config: Dict[Text, Any],
         training_artifact: Optional[Dict],
     ) -> None:
+        self.employees = []
         self.course_titles = []
         try:
             self.match_threshold = config["match_threshold"]
         except KeyError:
             self.match_threshold = self.get_default_config()["match_threshold"]
 
+        # Töötajate nimede mällu lugemine
+        with open(self.get_default_config()['employee_file_path'], "r") as f:
+            for line in f.readlines()[4:]:
+                self.employees.append(line.replace("      - ", "").replace("\n", ""))
         # Kursusenimede mällu lugemine
-        with open(self.get_default_config()['file_path'], "r") as f:
+        with open(self.get_default_config()['course_file_path'], "r") as f:
             for line in f.readlines()[4:]:
                 self.course_titles.append(line.replace("      - ", "").replace("\n", ""))
 
         # Kavatsustes esinevate sõnade mällu lugemine
-        self.intent_words = parse_nlu(["- intent: request_course_event_data\n"])
+        self.intent_words = parse_nlu(["- intent: request_combined_shorthand\n"])
 
         self._model_storage = model_storage
         self._resource = resource
@@ -99,19 +105,40 @@ class CourseTitleExtractor(GraphComponent, EntityExtractorMixin):
     def _extract_entities(self, message: Message) -> List[Dict[Text, Any]]:
         entities = []
         # Väärtuste ebavajaliku eraldamise vältimine kavatsuse kontrolli abil
-        if message.get(INTENT)['name'] not in {"inform_course", "request_course_event_data"}:
+        if message.get(INTENT)['name'] not in {"request_combined_shorthand"}:
             return entities
-        best_match = process.extractOne(remove_intent_words(message.get(TEXT), self.intent_words), self.course_titles)
-        if best_match[1] >= self.match_threshold:
+        employee_match = process.extractOne(remove_intent_words(message.get(TEXT), self.intent_words), self.employees)
+        course_match = process.extractOne(remove_intent_words(message.get(TEXT), self.intent_words), self.course_titles)
+        if employee_match[1] > course_match[1] and employee_match[1] >= self.match_threshold:
+            entities.append({
+                ENTITY_ATTRIBUTE_TYPE: "shorthand_outcome",
+                ENTITY_ATTRIBUTE_VALUE: "employee",
+                PREDICTED_CONFIDENCE_KEY: employee_match[1] - course_match[1]
+            })
+            entities.append({
+                ENTITY_ATTRIBUTE_TYPE: "employee",
+                ENTITY_ATTRIBUTE_VALUE: employee_match[0],
+                PREDICTED_CONFIDENCE_KEY: employee_match[1]
+            })
+        elif course_match[1] > employee_match[1] and course_match[1] >= self.match_threshold:
+            entities.append({
+                ENTITY_ATTRIBUTE_TYPE: "shorthand_outcome",
+                ENTITY_ATTRIBUTE_VALUE: "course",
+                PREDICTED_CONFIDENCE_KEY: course_match[1] - employee_match[1]
+            })
             entities.append({
                 ENTITY_ATTRIBUTE_TYPE: "course",
-                ENTITY_ATTRIBUTE_VALUE: best_match[0],
-                PREDICTED_CONFIDENCE_KEY: best_match[1]
+                ENTITY_ATTRIBUTE_VALUE: course_match[0],
+                PREDICTED_CONFIDENCE_KEY: course_match[1]
             })
-
+        else:
+            entities.append({
+                ENTITY_ATTRIBUTE_TYPE: "shorthand_outcome",
+                ENTITY_ATTRIBUTE_VALUE: "none"
+            })
         return entities
 
-    def process(self, messages: List[Message]) -> List[Message]:
+    def process(self, messages: List[Message], **kwargs: Any) -> List[Message]:
         for message in messages:
             extracted_entities = self._extract_entities(message)
             extracted_entities = self.add_extractor_name(extracted_entities)

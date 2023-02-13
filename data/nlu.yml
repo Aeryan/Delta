@@ -125,8 +125,11 @@ nlu:
     - Where can I find [School-based Youth Work Practice](course)'s [individual lesson](course_event)?
     - When is the next [practical session](course_event) of [Pedagogical Practicum](course)?
     - Where is the [resit](course_event) of [Geriatrics](course)?
-    - Where is [Camp Work](course)?
     - When is [Project Work II](course)?
+- intent: request_combined_shorthand
+  examples: |
+    - Where is [Agnes Luhtaru](shorthand_combination_entity)?
+    - Where can I find [Camp Work](shorthand_combination_entity)?
 - intent: inform_course
   examples: |
     - It's [Calculus I](course)
@@ -139,8 +142,6 @@ nlu:
     - I meant the [seminar](course_event)
     - Tell me about the [qolloqium](course_event)
     - [practical session](course_event), please
-    - Where is the [exam](course_event)?
-    - When is the [exam](course_event)?
 - intent: out_of_scope
   examples: |
     - I left my hat in two thousand and seven, can I get in the room to retrieve it?

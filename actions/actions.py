@@ -70,6 +70,8 @@ class ActionDrawLocationMap(Action):
 
 
 def room_has_mapping(room_nr):
+    if room_nr is None:
+        return False
     if str(room_nr) + ".png" not in os.listdir("../../media/location_images/"):
         with open("../../delta_map/delta_pixel_map.json") as f:
             pixel_map = json.load(f)

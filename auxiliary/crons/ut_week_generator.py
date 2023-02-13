@@ -12,7 +12,7 @@ import datetime
 from auxiliary.database_settings import *
 
 # Õppeaasta alguskuupäev
-START_DATE = "30-08-2021"
+START_DATE = "29-08-2022"
 
 
 def generate_weeks(start_date):

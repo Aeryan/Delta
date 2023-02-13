@@ -34,7 +34,6 @@ stories:
     - or:
       - intent: request_course_event_data
       - intent: inform_course
-      - intent: inform_course_event
     - action: course_event_query_form
     - active_loop: course_event_query_form
     - active_loop: null
@@ -125,6 +124,33 @@ stories:
   - action: utter_offer_room_guide
   - intent: affirm
   - checkpoint: perform_room_guide
+
+# Employee/course shorthand
+
+- story: shorthand search fail
+  steps:
+  - intent: request_combined_shorthand
+  - slot_was_set:
+    - shorthand_outcome: none
+  - action: utter_ask_rephrase
+
+- story: shorthand search employee
+  steps:
+  - intent: request_combined_shorthand
+  - slot_was_set:
+    - shorthand_outcome: employee
+  - checkpoint: perform_office_search
+
+- story: shorthand search course
+  steps:
+  - intent: request_combined_shorthand
+  - slot_was_set:
+    - shorthand_outcome: course
+  - action: course_event_query_form
+  - active_loop: course_event_query_form
+  - active_loop: null
+  - action: course_event_data_response
+
 
 # Room guide
 

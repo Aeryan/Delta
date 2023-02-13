@@ -84,7 +84,7 @@ def update_employees(pages, keep_existing=True):
 
     with open(os.path.join("data", "employee.yml"), write_mode) as employee_file:
         if not keep_existing:
-            employee_file.write('version: "3.0"\nnlu:\n  - lookup: employee\n    examples: |')
+            employee_file.write('version: "3.1"\nnlu:\n  - lookup: employee\n    examples: |')
         for name in updated.keys():
             if not updated[name]:
                 cur.execute(f"DELETE FROM offices WHERE name = '{name}';")

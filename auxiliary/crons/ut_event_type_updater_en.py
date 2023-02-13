@@ -39,7 +39,7 @@ def update_course_tables(keep_existing):
 
     with open(os.path.join("data", "course_event.yml"), write_mode) as course_event_file:
         if not keep_existing:
-            course_event_file.write('version: "3.0"\nnlu:\n  - lookup: course_event\n    examples: |')
+            course_event_file.write('version: "3.1"\nnlu:\n  - lookup: course_event\n    examples: |')
         for course_event in course_event_types:
             if course_event not in existing_events:
                 if "/" in course_event:
@@ -70,7 +70,7 @@ def update_course_tables(keep_existing):
     # Kõigi unikaalsete kursusenimede andmetabelisse lisamine
     with open(os.path.join("data", "course.yml"), write_mode) as course_file:
         if not keep_existing:
-            course_file.write('version: "3.0"\nnlu:\n  - lookup: course\n    examples: |')
+            course_file.write('version: "3.1"\nnlu:\n  - lookup: course\n    examples: |')
         for course_name in course_titles:
             if course_name not in existing_names:
                 course_file.write('\n      - ' + course_name)
